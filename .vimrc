@@ -5,7 +5,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " let Vundle manage Vundle
-" required! 
+" required!
 Bundle 'gmarik/vundle'
 
 " My bundles:
@@ -18,6 +18,8 @@ Bundle 'bling/vim-airline'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'slim-template/vim-slim'
+Bundle "pangloss/vim-javascript"
+Bundle 'mustache/vim-mustache-handlebars'
 " vim-scripts repos
 "Bundle 'L9'
 "Bundle 'FuzzyFinder'
@@ -28,6 +30,9 @@ Bundle 'slim-template/vim-slim'
 " ...
 
 filetype plugin indent on     " required!
+
+" "Turn on syntax highlighting
+syntax on
 
 " Solarized
 set background=dark
@@ -46,9 +51,6 @@ set number
 set guioptions=aAce
 set fileencoding=utf-8
 set showcmd
-
-" "Turn on syntax highlighting
-syntax on
 
 set showmode
 set cursorline
