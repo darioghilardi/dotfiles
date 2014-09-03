@@ -13,9 +13,6 @@ Plugin 'gmarik/Vundle.vim'
 set nocompatible              " be iMproved
 filetype off                  " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
 " original repos on GitHub
 Plugin 'tpope/vim-fugitive'
 Plugin 'kien/ctrlp.vim'
