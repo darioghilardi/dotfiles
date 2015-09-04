@@ -51,7 +51,12 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/home/dario/.bin"
+
+# chruby
+source /usr/local/share/chruby/chruby.sh
+chruby 2.2.0
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -85,7 +90,7 @@ alias gpush="git push"
 alias gpull="git pull"
 alias ack="ack-grep"
 alias bespec="bundle exec rspec"
-alias bi="bundle install -j 10"
+alias bi="bundle install -j 3"
 alias be="bundle exec"
 alias webrick="bundle exec rails s"
 alias thin="bundle exec rails s thin"
