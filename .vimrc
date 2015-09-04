@@ -9,7 +9,7 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 set nocompatible              " be iMproved
 filetype off                  " required!
 
@@ -24,11 +24,14 @@ Plugin 'slim-template/vim-slim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'losingkeys/vim-niji'
+Plugin 'vim-scripts/paredit.vim'
+Plugin 'sjl/tslime.vim'
 
 call vundle#end()             " required
 filetype plugin indent on     " required!
 
-" "Turn on syntax highlighting
+ "Turn on syntax highlighting
 syntax on
 
 " Solarized
@@ -109,7 +112,7 @@ set list listchars=trail:·
 " Set Control-P plugin
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 " Remap Control-P
-let g:ctrlp_map = '\t'
+let g:ctrlp_map = '§t'
 " Refresh at every call the Control-P cache
 let g:ctrlp_use_caching = 0
 
@@ -168,6 +171,27 @@ let g:airline_theme             = 'solarized'
 let g:airline_enable_branch     = 1
 let g:airline_enable_syntastic  = 1
 set laststatus=2
+
+" Indentation fix for Lisp and Scheme
+autocmd filetype lisp,scheme,art setlocal equalprg=scmindent.rkt
+
+" Rainbow parentheses
+let g:niji_dark_colours = [
+    \ [ '81', '#5fd7ff'],
+    \ [ '99', '#875fff'],
+    \ [ '1',  '#dc322f'],
+    \ [ '76', '#5fd700'],
+    \ [ '3',  '#b58900'],
+    \ [ '2',  '#859900'],
+    \ [ '6',  '#2aa198'],
+    \ [ '4',  '#268bd2'],
+    \ ]
+
+" tslime
+let g:tslime_ensure_trailing_newlines = 1
+let g:tslime_normal_mapping = '§e'
+let g:tslime_visual_mapping = '§e'
+let g:tslime_vars_mapping = '§E'
 
 " Brief help
 " :BundleList          - list configured bundles
