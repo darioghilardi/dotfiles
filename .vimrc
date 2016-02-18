@@ -38,7 +38,6 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fireplace'
 Plugin 'guns/vim-clojure-highlight.git'
 Plugin 'losingkeys/vim-niji'
-Plugin 'vim-scripts/paredit.vim'
 Plugin 'sjl/tslime.vim'
 
 call vundle#end()             " required
