@@ -26,7 +26,6 @@ Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'heartsentwined/vim-emblem'
 Plugin 'elixir-lang/vim-elixir'
-Plugin 'jgdavey/tslime.vim'
 Plugin 'thoughtbot/vim-rspec'
 Plugin 'sjl/vitality.vim'
 Plugin 'ervandew/supertab'
@@ -38,6 +37,9 @@ Plugin 'vim-scripts/paredit.vim.git'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fireplace'
 Plugin 'guns/vim-clojure-highlight.git'
+Plugin 'losingkeys/vim-niji'
+Plugin 'vim-scripts/paredit.vim'
+Plugin 'sjl/tslime.vim'
 
 call vundle#end()             " required
 filetype plugin indent on     " required!
@@ -187,6 +189,27 @@ let g:airline_theme                         = 'solarized'
 let g:airline#extensions#branch#enabled     = 1
 let g:airline#extensions#syntastic#enabled  = 1
 set laststatus=2
+
+" Indentation fix for Lisp and Scheme
+autocmd filetype lisp,scheme,art setlocal equalprg=scmindent.rkt
+
+" Rainbow parentheses
+let g:niji_dark_colours = [
+    \ [ '81', '#5fd7ff'],
+    \ [ '99', '#875fff'],
+    \ [ '1',  '#dc322f'],
+    \ [ '76', '#5fd700'],
+    \ [ '3',  '#b58900'],
+    \ [ '2',  '#859900'],
+    \ [ '6',  '#2aa198'],
+    \ [ '4',  '#268bd2'],
+    \ ]
+
+" tslime
+let g:tslime_ensure_trailing_newlines = 1
+let g:tslime_normal_mapping = '§e'
+let g:tslime_visual_mapping = '§e'
+let g:tslime_vars_mapping = '§E'
 
 " Brief help
 " :BundleList          - list configured bundles

@@ -55,11 +55,15 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/home/d
 
 # chruby
 source /usr/local/share/chruby/chruby.sh
+<<<<<<< HEAD
 chruby 2.2.3
 
 # nvm
 source ~/.nvm/nvm.sh
 nvm use 0.12.0
+=======
+chruby 2.2.0
+>>>>>>> origin/master
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
