@@ -55,15 +55,11 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/home/d
 
 # chruby
 source /usr/local/share/chruby/chruby.sh
-<<<<<<< HEAD
 chruby 2.2.3
 
 # nvm
 source ~/.nvm/nvm.sh
 nvm use 0.12.0
-=======
-chruby 2.2.0
->>>>>>> origin/master
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -96,7 +92,7 @@ alias gc="git commit"
 alias gl="git log"
 alias gpush="git push"
 alias gpull="git pull"
-alias ack="ack-grep"
+# alias ack="ack-grep"
 alias bespec="bundle exec rspec"
 alias bi="bundle install -j 3"
 alias be="bundle exec"
@@ -107,6 +103,9 @@ alias regendb="be rake db:drop; be rake db:create; be rake db:migrate; be rake d
 alias regendbtest="RAILS_ENV=test be rake db:drop;RAILS_ENV=test be rake db:create;RAILS_ENV=test be rake db:migrate;RAILS_ENV=test be rake db:seed;"
 alias mdman="bundle exec middleman -b 0.0.0.0"
 
+# Servers
+alias edev="ssh edev"
+
 export EDITOR=vim
 export TERM="xterm-256color"
 
@@ -114,3 +113,6 @@ alias gitlg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Crese
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+export NVM_DIR="/Users/dario/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
