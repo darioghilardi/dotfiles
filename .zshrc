@@ -51,7 +51,16 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/home/dario/.bin"
+
+# chruby
+source /usr/local/share/chruby/chruby.sh
+chruby 2.2.3
+
+# nvm
+source ~/.nvm/nvm.sh
+nvm use 0.12.0
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -85,13 +94,19 @@ alias gpush="git push"
 alias gpull="git pull"
 alias ack="ack-grep"
 alias bespec="bundle exec rspec"
-alias bi="bundle install -j 10"
+alias bi="bundle install -j 3"
 alias be="bundle exec"
 alias webrick="bundle exec rails s"
 alias thin="bundle exec rails s thin"
-alias puma="bundle exec rails s puma"
+alias puma="bundle exec rails s puma -b 0.0.0.0"
+alias regendb="be rake db:drop; be rake db:create; be rake db:migrate; be rake db:seed;"
+alias regendbtest="RAILS_ENV=test be rake db:drop;RAILS_ENV=test be rake db:create;RAILS_ENV=test be rake db:migrate;RAILS_ENV=test be rake db:seed;"
+alias mdman="bundle exec middleman -b 0.0.0.0"
 
 export EDITOR=vim
 export TERM="xterm-256color"
 
 alias gitlg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
