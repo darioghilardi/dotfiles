@@ -26,6 +26,9 @@ Plug 'janko-m/vim-test'
 Plug 'w0rp/ale'
 Plug 'jaawerth/nrun.vim'
 Plug 'kassio/neoterm'
+Plug 'easymotion/vim-easymotion'
+Plug 'Shougo/deoplete.nvim'
+Plug 'mileszs/ack.vim'
 
 " Markdown support
 Plug 'plasticboy/vim-markdown'
@@ -177,6 +180,27 @@ let g:solarized_termtrans=1
 let g:solarized_contrast="medium"
 let g:solarized_visibility="high"
 colorscheme solarized
+
+
+""""""""""""""""""""""""""""""
+" Ack.vim
+""""""""""""""""""""""""""""""
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'     " Use ag instead of ack
+endif
+
+" Remap the search in all files command to <leader>a
+nmap <leader>f :Ack! 
+
+" Remap the search in all files command to <leader>f
+nmap <leader>ff :AckFile! 
+
+
+""""""""""""""""""""""""""""""
+" Deoplete & Neopairs
+""""""""""""""""""""""""""""""
+let g:deoplete#enable_at_startup = 1
+let g:neopairs#enable = 1
 
 
 """"""""""""""""""""""""""""""
