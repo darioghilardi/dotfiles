@@ -1,60 +1,74 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+scriptencoding utf-8
+set encoding=utf-8
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+set nocompatible
+filetype off
 
-" let Vundle manage Vundle, required
 
-Plugin 'VundleVim/Vundle.vim'
-set nocompatible              " be iMproved
-filetype off                  " required!
+""""""""""""""""""""""""""""""
+" Vim-Plug
+""""""""""""""""""""""""""""""
+call plug#begin('~/.vim/plugged')
 
-" original repos on GitHub
-Plugin 'tpope/vim-fugitive'
-Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'bling/vim-airline'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'slim-template/vim-slim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'heartsentwined/vim-emblem'
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'thoughtbot/vim-rspec'
-Plugin 'sjl/vitality.vim'
-Plugin 'ervandew/supertab'
+Plug 'tpope/vim-fugitive'
+Plug 'kien/ctrlp.vim'
+Plug 'bling/vim-airline'
+Plug 'altercation/vim-colors-solarized'
+Plug 'slim-template/vim-slim'
+Plug 'pangloss/vim-javascript'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'heartsentwined/vim-emblem'
+Plug 'elixir-lang/vim-elixir'
+Plug 'sjl/vitality.vim'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'janko-m/vim-test'
+Plug 'w0rp/ale'
+Plug 'jaawerth/nrun.vim'
+Plug 'kassio/neoterm'
+
+" Markdown support
+Plug 'plasticboy/vim-markdown'
+
+" Php development
+Plug 'stanAngeloff/php.vim'
+
+" JS development
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'leafgarland/typescript-vim'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'Quramy/tsuquyomi'
 
 " Clojure development
-Plugin 'guns/vim-clojure-static.git'
-Plugin 'kien/rainbow_parentheses.vim.git'
-Plugin 'vim-scripts/paredit.vim.git'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fireplace'
-Plugin 'guns/vim-clojure-highlight.git'
-Plugin 'losingkeys/vim-niji'
-Plugin 'sjl/tslime.vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fireplace'
+Plug 'losingkeys/vim-niji'
+Plug 'sjl/tslime.vim'
+Plug 'https://github.com/guns/vim-clojure-static.git'
+Plug 'https://github.com/kien/rainbow_parentheses.vim.git'
+Plug 'https://github.com/vim-scripts/paredit.vim.git'
+Plug 'https://github.com/guns/vim-clojure-highlight.git'
 
-call vundle#end()             " required
-filetype plugin indent on     " required!
+" Api Blueprint support
+Plug 'kylef/apiblueprint.vim'
 
- "Turn on syntax highlighting
-syntax on
+" Purescript
+Plug 'https://github.com/raichoo/purescript-vim.git'
 
-" Solarized
-set background=dark
-let g:solarized_termtrans=1
-let g:solarized_contrast="medium"
-let g:solarized_visibility="high"
-colorscheme solarized
+" Reason
+Plug 'reasonml-editor/vim-reason'
 
-" Set correct backspace handling
-set backspace=2
+call plug#end()
+
+filetype plugin indent on
+
+
+""""""""""""""""""""""""""""""
+" General configuration
+""""""""""""""""""""""""""""""
+syntax on                 " Turn on syntax highlighting
+set backspace=2           " Set correct backspace handling
 
 set hlsearch
 set incsearch
@@ -69,8 +83,7 @@ set cursorline
 hi cursorline guibg=#333333
 hi CursorColumn guibg=#333333
 
-" Remap leader key
-:let mapleader = "§"
+:let mapleader = "§"      " Remap leader key
 
 " Toggle paste mode remapping with visual feedback with f5
 nnoremap <f5> :set invpaste paste?<cr>
@@ -86,6 +99,14 @@ map <Right> :echo 'Stop using right arrow!'<cr>
 map <Up> :echo 'Stop using up arrow!'<cr>
 map <Down> :echo 'Stop using down arrow!'<cr>
 
+" Custom copy'n'paste
+" Copy the current visual selection to ~/.vbuf
+" Copy the current line to the buffer file if no visual selection
+vmap <C-c> :w! ~/.vbuf<CR>
+nmap <C-c> :.w! ~/.vbuf<CR>
+" Paste the contents of the buffer file
+nmap <C-P> :r ~/.vbuf<CR>
+
 " Enable correct indentation
 set sw=2 " no of spaces for indenting
 set ts=2 " show \t as 2 spaces and treat 2 spaces as \t when deleting, etc..
@@ -94,16 +115,6 @@ set softtabstop=2
 
 " Turn on line numbers
 :set number
-
-" Enable SCSS support
-au BufRead,BufNewFile *.scss set filetype=scss
-
-" Enable autocompletion for CSS files
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-:imap <c-space> <c-x><c-o>
-
-" Enable autocompletion for HTML files
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 
 " Enable indention
 if has("autocmd")
@@ -115,23 +126,10 @@ if has("autocmd")
 filetype plugin indent on
 endif
 
-" Enable virtualedit
-set virtualedit=all
-
-" Automatic folding for scss files
-autocmd BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
+set virtualedit=all       " Enable virtualedit
 
 " Show trailing spaces
 set list listchars=trail:·
-
-" Set Control-P plugin
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-" Remap Control-P
-let g:ctrlp_map = '§t'
-" Refresh at every call the Control-P cache
-let g:ctrlp_use_caching = 0
-" Exclude common directories from ctrlp
-let g:ctrlp_custom_ignore = '\v[\/](node_modules|dist|tmp|deps|_build|build|out)$'
 
 " Save your swp files to a less annoying place than the current directory.
 " If you have .vim-swap in the current directory, it'll use that.
@@ -143,9 +141,6 @@ set directory=./.vim-swap//
 set directory+=~/.vim/swap//
 set directory+=~/tmp//
 set directory+=.
-
-" viminfo stores the the state of your previous editing session
-set viminfo+=n~/.vim/viminfo
 
 if exists("+undofile")
   " undofile - This allows you to use undos after exiting and restarting
@@ -173,26 +168,64 @@ set backupdir^=~/.vim/backup/
 set backupdir^=./.vim-backup/
 set backup
 
-" Custom copy'n'paste
-" Copy the current visual selection to ~/.vbuf
-" Copy the current line to the buffer file if no visual selection
-vmap <C-c> :w! ~/.vbuf<CR>
-nmap <C-c> :.w! ~/.vbuf<CR>
-" Paste the contents of the buffer file
-nmap <C-P> :r ~/.vbuf<CR>
 
 """"""""""""""""""""""""""""""
-" airline
+" Solarized
 """"""""""""""""""""""""""""""
+set background=dark
+let g:solarized_termtrans=1
+let g:solarized_contrast="medium"
+let g:solarized_visibility="high"
+colorscheme solarized
+
+
+""""""""""""""""""""""""""""""
+" Airline
+""""""""""""""""""""""""""""""
+let g:airline_powerline_fonts               = 1
 let g:airline_theme                         = 'solarized'
 let g:airline#extensions#branch#enabled     = 1
-let g:airline#extensions#syntastic#enabled  = 1
+let g:airline#extensions#naomake#enabled    = 1
 set laststatus=2
 
-" Indentation fix for Lisp and Scheme
-autocmd filetype lisp,scheme,art setlocal equalprg=scmindent.rkt
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
 
-" Rainbow parentheses
+
+""""""""""""""""""""""""""""""
+" Ctrl-P
+""""""""""""""""""""""""""""""
+set runtimepath^=~/.vim/bundle/ctrlp.vim                    " Remap Control-P
+let g:ctrlp_map = '§t'                                      " Refresh at every call the Control-P cache
+let g:ctrlp_use_caching = 0                                 " Exclude common directories from ctrlp
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|dist|tmp|deps|_build|build|out|coverage)$'
+
+
+""""""""""""""""""""""""""""""
+" Ale
+""""""""""""""""""""""""""""""
+let g:airline#extensions#ale#enabled = 1                    " Airline
+let g:ale_javascript_eslint_options = '-c .eslintrc.yml'    " ESLint
+
+let g:ale_linters = { 'javascript': ['flow', 'eslint'] }    " Limit linters used for JavaScript.
+highlight clear ALEErrorSign                                " otherwise uses error bg color (typically red)
+highlight clear ALEWarningSign                              " otherwise uses error bg color (typically red)
+let g:ale_sign_error = 'X'                                  " could use emoji
+let g:ale_sign_warning = '?'                                " could use emoji
+let g:ale_statusline_format = ['X %d', '? %d', '']
+
+let g:ale_echo_msg_format = '%linter% says %s'              " %linter% is linter name, %s is the error or warning message
+
+" Map keys to navigate between lines with errors and warnings.
+nnoremap <leader>an :ALENextWrap<cr>
+nnoremap <leader>ap :ALEPreviousWrap<cr>
+
+
+""""""""""""""""""""""""""""""
+" Rainbow Parenthesis
+""""""""""""""""""""""""""""""
 let g:niji_dark_colours = [
     \ [ '81', '#5fd7ff'],
     \ [ '99', '#875fff'],
@@ -204,22 +237,6 @@ let g:niji_dark_colours = [
     \ [ '4',  '#268bd2'],
     \ ]
 
-" tslime
-let g:tslime_ensure_trailing_newlines = 1
-let g:tslime_normal_mapping = '§e'
-let g:tslime_visual_mapping = '§e'
-let g:tslime_vars_mapping = '§E'
-
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install (update) bundles
-" :BundleSearch(!) foo - search (or refresh cache first) for foo
-" :BundleClean(!)      - confirm (or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle commands are not allowed.
-
-" Rainbow parhentesis
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
@@ -235,32 +252,102 @@ let g:rbpt_colorpairs = [
   \ [ '4',  '#268bd2'],
   \ ]
 
-" Enable paredit for now
-let g:paredit_mode = 1
 
+""""""""""""""""""""""""""""""
 " tslime
+""""""""""""""""""""""""""""""
+let g:tslime_ensure_trailing_newlines = 1
+let g:tslime_normal_mapping = '§e'
+let g:tslime_visual_mapping = '§e'
+let g:tslime_vars_mapping = '§E'
 let g:tslime_always_current_session = 1
 let g:tslime_always_current_window = 1
 vmap <leader>e <Plug>SendSelectionToTmux
 nmap <leader>e <Plug>NormalModeSendToTmux
 nmap <leader>E <Plug>SetTmuxVars
 
-" rspec.vim
-let g:rspec_command = "!bundle exec rspec -fd {spec}"
-map <Leader>p :call RunCurrentSpecFile()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
 
+""""""""""""""""""""""""""""""
+" Paredit
+""""""""""""""""""""""""""""""
+let g:paredit_mode = 1
+
+
+""""""""""""""""""""""""""""""
+" Neoterm
+""""""""""""""""""""""""""""""
+let g:neoterm_autoscroll = 1        " Autoscroll neoterm to the bottom
+let g:neoterm_keep_term_open = 0    " Keep neoterm open and hides instead of closing it between commands
+nnoremap <silent> <leader>q :Tclose<cr>
+
+
+""""""""""""""""""""""""""""""
+" Vim-Test
+""""""""""""""""""""""""""""""
+let test#ruby#rspec#executable = "!bundle exec rspec"
+let test#ruby#rspec#options = '-fd'
+let test#strategy = "neoterm"
+
+let test#javascript#mocha#executable = "NODE_PATH=./src NODE_ENV=test ./node_modules/mocha/bin/mocha"
+let test#javascript#mocha#file_pattern = '_spec\.js'
+let test#javascript#mocha#options = {
+  \ 'file':    '--compilers js:babel-core/register --require babel-polyfill --reporter dot',
+  \ 'suite':   '--compilers js:babel-core/register --require babel-polyfill --reporter dot test/unit/**/*.js test/integration/**/*.js',
+  \}
+
+let test#javascript#jest#executable = "node_modules/jest/bin/jest.js --config .jest.json --verbose --runInBand"
+let test#javascript#jest#file_pattern = '\.spec\.js'
+
+nmap <silent> <leader>p :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+
+
+""""""""""""""""""""""""""""""
 " Vitality
+""""""""""""""""""""""""""""""
 let g:vitality_fix_cursor = 1
 let g:vitality_fix_focus = 1
 let g:vitality_always_assume_iterm = 1
 
-" SuperTab
+
+""""""""""""""""""""""""""""""
+" Supertab
+""""""""""""""""""""""""""""""
 let g:SuperTabDefaultCompletionType = "context"
 
-" Forcing clojure build.boot file syntax highlighting
-au BufReadPost build.boot set syntax=clojure
 
-" Allow vim to send commands to the browser in Clojurescript
-command VimConnect execute 'Piggieback (adzerk.boot-cljs-repl/repl-env :ip "edev" :ws-host "edev")'
+""""""""""""""""""""""""""""""
+" Custom clojure setup
+""""""""""""""""""""""""""""""
+au BufReadPost build.boot set syntax=clojure                                                        " Forcing clojure build.boot file syntax highlighting
+autocmd filetype lisp,scheme,art setlocal equalprg=scmindent.rkt                                    " Indentation fix for Lisp and Scheme
+command VimConnect execute 'Piggieback (adzerk.boot-cljs-repl/repl-env :ip "edev" :ws-host "edev")' " Allow vim to send commands to the browser in Clojurescript
+
+
+""""""""""""""""""""""""""""""
+" Custom Javascript setup
+""""""""""""""""""""""""""""""
+let g:jsx_ext_required = 0    " Allow JSX in normal JS files
+
+
+""""""""""""""""""""""""""""""
+" Custom Python setup
+""""""""""""""""""""""""""""""
+let g:python3_host_prog = '/usr/local/bin/python3'  " Python 3 support
+
+
+""""""""""""""""""""""""""""""
+" Custom HTML setup
+""""""""""""""""""""""""""""""
+" Enable autocompletion for HTML files
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+
+
+""""""""""""""""""""""""""""""
+" Custom CSS-SCSS setup
+""""""""""""""""""""""""""""""
+au BufRead,BufNewFile *.scss set filetype=scss
+
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS                                 " Enable autocompletion for CSS files
+:imap <c-space> <c-x><c-o>
+autocmd BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}  " Automatic folding for CSS-SCSS files
