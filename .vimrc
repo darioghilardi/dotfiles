@@ -13,7 +13,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'kien/ctrlp.vim'
 Plug 'bling/vim-airline'
-Plug 'altercation/vim-colors-solarized'
 Plug 'slim-template/vim-slim'
 Plug 'pangloss/vim-javascript'
 Plug 'mustache/vim-mustache-handlebars'
@@ -29,6 +28,11 @@ Plug 'kassio/neoterm'
 Plug 'easymotion/vim-easymotion'
 Plug 'Shougo/deoplete.nvim'
 Plug 'mileszs/ack.vim'
+Plug 'Raimondi/delimitMate'
+
+" Themes
+Plug 'altercation/vim-colors-solarized'
+Plug 'trevordmiller/nova-vim'
 
 " Markdown support
 Plug 'plasticboy/vim-markdown'
@@ -37,6 +41,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'stanAngeloff/php.vim'
 
 " JS development
+Plug 'ternjs/tern_for_vim'
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'leafgarland/typescript-vim'
@@ -118,6 +124,7 @@ set softtabstop=2
 
 " Turn on line numbers
 :set number
+:set numberwidth=3
 
 " Enable indention
 if has("autocmd")
@@ -197,11 +204,37 @@ nmap <leader>ff :AckFile!
 
 
 """"""""""""""""""""""""""""""
-" Deoplete & Neopairs
+" Deoplete & Neopairs & Tern
 """"""""""""""""""""""""""""""
-let g:deoplete#enable_at_startup = 1
-let g:neopairs#enable = 1
+let g:tern_show_argument_hints="on_hold"                                    " Tern configuration
+let g:deoplete#enable_at_startup = 1                                        " Enable deoplete
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif    " Autoclose the top panel when completion is selected
 
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+
+autocmd FileType javascript setlocal omnifunc=tern#Complete                 " Autocomplete with tern
+
+let g:deoplete#auto_complete_delay = 25                 " Delay the display of the complete
+let g:deoplete#auto_completion_start_length = 1         " Start the completion at the first char inserted
+let g:deoplete#sources#ternjs#types = 1                 " Include the types of the completions in the result data.
+let g:deoplete#sources#ternjs#depths = 1                " Include the distance between the completions and the origin position in the result data.
+let g:deoplete#sources#ternjs#docs = 1                  " Include documentation strings in the result data.
+let g:deoplete#sources#ternjs#filter = 0                " When on, only completions that match the current word will be returned. Turn this off to get all results.
+let g:deoplete#sources#ternjs#case_insensitive = 1      " Use a case-insensitive compare between the current word and potential completions.
+let g:deoplete#sources#ternjs#guess = 0                 " When no completions are found, Tern will not use some heuristics to try and return some properties anyway.
+let g:deoplete#sources#ternjs#sort = 0                  " The result set will not be sorted.
+let g:deoplete#sources#ternjs#expand_word_forward = 0   " Only the text before the given position is considered part of the word.
+let g:deoplete#sources#ternjs#omit_object_prototype = 0 " Do not ignore the properties of Object.prototype unless they have been spelled out by at least to characters.
+let g:deoplete#sources#ternjs#include_keywords = 1      " Include JavaScript keywords when completing something that is not a property.
+let g:deoplete#sources#ternjs#in_literal = 0            " Completions should not be returned when inside a literal.
+let g:deoplete#sources#ternjs#filetypes = [
+  \ 'jsx',
+  \ 'javascript.jsx',
+  \ 'vue',
+  \ ]
+set splitbelow                                          " Put the preview window at the bottom
 
 """"""""""""""""""""""""""""""
 " Airline
@@ -236,11 +269,17 @@ let g:ale_javascript_eslint_options = '-c .eslintrc.yml'    " ESLint
 let g:ale_linters = { 'javascript': ['flow', 'eslint'] }    " Limit linters used for JavaScript.
 highlight clear ALEErrorSign                                " otherwise uses error bg color (typically red)
 highlight clear ALEWarningSign                              " otherwise uses error bg color (typically red)
-let g:ale_sign_error = 'X'                                  " could use emoji
-let g:ale_sign_warning = '?'                                " could use emoji
-let g:ale_statusline_format = ['X %d', '? %d', '']
-
+let g:ale_sign_error = '>>'                                 " Error sign
+let g:ale_sign_warning = '??'                               " Warning sign
+let g:ale_set_highlights = 0                                " Disable underline for errors
+let g:ale_sign_column_always = 1                            " Always display the left column with Ale messages (SignColumn)
+let g:ale_statusline_format = ['X %d', '? %d', '']          " Format of the status line
 let g:ale_echo_msg_format = '%linter% says %s'              " %linter% is linter name, %s is the error or warning message
+
+" Setup colors
+highlight clear SignColumn
+highlight ALEErrorSign guibg=yellow guifg=red ctermbg=NONE ctermfg=red
+highlight ALEWarningSign guibg=yellow guifg=red ctermbg=NONE ctermfg=yellow
 
 " Map keys to navigate between lines with errors and warnings.
 nnoremap <leader>an :ALENextWrap<cr>
