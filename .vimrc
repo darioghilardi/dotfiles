@@ -41,8 +41,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'stanAngeloff/php.vim'
 
 " JS development
-Plug 'ternjs/tern_for_vim'
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'leafgarland/typescript-vim'
@@ -206,7 +204,6 @@ nmap <leader>ff :AckFile!
 """"""""""""""""""""""""""""""
 " Deoplete & Neopairs & Tern
 """"""""""""""""""""""""""""""
-let g:tern_show_argument_hints="on_hold"                                    " Tern configuration
 let g:deoplete#enable_at_startup = 1                                        " Enable deoplete
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif    " Autoclose the top panel when completion is selected
 
@@ -214,26 +211,8 @@ if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
 endif
 
-autocmd FileType javascript setlocal omnifunc=tern#Complete                 " Autocomplete with tern
-
 let g:deoplete#auto_complete_delay = 25                 " Delay the display of the complete
 let g:deoplete#auto_completion_start_length = 1         " Start the completion at the first char inserted
-let g:deoplete#sources#ternjs#types = 1                 " Include the types of the completions in the result data.
-let g:deoplete#sources#ternjs#depths = 1                " Include the distance between the completions and the origin position in the result data.
-let g:deoplete#sources#ternjs#docs = 1                  " Include documentation strings in the result data.
-let g:deoplete#sources#ternjs#filter = 0                " When on, only completions that match the current word will be returned. Turn this off to get all results.
-let g:deoplete#sources#ternjs#case_insensitive = 1      " Use a case-insensitive compare between the current word and potential completions.
-let g:deoplete#sources#ternjs#guess = 0                 " When no completions are found, Tern will not use some heuristics to try and return some properties anyway.
-let g:deoplete#sources#ternjs#sort = 0                  " The result set will not be sorted.
-let g:deoplete#sources#ternjs#expand_word_forward = 0   " Only the text before the given position is considered part of the word.
-let g:deoplete#sources#ternjs#omit_object_prototype = 0 " Do not ignore the properties of Object.prototype unless they have been spelled out by at least to characters.
-let g:deoplete#sources#ternjs#include_keywords = 1      " Include JavaScript keywords when completing something that is not a property.
-let g:deoplete#sources#ternjs#in_literal = 0            " Completions should not be returned when inside a literal.
-let g:deoplete#sources#ternjs#filetypes = [
-  \ 'jsx',
-  \ 'javascript.jsx',
-  \ 'vue',
-  \ ]
 set splitbelow                                          " Put the preview window at the bottom
 
 """"""""""""""""""""""""""""""
