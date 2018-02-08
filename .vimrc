@@ -1,9 +1,7 @@
 scriptencoding utf-8
 set encoding=utf-8
-
 set nocompatible
 filetype off
-
 
 """"""""""""""""""""""""""""""
 " Vim-Plug
@@ -26,9 +24,10 @@ Plug 'w0rp/ale'
 Plug 'jaawerth/nrun.vim'
 Plug 'kassio/neoterm'
 Plug 'easymotion/vim-easymotion'
-Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-completion-manager'
 Plug 'mileszs/ack.vim'
 Plug 'Raimondi/delimitMate'
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 
 " Themes
 Plug 'altercation/vim-colors-solarized'
@@ -91,20 +90,25 @@ hi cursorline guibg=#333333
 hi CursorColumn guibg=#333333
 
 :let mapleader = "§"      " Remap leader key
+:inoremap jk <esc>
 
 " Toggle paste mode remapping with visual feedback with f5
-nnoremap <f5> :set invpaste paste?<cr>
+
 set pastetoggle=<f5>
 set showmode
 
 " Toggle line numbers pressing f6
 nmap <f6> :set number! number?<cr>
 
-" Lock arrows
+" Disable arrows
 map <Left> :echo 'Stop using left arrow!'<cr>
 map <Right> :echo 'Stop using right arrow!'<cr>
 map <Up> :echo 'Stop using up arrow!'<cr>
 map <Down> :echo 'Stop using down arrow!'<cr>
+
+" Disable left and right (force me to use the proper motions)
+noremap h <NOP>
+noremap l <NOP>
 
 " Custom copy'n'paste
 " Copy the current visual selection to ~/.vbuf
@@ -202,18 +206,26 @@ nmap <leader>ff :AckFile!
 
 
 """"""""""""""""""""""""""""""
-" Deoplete & Neopairs & Tern
+" nvim-completion-manager
 """"""""""""""""""""""""""""""
-let g:deoplete#enable_at_startup = 1                                        " Enable deoplete
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif    " Autoclose the top panel when completion is selected
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-if !exists('g:deoplete#omni#input_patterns')
-  let g:deoplete#omni#input_patterns = {}
-endif
+""""""""""""""""""""""""""""""
+" Language Server Protocol
+""""""""""""""""""""""""""""""
+let g:LanguageClient_autoStart = 1                                                    " Automatically start language servers.
+let g:LanguageClient_serverCommands = {
+  \   'javascript': ['flow-language-server', '--stdio'],
+  \   'javascript.jsx': ['flow-language-server', '--stdio']
+  \ }
 
-let g:deoplete#auto_complete_delay = 25                 " Delay the display of the complete
-let g:deoplete#auto_completion_start_length = 1         " Start the completion at the first char inserted
-set splitbelow                                          " Put the preview window at the bottom
+autocmd FileType javascript setlocal omnifunc=LanguageClient#complete                 " Activate autocomplete for omnifunc
+
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+
 
 """"""""""""""""""""""""""""""
 " Airline
@@ -243,9 +255,10 @@ let g:ctrlp_custom_ignore = '\v[\/](node_modules|dist|tmp|deps|_build|build|out|
 " Ale
 """"""""""""""""""""""""""""""
 let g:airline#extensions#ale#enabled = 1                    " Airline
-let g:ale_javascript_eslint_options = '-c .eslintrc.yml'    " ESLint
+let g:ale_javascript_flow_executable = 'yarn flow'          " Flow
+let g:ale_javascript_eslint_options = '-c .eslintrc.yml'   " ESLint
 
-let g:ale_linters = { 'javascript': ['flow', 'eslint'] }    " Limit linters used for JavaScript.
+let g:ale_linters = { 'javascript': ['eslint', 'flow'] }  " Limit linters used for JavaScript.
 highlight clear ALEErrorSign                                " otherwise uses error bg color (typically red)
 highlight clear ALEWarningSign                              " otherwise uses error bg color (typically red)
 let g:ale_sign_error = '>>'                                 " Error sign
@@ -393,3 +406,9 @@ au BufRead,BufNewFile *.scss set filetype=scss
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS                                 " Enable autocompletion for CSS files
 :imap <c-space> <c-x><c-o>
 autocmd BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}  " Automatic folding for CSS-SCSS files
+
+
+""""""""""""""""""""""""""""""
+" Override config using .vimlocal
+""""""""""""""""""""""""""""""
+silent! so .vimlocal
