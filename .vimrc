@@ -1,9 +1,7 @@
 scriptencoding utf-8
 set encoding=utf-8
-
 set nocompatible
 filetype off
-
 
 """"""""""""""""""""""""""""""
 " Vim-Plug
@@ -13,7 +11,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'kien/ctrlp.vim'
 Plug 'bling/vim-airline'
-Plug 'altercation/vim-colors-solarized'
 Plug 'slim-template/vim-slim'
 Plug 'pangloss/vim-javascript'
 Plug 'mustache/vim-mustache-handlebars'
@@ -27,8 +24,14 @@ Plug 'w0rp/ale'
 Plug 'jaawerth/nrun.vim'
 Plug 'kassio/neoterm'
 Plug 'easymotion/vim-easymotion'
-Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-completion-manager'
 Plug 'mileszs/ack.vim'
+Plug 'Raimondi/delimitMate'
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+
+" Themes
+Plug 'altercation/vim-colors-solarized'
+Plug 'trevordmiller/nova-vim'
 
 " Markdown support
 Plug 'plasticboy/vim-markdown'
@@ -87,20 +90,25 @@ hi cursorline guibg=#333333
 hi CursorColumn guibg=#333333
 
 :let mapleader = "§"      " Remap leader key
+:inoremap jk <esc>
 
 " Toggle paste mode remapping with visual feedback with f5
-nnoremap <f5> :set invpaste paste?<cr>
+
 set pastetoggle=<f5>
 set showmode
 
 " Toggle line numbers pressing f6
 nmap <f6> :set number! number?<cr>
 
-" Lock arrows
+" Disable arrows
 map <Left> :echo 'Stop using left arrow!'<cr>
 map <Right> :echo 'Stop using right arrow!'<cr>
 map <Up> :echo 'Stop using up arrow!'<cr>
 map <Down> :echo 'Stop using down arrow!'<cr>
+
+" Disable left and right (force me to use the proper motions)
+noremap h <NOP>
+noremap l <NOP>
 
 " Custom copy'n'paste
 " Copy the current visual selection to ~/.vbuf
@@ -118,6 +126,7 @@ set softtabstop=2
 
 " Turn on line numbers
 :set number
+:set numberwidth=3
 
 " Enable indention
 if has("autocmd")
@@ -197,10 +206,25 @@ nmap <leader>ff :AckFile!
 
 
 """"""""""""""""""""""""""""""
-" Deoplete & Neopairs
+" nvim-completion-manager
 """"""""""""""""""""""""""""""
-let g:deoplete#enable_at_startup = 1
-let g:neopairs#enable = 1
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+""""""""""""""""""""""""""""""
+" Language Server Protocol
+""""""""""""""""""""""""""""""
+let g:LanguageClient_autoStart = 1                                                    " Automatically start language servers.
+let g:LanguageClient_serverCommands = {
+  \   'javascript': ['flow-language-server', '--stdio'],
+  \   'javascript.jsx': ['flow-language-server', '--stdio']
+  \ }
+
+autocmd FileType javascript setlocal omnifunc=LanguageClient#complete                 " Activate autocomplete for omnifunc
+
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
 
 """"""""""""""""""""""""""""""
@@ -231,16 +255,23 @@ let g:ctrlp_custom_ignore = '\v[\/](node_modules|dist|tmp|deps|_build|build|out|
 " Ale
 """"""""""""""""""""""""""""""
 let g:airline#extensions#ale#enabled = 1                    " Airline
-let g:ale_javascript_eslint_options = '-c .eslintrc.yml'    " ESLint
+let g:ale_javascript_flow_executable = 'yarn flow'          " Flow
+let g:ale_javascript_eslint_options = '-c .eslintrc.yml'   " ESLint
 
-let g:ale_linters = { 'javascript': ['flow', 'eslint'] }    " Limit linters used for JavaScript.
+let g:ale_linters = { 'javascript': ['eslint', 'flow'] }  " Limit linters used for JavaScript.
 highlight clear ALEErrorSign                                " otherwise uses error bg color (typically red)
 highlight clear ALEWarningSign                              " otherwise uses error bg color (typically red)
-let g:ale_sign_error = 'X'                                  " could use emoji
-let g:ale_sign_warning = '?'                                " could use emoji
-let g:ale_statusline_format = ['X %d', '? %d', '']
-
+let g:ale_sign_error = '>>'                                 " Error sign
+let g:ale_sign_warning = '??'                               " Warning sign
+let g:ale_set_highlights = 0                                " Disable underline for errors
+let g:ale_sign_column_always = 1                            " Always display the left column with Ale messages (SignColumn)
+let g:ale_statusline_format = ['X %d', '? %d', '']          " Format of the status line
 let g:ale_echo_msg_format = '%linter% says %s'              " %linter% is linter name, %s is the error or warning message
+
+" Setup colors
+highlight clear SignColumn
+highlight ALEErrorSign guibg=yellow guifg=red ctermbg=NONE ctermfg=red
+highlight ALEWarningSign guibg=yellow guifg=red ctermbg=NONE ctermfg=yellow
 
 " Map keys to navigate between lines with errors and warnings.
 nnoremap <leader>an :ALENextWrap<cr>
@@ -375,3 +406,9 @@ au BufRead,BufNewFile *.scss set filetype=scss
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS                                 " Enable autocompletion for CSS files
 :imap <c-space> <c-x><c-o>
 autocmd BufRead,BufNewFile *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}  " Automatic folding for CSS-SCSS files
+
+
+""""""""""""""""""""""""""""""
+" Override config using .vimlocal
+""""""""""""""""""""""""""""""
+silent! so .vimlocal
