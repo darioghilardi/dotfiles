@@ -24,7 +24,7 @@ Plug 'w0rp/ale'
 Plug 'jaawerth/nrun.vim'
 Plug 'kassio/neoterm'
 Plug 'easymotion/vim-easymotion'
-Plug 'roxma/nvim-completion-manager'
+"Plug 'roxma/nvim-completion-manager'
 Plug 'mileszs/ack.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
@@ -51,9 +51,11 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fireplace'
 Plug 'losingkeys/vim-niji'
 Plug 'sjl/tslime.vim'
+"Plug 'bhurlow/vim-parinfer'
 Plug 'https://github.com/guns/vim-clojure-static.git'
 Plug 'https://github.com/kien/rainbow_parentheses.vim.git'
-Plug 'https://github.com/vim-scripts/paredit.vim.git'
+Plug 'https://github.com/kien/rainbow_parentheses.vim.git'
+"Plug 'https://github.com/vim-scripts/paredit.vim.git'
 Plug 'https://github.com/guns/vim-clojure-highlight.git'
 
 " Api Blueprint support
@@ -63,7 +65,10 @@ Plug 'kylef/apiblueprint.vim'
 Plug 'https://github.com/raichoo/purescript-vim.git'
 
 " Reason
-Plug 'reasonml-editor/vim-reason'
+Plug 'reasonml-editor/vim-reason-plus'
+
+" CSS
+Plug 'ap/vim-css-color'
 
 call plug#end()
 
@@ -89,7 +94,7 @@ set cursorline
 hi cursorline guibg=#333333
 hi CursorColumn guibg=#333333
 
-:let mapleader = "§"      " Remap leader key
+:let mapleader = ","      " Remap leader key
 :inoremap jk <esc>
 
 " Toggle paste mode remapping with visual feedback with f5
@@ -217,7 +222,9 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 let g:LanguageClient_autoStart = 1                                                    " Automatically start language servers.
 let g:LanguageClient_serverCommands = {
   \   'javascript': ['flow-language-server', '--stdio'],
-  \   'javascript.jsx': ['flow-language-server', '--stdio']
+  \   'javascript.jsx': ['flow-language-server', '--stdio'],
+  \   'reason': ['ocaml-language-server', '--stdio'],
+  \   'ocaml': ['ocaml-language-server', '--stdio'],
   \ }
 
 autocmd FileType javascript setlocal omnifunc=LanguageClient#complete                 " Activate autocomplete for omnifunc
@@ -246,9 +253,9 @@ let g:airline_symbols.space = "\ua0"
 " Ctrl-P
 """"""""""""""""""""""""""""""
 set runtimepath^=~/.vim/bundle/ctrlp.vim                    " Remap Control-P
-let g:ctrlp_map = '§t'                                      " Refresh at every call the Control-P cache
+let g:ctrlp_map = ',t'                                      " Refresh at every call the Control-P cache
 let g:ctrlp_use_caching = 0                                 " Exclude common directories from ctrlp
-let g:ctrlp_custom_ignore = '\v[\/](node_modules|dist|tmp|deps|_build|build|out|coverage)$'
+let g:ctrlp_custom_ignore = '\v[\/](node_modules|dist|tmp|deps|_build|build|out|coverage|target)$'
 
 
 """"""""""""""""""""""""""""""
@@ -339,8 +346,6 @@ nnoremap <silent> <leader>q :Tclose<cr>
 """"""""""""""""""""""""""""""
 " Vim-Test
 """"""""""""""""""""""""""""""
-let test#ruby#rspec#executable = "!bundle exec rspec"
-let test#ruby#rspec#options = '-fd'
 let test#strategy = "neoterm"
 
 let test#javascript#mocha#executable = "NODE_PATH=./src NODE_ENV=test ./node_modules/mocha/bin/mocha"
