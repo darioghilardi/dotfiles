@@ -45,21 +45,25 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
+# Customize the prompt to display the machine name
+PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
+
 # User configuration
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/home/dario/.bin"
+export PATH="/Applications/Genymotion.app/Contents/MacOS/tools/:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/home/dario/.bin"
 
 # chruby
 source /usr/local/share/chruby/chruby.sh
-chruby 2.2.3
+chruby 2.5.0
 
 # nvm
 source ~/.nvm/nvm.sh
-nvm use 0.12.0
+nvm use
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -85,7 +89,9 @@ nvm use 0.12.0
 # For a full list of active aliases, run `alias`.
 
 # Aliases
-alias vi="vim"
+alias sudo='sudo ' # necessary for zsh to understand sudo
+alias vi="nvim"
+alias vim="nvim"
 alias gs="git status"
 alias ga="git add"
 alias gc="git commit"
@@ -103,16 +109,39 @@ alias regendb="be rake db:drop; be rake db:create; be rake db:migrate; be rake d
 alias regendbtest="RAILS_ENV=test be rake db:drop;RAILS_ENV=test be rake db:create;RAILS_ENV=test be rake db:migrate;RAILS_ENV=test be rake db:seed;"
 alias mdman="bundle exec middleman -b 0.0.0.0"
 
+alias npmt="npm run -s test"
+alias npml="npm run -s lint"
+alias npmf="npm run flow"
+alias npma="npmt && npml && npmf"
+
+# Projects
+alias crypto-frontend="be rails s -p 9000 -b 0.0.0.0"
+
 # Servers
 alias edev="ssh edev"
+alias phpdev="ssh phpdev"
+alias fidordev="ssh fidordev"
+alias fidordev18="ssh fidordev18"
 
 export EDITOR=vim
 export TERM="xterm-256color"
+export REACT_DEBUGGER="open -g 'rndebugger://set-debugger-loc?port=19001'"
 
 alias gitlg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
 export NVM_DIR="/Users/dario/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# Automatic switch to the .nvmrc node version.
+autoload -U add-zsh-hook
+load-nvmrc() {
+  if [[ -f .nvmrc && -r .nvmrc ]]; then
+    nvm use
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
