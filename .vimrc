@@ -94,8 +94,9 @@ set cursorline
 hi cursorline guibg=#333333
 hi CursorColumn guibg=#333333
 
-:let mapleader = ","      " Remap leader key
-:inoremap jk <esc>
+:let mapleader = " "      " Remap leader key
+nnoremap <SPACE> <Nop>    " Set space as noop
+:inoremap fd <esc>
 
 " Toggle paste mode remapping with visual feedback with f5
 
@@ -253,7 +254,7 @@ let g:airline_symbols.space = "\ua0"
 " Ctrl-P
 """"""""""""""""""""""""""""""
 set runtimepath^=~/.vim/bundle/ctrlp.vim                    " Remap Control-P
-let g:ctrlp_map = ',t'                                      " Refresh at every call the Control-P cache
+let g:ctrlp_map = '<space>t'                                      " Refresh at every call the Control-P cache
 let g:ctrlp_use_caching = 0                                 " Exclude common directories from ctrlp
 let g:ctrlp_custom_ignore = '\v[\/](node_modules|dist|tmp|deps|_build|build|out|coverage|target)$'
 
