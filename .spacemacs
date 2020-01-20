@@ -53,7 +53,7 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(color-theme-solarized)
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(alchemist)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'. (default t)
@@ -108,14 +108,25 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
+   dotspacemacs-themes '(solarized-dark
+                         spacemacs-dark
                          spacemacs-light)
+   ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
+   ;; `all-the-icons', `custom', `vim-powerline' and `vanilla'. The first three
+   ;; are spaceline themes. `vanilla' is default Emacs mode-line. `custom' is a
+   ;; user defined themes, refer to the DOCUMENTATION.org for more info on how
+   ;; to create your own spaceline theme. Value can be a symbol or list with\
+   ;; additional properties.
+   ;; (default '(spacemacs :separator wave :separator-scale 1.5))
+   dotspacemacs-mode-line-theme '(spacemacs
+                                  :separator arrow
+                                  :separator-scale 1.4)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolata"
-                               :size 18
+   dotspacemacs-default-font '("Fira Code"
+                               :size 13
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -276,15 +287,15 @@ values."
    ))
 
 ;; Custom indenting
-(defun my/indentation-config (n)
-  (setq coffee-tab-width n) ; coffeescript
-  (setq javascript-indent-level n) ; javascript-mode
-  (setq js-indent-level n) ; js-mode
-  (setq js2-basic-offset n) ; js2-mode, in latest js2-mode, it's alias of js-indent-level
-  (setq web-mode-markup-indent-offset n) ; web-mode, html tag in html file
-  (setq web-mode-css-indent-offset n) ; web-mode, css in html file
-  (setq web-mode-code-indent-offset n) ; web-mode, js code in html file
-  (setq css-indent-offset n) ; css-mode
+(defun my/indentation-config ()
+  (setq coffee-tab-width 2) ; coffeescript
+  (setq javascript-indent-level 2) ; javascript-mode
+  (setq js-indent-level 2) ; js-mode
+  (setq js2-basic-offset 2) ; js2-mode, in latest js2-mode, it's alias of js-indent-level
+  (setq web-mode-markup-indent-offset 2) ; web-mode, html tag in html file
+  (setq web-mode-css-indent-offset 2) ; web-mode, css in html file
+  (setq web-mode-code-indent-offset 2) ; web-mode, js code in html file
+  (setq css-indent-offset 2) ; css-mode
  )
 
 (defun dotspacemacs/user-init ()
@@ -298,8 +309,20 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; Get rid of the warning about using the PATH in bashrc or zshrc
   (setq exec-path-from-shell-arguments '("-l"))
 
-  ;; Set indentation to 2
-  (my/indentation-config 2)
+  ;; Set custom indentation
+  (my/indentation-config)
+
+  ;; Do not switch pane when alt+3 but insert hash
+  (setq-default mac-right-option-modifier nil)
+
+  ;; Disable font height org mode
+  (setq theming-modifications
+        '((solarized-dark
+           (org-level-1 :font "Fira Code" :height 1.0)
+           (org-level-2 :font "Fira Code" :height 1.0)
+           (org-level-3 :font "Fira Code" :height 1.0)
+           (org-level-4 :font "Fira Code" :height 1.0)
+           (org-level-5 :font "Fira Code" :height 1.0))))
   )
 
 (defun dotspacemacs/user-config ()
@@ -336,70 +359,97 @@ you should place your code here."
 
   (set-terminal-parameter nil 'background-mode 'dark)
   (set-frame-parameter nil 'background-mode 'dark)
-  (spacemacs/load-theme 'solarized)
+  (spacemacs/load-theme 'solarized-dark)
 
-  ;; Set the org-capture templates
-  (setq org-capture-templates '(("t" "Todo [inbox]" entry
-                              (file+headline "~/Dropbox/gtd/inbox.org" "Tasks")
-                              "* TODO %i%?")))
+  ;; Org configuration
+  (with-eval-after-load 'org
+    ;; Set the org-capture templates
+    (setq org-capture-templates '(("t" "Todo [inbox]" entry
+                                (file+headline "~/Dropbox/gtd/inbox.org" "Tasks")
+                                "* TODO %i%?")))
 
-  ;; Set the todo keywords
-  (setq org-todo-keywords
-        (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                (sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)" ))))
+    ;; Set the todo keywords
+    (setq org-todo-keywords
+          (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                  (sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)" ))))
 
-  ;; Set the colors for the todo keywords
-  (setq org-todo-keyword-faces
-        (quote (("TODO" :foreground "red" :weight bold)
-                ("NEXT" :foreground "light blue" :weight bold)
-                ("DONE" :foreground "forest green" :weight bold)
-                ("WAITING" :foreground "orange" :weight bold)
-                ("CANCELLED" :foreground "forest green" :weight bold))))
+    ;; Set the colors for the todo keywords
+    (setq org-todo-keyword-faces
+          (quote (("TODO" :foreground "red" :weight bold)
+                  ("NEXT" :foreground "light blue" :weight bold)
+                  ("DONE" :foreground "forest green" :weight bold)
+                  ("WAITING" :foreground "orange" :weight bold)
+                  ("CANCELLED" :foreground "forest green" :weight bold))))
 
-  ;; Set the refile targets
-  (setq org-refile-targets '(("~/Dropbox/gtd/todo.org" :maxlevel . 1)
-                              ("~/Dropbox/gtd/someday.org" :level . 1)))
+    ;; Set the refile targets
+    (setq org-refile-targets '(("~/Dropbox/gtd/todo.org" :maxlevel . 1)
+                                ("~/Dropbox/gtd/someday.org" :level . 1)))
 
-  ;; Add org files to the agenda
-  (setq org-agenda-files '("~/Dropbox/gtd/inbox.org"
-                            "~/Dropbox/gtd/todo.org"))
+    ;; Add org files to the agenda
+    (setq org-agenda-files '("~/Dropbox/gtd/inbox.org"
+                             "~/Dropbox/gtd/todo.org"))
+
+    ;; Configure headers and fonts
+    (let* ((variable-tuple
+        (cond ((x-list-fonts "Fira Code") '(:font "Fira Code"))
+              ((x-list-fonts "Fire Code")   '(:font "Fira Code"))
+              ((x-list-fonts "Fira Code")         '(:font "Fira Code"))
+              ((x-family-fonts "Fira Code")    '(:family "Fira Code"))
+              (nil (warn "Cannot find a Fira Code Font.  Install Fira Code."))))
+       (base-font-color     (face-foreground 'default nil 'default))
+       (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+
+    (custom-theme-set-faces
+    'user
+    `(org-level-8 ((t (,@headline ,@variable-tuple))))
+    `(org-level-7 ((t (,@headline ,@variable-tuple))))
+    `(org-level-6 ((t (,@headline ,@variable-tuple))))
+    `(org-level-5 ((t (,@headline ,@variable-tuple))))
+    `(org-level-4 ((t (,@headline ,@variable-tuple :height 1))))
+    `(org-level-3 ((t (,@headline ,@variable-tuple :height 1))))
+    `(org-level-2 ((t (,@headline ,@variable-tuple :height 1))))
+    `(org-level-1 ((t (,@headline ,@variable-tuple :height 1))))
+    `(org-document-title ((t (,@headline ,@variable-tuple :height 1 :underline nil))))))
+
+    ;; When a heading enter the status done add a closed timestamp
+    (setq org-log-done 'time))
 
   ;; Disable emacs lock files
   (setq create-lockfiles nil)
 
+  ;; lsp-mode configuration
+  (use-package lsp-mode
+    :commands lsp
+    :ensure t
+    :diminish lsp-mode
+    :config
+    (setq lsp-enable-file-watchers nil)
+    :hook
+    (elixir-mode . lsp)
+    :init
+    (add-to-list 'exec-path "/Users/dario/elixir-ls/release"))
+
+  ;; Show the lsp help on the right column
+  (setcdr (assoc "*lsp-help*" popwin:special-display-config)
+          '(:dedicated t :position right :stick t :noselect t :width 0.3))
+
+  ;; lsp-ui
+  (use-package lsp-ui
+    :config
+    ;; Disable the hover doc panel for lsp mode.
+    ;; Manual invocation with SPC h h
+    (setq lsp-ui-doc-enable nil))
+
+  (defvar lsp-elixir--config-options (make-hash-table))
+  (add-hook 'lsp-after-initialize-hook
+            (lambda ()
+              (lsp--set-configuration `(:elixirLS, lsp-elixir--config-options))))
+
+  ;; Format on save elixir-format
+  (add-hook 'elixir-mode-hook
+            (lambda () (add-hook 'before-save-hook 'elixir-format nil t)))
+
   ;; Disable the standard linter that comes with js2-mode
-  (setq js2-mode-show-parse-errors nil js2-mode-show-strict-warnings nil)
-  (eval-after-load 'js2-mode
-    '(add-hook 'js2-mode-hook #'add-node-modules-path))
-
-  ;; use local eslint from node_modules before global
-  ;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
-  (defun my/use-eslint-from-node-modules ()
-    (let* ((root (locate-dominating-file
-                  (or (buffer-file-name) default-directory)
-                  "node_modules"))
-            (eslint (and root
-                        (expand-file-name "node_modules/eslint/bin/eslint.js"
-                                          root))))
-      (when (and eslint (file-executable-p eslint))
-        (setq-local flycheck-javascript-eslint-executable eslint))))
-
-  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
-
-  ;; Still related to the eslint nightmare
-  (eval-after-load 'js-mode
-    '(add-hook 'js-mode-hook #'add-node-modules-path))
-
-  ;; use zsh as shell
-  (setq multi-term-program "/bin/zsh")
-
-  ;; Eslint --fix
-  ;;(defun eslint-fmt-region-or-buffer ()
-  ;;  "use shell command to format buffer or region via eslint"
-  ;;  (interactive)
-  ;;  (if (region-active-p)
-  ;;      (shell-command-on-region "node_modules/eslint/bin/eslint.js --fix")
-  ;;    (mark-whole-buffer)
   ;;    (shell-command-on-region "node_modules/eslint/bin/eslint.js --fix")))
 
   ;;(add-hook 'before-save-hook #'eslint-fmt-region-or-buffer)
@@ -430,7 +480,7 @@ you should place your code here."
  '(org-agenda-files (quote ("~/Dropbox/gtd/todo.org")))
  '(package-selected-packages
    (quote
-    (yaml-mode projectile-rails inflections magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito pcache ht feature-mode orgit magit-gitflow magit-popup evil-magit smeargle helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter magit transient git-commit with-editor diff-hl rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data mmm-mode markdown-toc markdown-mode gh-md helm-company helm-c-yasnippet fuzzy company-tern dash-functional tern company-statistics company auto-yasnippet ac-ispell auto-complete color-theme-solarized color-theme eslintd-fix zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme add-node-modules-path xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help flycheck-pos-tip pos-tip flycheck lv web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+    (php-auto-yasnippets drupal-mode phpunit phpcbf php-extras php-mode ob-elixir flycheck-mix flycheck-credo alchemist elixir-mode sql-indent flycheck-elm elm-mode reformatter nginx-mode yaml-mode projectile-rails inflections magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito pcache ht feature-mode orgit magit-gitflow magit-popup evil-magit smeargle helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter magit transient git-commit with-editor diff-hl rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data mmm-mode markdown-toc markdown-mode gh-md helm-company helm-c-yasnippet fuzzy company-tern dash-functional tern company-statistics company auto-yasnippet ac-ispell auto-complete color-theme-solarized color-theme eslintd-fix zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme add-node-modules-path xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help flycheck-pos-tip pos-tip flycheck lv web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(vc-annotate-background "#2B2B2B")
@@ -455,8 +505,26 @@ you should place your code here."
      (340 . "#94BFF3")
      (360 . "#DC8CC3"))))
  '(vc-annotate-very-old-color "#DC8CC3"))
-(custom-set-faces)
+(custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cursor ((t (:background "#b58900"))))
+ '(helm-selection ((t (:foreground "white" :background "red" :inverse-video nil))))
+ '(mode-line ((t (:foreground "#e9e2cb" :background "#2075c7" :inverse-video nil))))
+ '(mode-line-inactive ((t (:foreground "#2075c7" :background "#e9e2cb" :inverse-video nil))))
+ '(powerline-active1 ((t (:foreground "#e9e2cb" :background "#2075c7" :inverse-video nil))))
+ '(powerline-active2 ((t (:foreground "#e9e2cb" :background "#2075c7" :inverse-video nil))))
+ '(powerline-inactive1 ((t (:foreground "#2075c7" :background "#e9e2cb" :inverse-video nil))))
+ '(powerline-inactive2 ((t (:foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+)

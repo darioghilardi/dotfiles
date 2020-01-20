@@ -262,6 +262,8 @@ let g:ctrlp_custom_ignore = '\v[\/](node_modules|dist|tmp|deps|_build|build|out|
 """"""""""""""""""""""""""""""
 " Ale
 """"""""""""""""""""""""""""""
+" Bind F8 to fixing problems with ALE
+nmap <leader>f <Plug>(ale_fix)
 let g:airline#extensions#ale#enabled = 1                    " Airline
 let g:ale_javascript_flow_executable = 'yarn flow'          " Flow
 let g:ale_javascript_eslint_options = '-c .eslintrc.yml'   " ESLint
@@ -341,6 +343,9 @@ let g:paredit_mode = 1
 """"""""""""""""""""""""""""""
 let g:neoterm_autoscroll = 1        " Autoscroll neoterm to the bottom
 let g:neoterm_keep_term_open = 0    " Keep neoterm open and hides instead of closing it between commands
+let g:neoterm_default_mod = 'rightbelow'
+let g:neoterm_shell = 'zsh'
+
 nnoremap <silent> <leader>q :Tclose<cr>
 
 
@@ -356,7 +361,7 @@ let test#javascript#mocha#options = {
   \ 'suite':   '--compilers js:babel-core/register --require babel-polyfill --reporter dot test/unit/**/*.js test/integration/**/*.js',
   \}
 
-let test#javascript#jest#executable = "node_modules/jest/bin/jest.js --config .jest.json --verbose --runInBand"
+let test#javascript#jest#executable = "nvm use; node_modules/jest/bin/jest.js --config .jest.json --verbose --runInBand"
 let test#javascript#jest#file_pattern = '\.spec\.js'
 
 nmap <silent> <leader>p :TestFile<CR>

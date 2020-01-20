@@ -1,12 +1,8 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
-
+ZSH_THEME="spaceship"
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -50,25 +46,32 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-# Customize the prompt to display the machine name
-PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
+# Customize Spaceship
+SPACESHIP_NODE_SHOW=false
+SPACESHIP_PACKAGE_SHOW=false
+SPACESHIP_ELM_SHOW=false
+SPACESHIP_RUBY_SHOW=false
+SPACESHIP_ELIXIR_SHOW=false
+SPACESHIP_PROMPT_SEPARATE_LINE=false
+SPACESHIP_PROMPT_ORDER=(
+  user          # Username section
+  dir           # Current directory section
+  host          # Hostname section
+  git           # Git section (git_branch + git_status)
+  exec_time     # Execution time
+  line_sep      # Line break
+  jobs          # Background jobs indicator
+  exit_code     # Exit code section
+  char          # Prompt character
+  )
 
-# User configuration
-
-export PATH="/Applications/Genymotion.app/Contents/MacOS/tools/:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/home/dario/.bin"
 
 # chruby
 source /usr/local/share/chruby/chruby.sh
 chruby 2.5.0
 
-# nvm
-source ~/.nvm/nvm.sh
-nvm use
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -92,6 +95,7 @@ nvm use
 alias sudo='sudo ' # necessary for zsh to understand sudo
 alias vi="nvim"
 alias vim="nvim"
+alias mux="tmuxinator"
 alias gs="git status"
 alias ga="git add"
 alias gc="git commit"
@@ -114,6 +118,9 @@ alias npml="npm run -s lint"
 alias npmf="npm run flow"
 alias npma="npmt && npml && npmf"
 
+# Spacemacs
+alias update-spacemacs="cd ~/.emacs.d && git pull --rebase; find ~/.emacs.d/elpa/2*/develop/org-plus-contrib* -name '*.elc' -delete"
+
 # Projects
 alias crypto-frontend="be rails s -p 9000 -b 0.0.0.0"
 
@@ -127,21 +134,51 @@ export EDITOR=vim
 export TERM="xterm-256color"
 export REACT_DEBUGGER="open -g 'rndebugger://set-debugger-loc?port=19001'"
 
-alias gitlg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-
 export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-export NVM_DIR="/Users/dario/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+### asdf
+. /usr/local/opt/asdf/asdf.sh
+. /usr/local/opt/asdf/etc/bash_completion.d/asdf.bash
 
-# Automatic switch to the .nvmrc node version.
+### NVM
+export NVM_DIR="/Users/dario/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use
+
+### NVM: autoload entering a directory
 autoload -U add-zsh-hook
 load-nvmrc() {
-  if [[ -f .nvmrc && -r .nvmrc ]]; then
-    nvm use
+  local node_version="$(nvm version)"
+  local nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
   fi
 }
 add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+
+# tmuxinator autocompletion
+source ~/.bin/tmuxinator.zsh
+
+# fzf autocompletion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Add colors for the OneDark terminal theme
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+
+  # Set Spaceship ZSH as a prompt
+  autoload -U promptinit; promptinit
+  prompt spaceship
