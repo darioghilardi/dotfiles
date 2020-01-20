@@ -34,12 +34,17 @@ values."
      version-control
      ruby
      ruby-on-rails
+     nginx
      javascript
-     emacs-lisp
+     react
      html
      yaml
      theming
      org
+     elm
+     lsp
+     (elixir :variables elixir-backend 'lsp)
+     sql
      ;; spell-checking
      )
    ;; List of additional packages that will be installed without being
