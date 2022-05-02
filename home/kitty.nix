@@ -29,8 +29,7 @@ in
   # General config ----------------------------------------------------------------------------- {{{
 
   programs.kitty.settings = {
-    # https://fsd.it/shop/fonts/pragmatapro/
-    font_family = "PragmataPro Mono Liga";
+    font_family = "FiraCode";
     font_size = "14.0";
     adjust_line_height = "140%";
     disable_ligatures = "cursor"; # disable ligatures when cursor is on them
