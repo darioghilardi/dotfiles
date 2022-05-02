@@ -2,6 +2,11 @@
   system.defaults.NSGlobalDomain = {
     # scroll direction
     "com.apple.swipescrolldirection" = false;
+
+    # mouse speed cannot be set yet
+    # https://github.com/LnL7/nix-darwin/pull/452
+    # °com.apple.mouse.scaling" = 3;
+
     # keyboard key repeat
     InitialKeyRepeat = 15;
     KeyRepeat = 2;
@@ -12,6 +17,10 @@
     autohide = false;
     tilesize = 32;
     show-recents = false;
+  };
+
+  system.defaults.magicmouse = {
+    MouseButtonMode = "TwoButton";
   };
 
   system.defaults.trackpad = {
