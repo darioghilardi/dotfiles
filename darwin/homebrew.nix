@@ -61,13 +61,11 @@ in
     "1password-cli"
     "amethyst"
     "balenaetcher"
-    "bettertouchtool"
     "discord"
     "dropbox"
     "firefox"
     "google-chrome"
     "google-drive"
-    "istat-menus"
     "kitty"
     "linear-linear"
     "microsoft-teams"
@@ -85,6 +83,13 @@ in
     "vmware-fusion"
     "whatsapp"
     "zoom"
+
+    # Those other apps comes from setapp:
+    # "bettertouchtool"
+    # "istat-menus"
+    # "tableplus"
+    # "sip"
+    # "pixelsnap"
   ];
 
   # Configuration related to casks
