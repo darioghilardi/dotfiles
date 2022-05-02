@@ -3,15 +3,10 @@
 {
   # Nix configuration ------------------------------------------------------------------------------
 
-  nix.binaryCaches = [
-    "https://cache.nixos.org/"
-  ];
-  nix.binaryCachePublicKeys = [
-    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-  ];
-  nix.trustedUsers = [
-    "@admin"
-  ];
+  nix.binaryCaches = [ "https://cache.nixos.org/" ];
+  nix.binaryCachePublicKeys =
+    [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
+  nix.trustedUsers = [ "@admin" ];
   users.nix.configureBuildUsers = true;
 
   # Enable experimental nix command and flakes
@@ -28,15 +23,10 @@
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
-
   # Shells -----------------------------------------------------------------------------------------
 
   # Add shells installed by nix to /etc/shells file
-  environment.shells = with pkgs; [
-    bashInteractive
-    fish
-    zsh
-  ];
+  environment.shells = with pkgs; [ bashInteractive fish zsh ];
 
   # Make Fish the default shell
   programs.fish.enable = true;

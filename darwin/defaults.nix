@@ -19,9 +19,7 @@
     show-recents = false;
   };
 
-  system.defaults.magicmouse = {
-    MouseButtonMode = "TwoButton";
-  };
+  system.defaults.magicmouse = { MouseButtonMode = "TwoButton"; };
 
   system.defaults.trackpad = {
     Clicking = true;

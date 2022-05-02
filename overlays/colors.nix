@@ -28,7 +28,7 @@ final: prev: {
           darkBase = "002b36"; # base03
           darkBasehl = "073642"; # base02
           darkestTone = "586e75"; # base01
-          darkTone = "657b83";  # base00
+          darkTone = "657b83"; # base00
           lightTone = "839496"; # base0
           lightestTone = "93a1a1"; # base1
           lightBasehl = "eee8d5"; # base2

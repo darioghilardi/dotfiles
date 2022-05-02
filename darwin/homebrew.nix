@@ -4,9 +4,8 @@ let
   inherit (lib) mkIf;
   mkIfCaskPresent = cask: mkIf (lib.any (x: x == cask) config.homebrew.casks);
   brewEnabled = config.homebrew.enable;
-in
 
-{
+in {
   environment.shellInit = mkIf brewEnabled ''
     eval "$(${config.homebrew.brewPrefix}/brew shellenv)"
   '';
@@ -93,5 +92,5 @@ in
 
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK = mkIfCaskPresent "1password-cli"
-    "/Users/dario/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+    "/Users/dario/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
 }

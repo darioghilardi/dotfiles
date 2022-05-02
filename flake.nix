@@ -3,26 +3,30 @@
 
   inputs = {
     # Package sets
-    nixpkgs-master.url = github:NixOS/nixpkgs/master;
-    nixpkgs-stable.url = github:NixOS/nixpkgs/nixpkgs-21.11-darwin;
-    nixpkgs-unstable.url = github:NixOS/nixpkgs/nixpkgs-unstable;
-    nixos-stable.url = github:NixOS/nixpkgs/nixos-21.11;
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixpkgs-21.11-darwin";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixos-stable.url = "github:NixOS/nixpkgs/nixos-21.11";
 
     # Environment/system management
-    darwin.url = github:LnL7/nix-darwin/master;
+    darwin.url = "github:LnL7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    home-manager.url = github:nix-community/home-manager;
+    home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     # Other sources
-    flake-compat = { url = github:edolstra/flake-compat; flake = false; };
-    flake-utils.url = github:numtide/flake-utils;
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = { self, darwin, flake-utils, home-manager, ... }@inputs:
     let
       inherit (darwin.lib) darwinSystem;
-      inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable optionalAttrs singleton;
+      inherit (inputs.nixpkgs-unstable.lib)
+        attrValues makeOverridable optionalAttrs singleton;
 
       # Configuration for `nixpkgs`
       nixpkgsConfig = {
@@ -37,8 +41,7 @@
         nixConfigDirectory = "/Users/dario/.config/nixpkgs";
       };
 
-    in
-    {
+    in {
       # nix-darwin config
       darwinConfigurations = rec {
         DarioBook = darwinSystem {
@@ -47,28 +50,26 @@
             ./darwin/bootstrap.nix
             # `home-manager` module
             home-manager.darwinModules.home-manager
-              {
-                nixpkgs = nixpkgsConfig;
-                nix.nixPath = { nixpkgs = "${inputs.nixpkgs-unstable}"; };
-                # `home-manager` config
-                users.users.dario = {
-                  home = "/Users/dario";
-                  name = "dario";
-                };
+            {
+              nixpkgs = nixpkgsConfig;
+              nix.nixPath = { nixpkgs = "${inputs.nixpkgs-unstable}"; };
+              # `home-manager` config
+              users.users.dario = {
+                home = "/Users/dario";
+                name = "dario";
+              };
 
-                networking.computerName = "DarioBook";
-                networking.hostName = "DarioBook";
-                networking.knownNetworkServices = [
-                  "Wi-Fi"
-                  "USB 10/100/1000 LAN"
-                ];
+              networking.computerName = "DarioBook";
+              networking.hostName = "DarioBook";
+              networking.knownNetworkServices =
+                [ "Wi-Fi" "USB 10/100/1000 LAN" ];
 
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.dario = import ./home/home.nix;
-                # Add a registry entry for this flake
-                nix.registry.my.flake = self;
-              }
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.dario = import ./home/home.nix;
+              # Add a registry entry for this flake
+              nix.registry.my.flake = self;
+            }
           ];
         };
       };
@@ -95,13 +96,14 @@
         };
 
         # Overlay useful on Macs with Apple Silicon
-        apple-silicon = final: prev: optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
-          # Add access to x86 packages system is running Apple Silicon
-          pkgs-x86 = import inputs.nixpkgs-unstable {
-            system = "x86_64-darwin";
-            inherit (nixpkgsConfig) config;
+        apple-silicon = final: prev:
+          optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
+            # Add access to x86 packages system is running Apple Silicon
+            pkgs-x86 = import inputs.nixpkgs-unstable {
+              system = "x86_64-darwin";
+              inherit (nixpkgsConfig) config;
+            };
           };
-        }; 
 
         # Overlay that adds `lib.colors` to reference colors elsewhere in system configs
         colors = import ./overlays/colors.nix;

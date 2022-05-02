@@ -2,25 +2,25 @@
 # Let-In --------------------------------------------------------------------------------------- {{{
 let
   inherit (lib) mkIf;
-  backgroundDependantColors = colors: with colors; {
-    background = "#${base}";
-    foreground = "#${main}";
+  backgroundDependantColors = colors:
+    with colors; {
+      background = "#${base}";
+      foreground = "#${main}";
 
-    # Cursor
-    cursor = "#${blue}";
-    cursor_text_color = "#${base}";
+      # Cursor
+      cursor = "#${blue}";
+      cursor_text_color = "#${base}";
 
-    # Selection
-    selection_background = "#${muted}";
-    selection_foreground = "#${base}";
+      # Selection
+      selection_background = "#${muted}";
+      selection_foreground = "#${base}";
 
-    # Tab bar
-    tab_bar_background = "#${basehl}";
-    inactive_tab_background = "#${strong}";
-  };
-in
-# }}}
-{
+      # Tab bar
+      tab_bar_background = "#${basehl}";
+      inactive_tab_background = "#${strong}";
+    };
+  # }}}
+in {
   # Kitty terminal
   # https://sw.kovidgoyal.net/kitty/conf.html
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.kitty.enable
