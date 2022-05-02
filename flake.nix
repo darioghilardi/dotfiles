@@ -81,7 +81,7 @@
         # My Apple Silicon macOS laptop config
         DarioBook = darwinSystem {
           system = "aarch64-darwin";
-          modules = attrValues self.darwinModules ++ [
+          modules = nixDarwinCommonModules ++ [
             {
               users.primaryUser = primaryUserInfo;
               networking.computerName = "DarioBook";
@@ -96,6 +96,26 @@
       };
 
       overlays = {
+        # Overlays to add different versions `nixpkgs` into package set
+        pkgs-master = final: prev: {
+          pkgs-master = import inputs.nixpkgs-master {
+            inherit (prev.stdenv) system;
+            inherit (nixpkgsConfig) config;
+          };
+        };
+        pkgs-stable = final: prev: {
+          pkgs-stable = import inputs.nixpkgs-stable {
+            inherit (prev.stdenv) system;
+            inherit (nixpkgsConfig) config;
+          };
+        };
+        pkgs-unstable = final: prev: {
+          pkgs-unstable = import inputs.nixpkgs-unstable {
+            inherit (prev.stdenv) system;
+            inherit (nixpkgsConfig) config;
+          };
+        };
+
         # Overlay useful on Macs with Apple Silicon
         apple-silicon = final: prev: optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
           # Add access to x86 packages system is running Apple Silicon
@@ -104,6 +124,11 @@
             inherit (nixpkgsConfig) config;
           };
         }; 
+
+        # Overlay that adds `lib.colors` to reference colors elsewhere in system configs
+        # colors = final: prev: {
+        #   lib = prev.lib // (import ./overlays/colors.nix { prev = prev; });
+        # };
       };
   
       darwinModules = {
@@ -112,13 +137,15 @@
         dario-defaults = import ./darwin/defaults.nix;
         dario-general = import ./darwin/general.nix;
         dario-homebrew = import ./darwin/homebrew.nix;
+        # Not sure why this doesn't work
+        # dario-copy-apps = import ./darwin/copy_apps.nix;
 
         users-primaryUser = import ./modules/darwin/users.nix;
       };
 
       homeManagerModules = {
         # My configurations
-        dario-kitty = import ./home/kitty.nix;
+        # dario-kitty = import ./home/kitty.nix;
         # malo-fish = import ./home/fish.nix;
         # malo-git = import ./home/git.nix;
         # malo-git-aliases = import ./home/git-aliases.nix;
@@ -131,10 +158,10 @@
         # Modules I've created
         # programs-neovim-extras = import ./modules/home/programs/neovim/extras.nix;
         # programs-kitty-extras = import ./modules/home/programs/kitty/extras.nix;
-        # home-user-info = { lib, ... }: {
-        #   options.home.user-info =
-        #     (self.darwinModules.users-primaryUser { inherit lib; }).options.users.primaryUser;
-        # };
+        home-user-info = { lib, ... }: {
+          options.home.user-info =
+            (self.darwinModules.users-primaryUser { inherit lib; }).options.users.primaryUser;
+        };
       };
     };
 }
