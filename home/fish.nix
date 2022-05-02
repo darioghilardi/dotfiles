@@ -1,10 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let
-  inherit (lib) elem optionalString;
-  inherit (config.home.user-info) nixConfigDirectory;
-
-in {
+{
   programs.fish.enable = true;
 
   programs.fish.plugins = [
@@ -57,8 +53,8 @@ in {
     # Set editor
     set -gx EDITOR nvim
     # asdf
-    source /usr/local/opt/asdf/libexec/asdf.fish
-    fish_add_path /usr/local/sbin
+    # source /usr/local/opt/asdf/libexec/asdf.fish
+    # fish_add_path /usr/local/sbin
   '';
 
   programs.fish.functions = {
@@ -115,7 +111,7 @@ in {
 
   programs.fish.shellAliases = {
     # Nix
-    drb = "~/dotfiles/darwin-rebuild switch --flake .#DarioBook";
+    drs = "env TERM=xterm-256color darwin-rebuild switch --flake ~/dotfiles/";
 
     # General
     cat = "bat";

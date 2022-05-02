@@ -13,6 +13,12 @@
   home.homeDirectory = "/Users/dario";
   home.sessionVariables = { EDITOR = "nvim"; };
 
-  imports =
-    [ ./kitty.nix ./kitty-extras.nix ./packages.nix ./git.nix ./fish.nix ];
+  imports = [
+    ./kitty.nix
+    ./kitty-extras.nix
+    ./packages.nix
+    ./git.nix
+    ./fish.nix
+    ./starship.nix
+  ];
 }
