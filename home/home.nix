@@ -1,5 +1,4 @@
-{ config, lib, pkgs, ... }:
-{
+{ config, lib, pkgs, ... }: {
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
@@ -12,13 +11,7 @@
 
   home.username = "dario";
   home.homeDirectory = "/Users/dario";
-  home.sessionVariables = {
-    EDITOR = "nvim";
-  };
+  home.sessionVariables = { EDITOR = "nvim"; };
 
-  imports = [
-    ./kitty.nix
-    ./kitty-extras.nix
-    ./packages.nix
-  ];
+  imports = [ ./kitty.nix ./kitty-extras.nix ./packages.nix ./git.nix ];
 }
