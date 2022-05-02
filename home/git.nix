@@ -11,4 +11,6 @@
       init = { defaultBranch = "master"; };
     };
   };
+
+  programs.git.delta.enable = true;
 }
