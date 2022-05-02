@@ -70,6 +70,7 @@ in
     "istat-menus"
     "linear-linear"
     "microsoft-teams"
+    "notion"
     "postman"
     "raycast"
     "setapp"
@@ -82,6 +83,7 @@ in
     "vlc"
     "vmware-fusion"
     "whatsapp"
+    "zoom"
   ];
 
   # Configuration related to casks
