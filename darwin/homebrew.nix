@@ -68,6 +68,8 @@ in
     "google-chrome"
     "google-drive"
     "istat-menus"
+    "linear-linear"
+    "microsoft-teams"
     "postman"
     "raycast"
     "setapp"
