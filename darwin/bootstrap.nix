@@ -22,7 +22,7 @@
     keep-outputs = true
     keep-derivations = true
   '' + lib.optionalString (pkgs.system == "aarch64-darwin") ''
-    extra-platforms = x86_64-darwin aarch64-darwin
+    extra-platforms = aarch64-darwin
   '';
 
   # Auto upgrade nix package and the daemon service.

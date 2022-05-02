@@ -9,7 +9,7 @@
     nixos-stable.url = github:NixOS/nixpkgs/nixos-21.11;
 
     # Environment/system management
-    darwin.url = github:LnL7/nix-darwin;
+    darwin.url = github:LnL7/nix-darwin/master;
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.url = github:nix-community/home-manager;
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -19,12 +19,10 @@
     flake-utils.url = github:numtide/flake-utils;
   };
 
-  outputs = { self, darwin, home-manager, flake-utils, ... }@inputs:
+  outputs = { self, darwin, flake-utils, home-manager, ... }@inputs:
     let
       inherit (darwin.lib) darwinSystem;
       inherit (inputs.nixpkgs-unstable.lib) attrValues makeOverridable optionalAttrs singleton;
-
-      homeManagerStateVersion = "22.05";
 
       # Configuration for `nixpkgs`
       nixpkgsConfig = {
@@ -32,7 +30,6 @@
         overlays = attrValues self.overlays;
       };
 
-      # User info
       primaryUserInfo = {
         username = "dario";
         fullName = "Dario Ghilardi";
@@ -40,57 +37,38 @@
         nixConfigDirectory = "/Users/dario/.config/nixpkgs";
       };
 
-      # Modules shared by most `nix-darwin` personal configurations.
-      nixDarwinCommonModules = attrValues self.darwinModules ++ [
-        # `home-manager` module
-        home-manager.darwinModules.home-manager
-        (
-          { config, lib, pkgs, ... }:
-          let
-            inherit (config.users) primaryUser;
-          in
-          {
-            nixpkgs = nixpkgsConfig;
-            # Hack to support legacy worklows that use `<nixpkgs>` etc.
-            # nix.nixPath = { nixpkgs = "${primaryUser.nixConfigDirectory}/nixpkgs.nix"; };
-            nix.nixPath = { nixpkgs = "${inputs.nixpkgs-unstable}"; };
-            # `home-manager` config
-            users.users.${primaryUser.username}.home = "/Users/${primaryUser.username}";
-            home-manager.useGlobalPkgs = true;
-            home-manager.users.${primaryUser.username} = {
-              imports = attrValues self.homeManagerModules;
-              home.stateVersion = homeManagerStateVersion;
-              home.user-info = config.users.primaryUser;
-            };
-            # Add a registry entry for this flake
-            nix.registry.my.flake = self;
-          }
-        )
-      ];
     in
     {
       # nix-darwin config
       darwinConfigurations = rec {
-        # Minimal configurations to bootstrap systems
-        bootstrap-x86 = makeOverridable darwinSystem {
-          system = "x86_64-darwin";
-          modules = [ ./darwin/bootstrap.nix { nixpkgs = nixpkgsConfig; } ];
-        };
-        bootstrap-arm = bootstrap-x86.override { system = "aarch64-darwin"; };
-
-        # My Apple Silicon macOS laptop config
         DarioBook = darwinSystem {
           system = "aarch64-darwin";
-          modules = nixDarwinCommonModules ++ [
-            {
-              users.primaryUser = primaryUserInfo;
-              networking.computerName = "DarioBook";
-              networking.hostName = "DarioBook";
-              networking.knownNetworkServices = [
-                "Wi-Fi"
-                "USB 10/100/1000 LAN"
-              ];
-            }
+          modules = attrValues self.darwinModules ++ [
+            ./darwin/bootstrap.nix
+            # `home-manager` module
+            home-manager.darwinModules.home-manager
+              {
+                nixpkgs = nixpkgsConfig;
+                nix.nixPath = { nixpkgs = "${inputs.nixpkgs-unstable}"; };
+                # `home-manager` config
+                users.users.dario = {
+                  home = "/Users/dario";
+                  name = "dario";
+                };
+
+                networking.computerName = "DarioBook";
+                networking.hostName = "DarioBook";
+                networking.knownNetworkServices = [
+                  "Wi-Fi"
+                  "USB 10/100/1000 LAN"
+                ];
+
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.dario = import ./home/home.nix;
+                # Add a registry entry for this flake
+                nix.registry.my.flake = self;
+              }
           ];
         };
       };
@@ -126,42 +104,16 @@
         }; 
 
         # Overlay that adds `lib.colors` to reference colors elsewhere in system configs
-        # colors = final: prev: {
-        #   lib = prev.lib // (import ./overlays/colors.nix { prev = prev; });
-        # };
+        colors = import ./overlays/colors.nix;
       };
-  
+
       darwinModules = {
         # My configurations
-        dario-bootstrap = import ./darwin/bootstrap.nix;
         dario-defaults = import ./darwin/defaults.nix;
         dario-general = import ./darwin/general.nix;
         dario-homebrew = import ./darwin/homebrew.nix;
-        # Not sure why this doesn't work
-        # dario-copy-apps = import ./darwin/copy_apps.nix;
 
         users-primaryUser = import ./modules/darwin/users.nix;
-      };
-
-      homeManagerModules = {
-        # My configurations
-        # dario-kitty = import ./home/kitty.nix;
-        # malo-fish = import ./home/fish.nix;
-        # malo-git = import ./home/git.nix;
-        # malo-git-aliases = import ./home/git-aliases.nix;
-        # malo-gh-aliases = import ./home/gh-aliases.nix;
-        # malo-neovim = import ./home/neovim.nix;
-        # malo-packages = import ./home/packages.nix;
-        # malo-starship = import ./home/starship.nix;
-        # malo-starship-symbols = import ./home/starship-symbols.nix;
-
-        # Modules I've created
-        # programs-neovim-extras = import ./modules/home/programs/neovim/extras.nix;
-        # programs-kitty-extras = import ./modules/home/programs/kitty/extras.nix;
-        home-user-info = { lib, ... }: {
-          options.home.user-info =
-            (self.darwinModules.users-primaryUser { inherit lib; }).options.users.primaryUser;
-        };
       };
     };
 }
