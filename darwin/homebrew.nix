@@ -68,6 +68,7 @@ in
     "google-chrome"
     "google-drive"
     "istat-menus"
+    "kitty"
     "linear-linear"
     "microsoft-teams"
     "notion"
