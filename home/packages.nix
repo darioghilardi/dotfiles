@@ -23,6 +23,12 @@
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.zoxide.enable
   programs.zoxide.enable = true;
 
+  # tmux
+  programs.tmux.enable = true;
+  programs.tmux.keyMode = "vi";
+  programs.tmux.prefix = "C-b";
+  programs.tmux.tmuxinator.enable = true;
+
   home.packages = with pkgs; [
     bandwhich # display current network utilization by process
     bottom # fancy version of `top` with ASCII graphs
@@ -61,8 +67,6 @@
     nix-prefetch-git
 
     # Code
-    tmux
-    tmuxinator
     heroku
     awscli2
     nodejs-14_x
