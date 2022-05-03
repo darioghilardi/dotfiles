@@ -17,7 +17,20 @@
     autohide = false;
     tilesize = 32;
     show-recents = false;
+    wvous-bl-corner = 2;
+    wvous-br-corner = 11;
+    wvous-tl-corner = 3;
+    wvous-tr-corner = 4;
   };
+
+  system.defaults.finder = {
+    AppleShowAllExtensions = true;
+    AppleShowAllFiles = true;
+    ShowStatusBar = true;
+    ShowPathbar = true;
+  };
+
+  system.defaults.loginwindow.GuestEnabled = false;
 
   system.defaults.magicmouse = { MouseButtonMode = "TwoButton"; };
 
