@@ -111,7 +111,8 @@
 
   programs.fish.shellAliases = {
     # Nix
-    drs = "darwin-rebuild switch --flake ~/dotfiles/";
+    nfb = "cd ~/dotfiles; nix build .#darwinConfigurations.DarioBook.system";
+    drs = "cd ~/dotfiles; darwin-rebuild switch --flake ~/dotfiles/";
 
     # General
     cat = "bat";
