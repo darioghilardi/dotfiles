@@ -29,6 +29,9 @@
   programs.tmux.prefix = "C-b";
   programs.tmux.tmuxinator.enable = true;
 
+  # neovim
+  programs.neovim.enable = true;
+
   home.packages = with pkgs; [
     bandwhich # display current network utilization by process
     bottom # fancy version of `top` with ASCII graphs
