@@ -93,9 +93,6 @@
   };
 
   programs.fish.interactiveShellInit = ''
-    # Run function to set colors that are dependant on `$term_background` and to register them so
-    # they are triggerd when the relevent event happens or variable changes.
-    set-shell-colors
     # Set Fish colors that aren't dependant the `$term_background`.
     set -g fish_color_quote        cyan      # color of commands
     set -g fish_color_redirection  brmagenta # color of IO redirections
@@ -111,7 +108,7 @@
 
   programs.fish.shellAliases = {
     # Nix
-    drs = "env TERM=xterm-256color darwin-rebuild switch --flake ~/dotfiles/";
+    drs = "darwin-rebuild switch --flake ~/dotfiles/";
 
     # General
     cat = "bat";
