@@ -61,6 +61,7 @@ in {
     "amethyst"
     "balenaetcher"
     "discord"
+    "docker"
     "dropbox"
     "firefox"
     "google-chrome"
