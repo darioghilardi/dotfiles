@@ -71,7 +71,6 @@ in {
     "microsoft-teams"
     "notion"
     "postman"
-    "raycast"
     "setapp"
     "signal"
     "skype"
