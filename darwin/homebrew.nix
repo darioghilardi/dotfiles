@@ -91,6 +91,9 @@ in {
     # "pixelsnap"
   ];
 
+  # Until these are managed by nix.
+  homebrew.brews = [ "asdf" "unixodbc" "wxwidgets" ];
+
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK = mkIfCaskPresent "1password-cli"
     "/Users/dario/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";

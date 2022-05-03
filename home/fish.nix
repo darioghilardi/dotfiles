@@ -48,13 +48,16 @@
     set -g fish_color_selection \'white\'  \'--bold\'  \'--background=brblack\'
     set -g fish_color_user brgreen
     set -g fish_color_valid_path --underline
+
     # Init startship
     starship init fish | source
+
     # Set editor
     set -gx EDITOR nvim
+
     # asdf
-    # source /usr/local/opt/asdf/libexec/asdf.fish
-    # fish_add_path /usr/local/sbin
+    source (brew --prefix asdf)/libexec/asdf.fish
+    fish_add_path --path $HOME/.asdf/shims 
   '';
 
   programs.fish.functions = {
