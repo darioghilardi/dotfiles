@@ -17,9 +17,9 @@
     autohide = false;
     tilesize = 32;
     show-recents = false;
-    wvous-bl-corner = 2;
+    wvous-bl-corner = 3;
     wvous-br-corner = 11;
-    wvous-tl-corner = 3;
+    wvous-tl-corner = 2;
     wvous-tr-corner = 4;
   };
 
