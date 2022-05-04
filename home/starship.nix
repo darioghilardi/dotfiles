@@ -7,6 +7,10 @@
     # See docs here: https://starship.rs/config/
     # Symbols config configured ./starship-symbols.nix.
 
+    elixir = { disabled = true; };
+    package = { disabled = true; };
+    aws = { symbol = ""; };
+
     line_break.disabled = true;
     add_newline = false;
     directory.fish_style_pwd_dir_length = 1; # turn on fish directory truncation
