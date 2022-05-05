@@ -71,6 +71,7 @@ in {
     "microsoft-teams"
     "notion"
     "postman"
+    "rectangle-pro"
     "setapp"
     "signal"
     "skype"
