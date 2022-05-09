@@ -56,8 +56,8 @@
     set -gx EDITOR nvim
 
     # asdf
-    source (brew --prefix asdf)/libexec/asdf.fish
-    fish_add_path --path $HOME/.asdf/shims 
+    # source (brew --prefix asdf)/libexec/asdf.fish
+    # fish_add_path --path $HOME/.asdf/shims 
   '';
 
   programs.fish.functions = {

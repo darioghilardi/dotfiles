@@ -75,6 +75,7 @@ in {
     "setapp"
     "signal"
     "skype"
+    "telegram-desktop"
     "tor-browser"
     "transmission"
     "transmit"
@@ -93,7 +94,7 @@ in {
   ];
 
   # Until these are managed by nix.
-  homebrew.brews = [ "asdf" "unixodbc" "wxwidgets" ];
+  # homebrew.brews = [ "asdf" "unixodbc" "wxwidgets" ];
 
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK = mkIfCaskPresent "1password-cli"
