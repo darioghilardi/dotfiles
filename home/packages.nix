@@ -64,6 +64,12 @@
     wxmac
     gettext
 
+    # Elixir, to be able to run mix commands when not in a project
+    beam.interpreters.erlangR24
+    beam.packages.erlangR24.elixir_1_13
+    beam.packages.erlangR24.hex
+    beam.packages.erlangR24.rebar3
+
     # Nix
     statix # lints and suggestions for the Nix programming language
     nixfmt
