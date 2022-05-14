@@ -72,6 +72,7 @@ in {
     "notion"
     "postman"
     "rectangle-pro"
+    "scummvm"
     "setapp"
     "signal"
     "skype"
