@@ -48,6 +48,7 @@ in {
     Pages = 409201541;
     Slack = 803453959;
     "Spark - App email di Readdle" = 1176895641;
+    Tailscale = 1475387142;
     "Things 3" = 904280696;
     Twitter = 1482454543;
     Xcode = 497799835;
@@ -69,6 +70,7 @@ in {
     "google-drive"
     "linear-linear"
     "microsoft-teams"
+    "ngrok"
     "notion"
     "postman"
     "rectangle-pro"
@@ -77,6 +79,7 @@ in {
     "signal"
     "skype"
     "telegram-desktop"
+    "texturepacker"
     "tor-browser"
     "transmission"
     "transmit"
