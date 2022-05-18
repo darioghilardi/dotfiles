@@ -58,6 +58,7 @@ in {
   homebrew.casks = [
     "1password-beta"
     "1password-cli"
+    "affinity-designer"
     "alfred"
     "amethyst"
     "balenaetcher"
