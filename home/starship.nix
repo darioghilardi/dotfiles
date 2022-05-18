@@ -10,6 +10,10 @@
     elixir = { disabled = true; };
     package = { disabled = true; };
     aws = { symbol = ""; };
+    nix_shell = {
+      symbol = "❄ ️";
+      format = "[$symbol]($style)";
+    };
 
     line_break.disabled = true;
     add_newline = false;
