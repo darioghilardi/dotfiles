@@ -64,6 +64,9 @@
     wxmac
     gettext
     azure-cli
+    direnv
+    pcre
+    gnugrep
 
     # Elixir, to be able to run mix commands when not in a project
     beam.interpreters.erlangR24
