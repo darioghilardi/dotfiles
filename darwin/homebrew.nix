@@ -51,7 +51,6 @@ in {
     Tailscale = 1475387142;
     "Things 3" = 904280696;
     Twitter = 1482454543;
-    Xcode = 497799835;
   };
 
   # If an app isn't available in the Mac App Store, or the version in the App Store has
@@ -98,7 +97,7 @@ in {
   ];
 
   # Until these are managed by nix.
-  # homebrew.brews = [ "asdf" "unixodbc" "wxwidgets" ];
+  homebrew.brews = [ "tfenv" ]; # [ "asdf" "unixodbc" "wxwidgets" ];
 
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK = mkIfCaskPresent "1password-cli"
