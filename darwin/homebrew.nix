@@ -78,6 +78,7 @@ in {
     "setapp"
     "signal"
     "skype"
+    "sublime-text"
     "telegram-desktop"
     "texturepacker"
     "tor-browser"
