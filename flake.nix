@@ -30,7 +30,10 @@
 
       # Configuration for `nixpkgs`
       nixpkgsConfig = {
-        config = { allowUnfree = true; };
+        config = {
+          allowUnfree = true;
+          allowBroken = true;
+        };
         overlays = attrValues self.overlays;
       };
 
