@@ -69,6 +69,7 @@ in {
     "google-chrome"
     "google-drive"
     "linear-linear"
+    "meld"
     "microsoft-teams"
     "ngrok"
     "notion"
