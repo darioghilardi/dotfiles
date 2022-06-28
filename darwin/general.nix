@@ -17,6 +17,7 @@
   fonts.fontDir.enable = true;
   fonts.fonts = with pkgs; [
     recursive
+    inter
     (nerdfonts.override { fonts = [ "FiraCode" ]; })
   ];
 }
