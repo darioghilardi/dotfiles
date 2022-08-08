@@ -84,7 +84,6 @@
     awscli2
     nodejs-14_x
     earthly
-    jd
 
     # Neovim
     elixir_ls
