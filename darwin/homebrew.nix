@@ -75,6 +75,7 @@ in {
     "ngrok"
     "notion"
     "postman"
+    "powershell"
     "rectangle-pro"
     "scummvm"
     "setapp"
