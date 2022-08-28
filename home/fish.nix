@@ -136,6 +136,8 @@
     gm = "git merge";
     gum =
       "git checkout master && git fetch upstream && git merge upstream/master";
+    gom =
+      "git checkout master && git fetch origin && git merge origin/master";
 
     # Tmuxinator
     tx = "tmuxinator";
