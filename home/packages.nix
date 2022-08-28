@@ -47,6 +47,7 @@
     httpie
     tree
     gnupg
+    gnugrep
 
     # Search tools
     silver-searcher
