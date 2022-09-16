@@ -26,7 +26,7 @@ in {
   homebrew.autoUpdate = true;
   homebrew.cleanup = "zap";
   homebrew.global.brewfile = true;
-  homebrew.global.noLock = true;
+  homebrew.global.lockfiles = true;
 
   homebrew.taps = [
     "homebrew/cask"
@@ -81,6 +81,7 @@ in {
     "setapp"
     "signal"
     "skype"
+    "spotify"
     "sublime-text"
     "telegram-desktop"
     "texturepacker"
