@@ -71,7 +71,7 @@
 
     # Elixir, to be able to run mix commands when not in a project
     beam.interpreters.erlangR24
-    beam.packages.erlangR24.elixir_1_13
+    beam.packages.erlangR24.elixir_1_14
     beam.packages.erlangR24.hex
     beam.packages.erlangR24.rebar3
 
