@@ -23,8 +23,9 @@ in {
   '';
 
   homebrew.enable = true;
-  homebrew.autoUpdate = true;
-  homebrew.cleanup = "zap";
+  homebrew.onActivation.upgrade = true;
+  homebrew.onActivation.autoUpdate = true;
+  homebrew.onActivation.cleanup = "zap";
   homebrew.global.brewfile = true;
   homebrew.global.lockfiles = true;
 
