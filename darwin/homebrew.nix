@@ -83,6 +83,7 @@ in {
     "signal"
     "skype"
     "spotify"
+    "steam"
     "sublime-text"
     "telegram-desktop"
     "texturepacker"
