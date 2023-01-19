@@ -52,6 +52,7 @@ in {
     Tailscale = 1475387142;
     "Things 3" = 904280696;
     Twitter = 1482454543;
+    "1password for Safari" = 1569813296;
   };
 
   # If an app isn't available in the Mac App Store, or the version in the App Store has
@@ -59,6 +60,7 @@ in {
   homebrew.casks = [
     "1password-beta"
     "1password-cli"
+    "airflow"
     "affinity-designer"
     "alfred"
     "amethyst"
