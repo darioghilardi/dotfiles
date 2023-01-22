@@ -53,6 +53,7 @@ in {
     "Things 3" = 904280696;
     Twitter = 1482454543;
     "1password for Safari" = 1569813296;
+    rcmd = 1596283165;
   };
 
   # If an app isn't available in the Mac App Store, or the version in the App Store has
