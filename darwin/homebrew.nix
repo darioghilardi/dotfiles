@@ -69,6 +69,7 @@ in {
     "discord"
     "docker"
     "dropbox"
+    "fantastical"
     "figma"
     "firefox"
     "google-chrome"
