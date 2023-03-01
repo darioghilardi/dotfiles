@@ -54,6 +54,7 @@ in {
     Twitter = 1482454543;
     "1password for Safari" = 1569813296;
     rcmd = 1596283165;
+    amphetamine = 937984704;
   };
 
   # If an app isn't available in the Mac App Store, or the version in the App Store has
@@ -66,6 +67,7 @@ in {
     "alfred"
     "amethyst"
     "balenaetcher"
+    "cardhop"
     "discord"
     "docker"
     "dropbox"
@@ -81,6 +83,7 @@ in {
     "notion"
     "postman"
     "powershell"
+    "qmk-toolbox"
     "rectangle-pro"
     "scummvm"
     "setapp"
