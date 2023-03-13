@@ -67,6 +67,7 @@ in {
     "alfred"
     "amethyst"
     "balenaetcher"
+    "calibre"
     "cardhop"
     "discord"
     "docker"

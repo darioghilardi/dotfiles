@@ -97,6 +97,9 @@
     brotli
     ffmpeg
 
+    # Data recovery
+    testdisk
+
     # Kubernetes
     kubectl
     kubectx
