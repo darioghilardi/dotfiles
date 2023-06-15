@@ -62,7 +62,7 @@
     mkcert
     autoconf
     automake
-    wxmac
+    # wxmac
     gettext
     azure-cli
     direnv
@@ -71,10 +71,10 @@
     bfg-repo-cleaner
 
     # Elixir, to be able to run mix commands when not in a project
-    beam.interpreters.erlangR25
-    beam.packages.erlangR25.elixir_1_14
-    beam.packages.erlangR25.hex
-    beam.packages.erlangR25.rebar3
+    # beam.interpreters.erlangR25
+    # beam.packages.erlangR25.elixir_1_14
+    # beam.packages.erlangR25.hex
+    # beam.packages.erlangR25.rebar3
 
     # Nix
     statix # lints and suggestions for the Nix programming language
@@ -84,7 +84,7 @@
     # Code
     heroku
     awscli2
-    nodejs-14_x
+    nodejs-18_x
     earthly
 
     # Neovim
