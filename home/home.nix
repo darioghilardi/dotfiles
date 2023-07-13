@@ -13,6 +13,11 @@
   home.homeDirectory = "/Users/dario";
   home.sessionVariables = { EDITOR = "nvim"; };
 
+  # Some weird bug
+  manual.manpages.enable = false;
+  manual.html.enable = false;
+  manual.json.enable = false;
+
   imports = [
     ./kitty.nix
     ./kitty-extras.nix
