@@ -7,27 +7,32 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     # Environment/system management
-    darwin.url = "github:LnL7/nix-darwin/master";
+    darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     # Other sources
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
+    flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, darwin, flake-utils, home-manager, ... }@inputs:
-    let
-      inherit (darwin.lib) darwinSystem;
-      inherit (inputs.nixpkgs-unstable.lib)
-        attrValues makeOverridable optionalAttrs singleton;
+  outputs = { self, darwin, home-manager, flake-utils, ... }@inputs:
+  let
+      inherit (self.lib) attrValues makeOverridable mkForce optionalAttrs singleton;
+
+      # This value determines the Home Manager release that your
+      # configuration is compatible with. This helps avoid breakage
+      # when a new Home Manager release introduces backwards
+      # incompatible changes.
+      #
+      # You can update Home Manager without changing this value. See
+      # the Home Manager release notes for a list of state version
+      # changes in each release.
+      homeStateVersion = "23.11";
 
       # Configuration for `nixpkgs`
-      nixpkgsConfig = {
+      nixpkgsDefaults = {
         config = {
           allowUnfree = true;
           allowBroken = true;
@@ -35,7 +40,7 @@
         overlays = attrValues self.overlays;
       };
 
-      primaryUserInfo = {
+      primaryUserDefaults = {
         username = "dario";
         fullName = "Dario Ghilardi";
         email = "darioghilardi@webrain.it";
@@ -43,56 +48,32 @@
       };
 
     in {
-      # nix-darwin config
-      darwinConfigurations = rec {
-        DarioBook = darwinSystem {
-          system = "aarch64-darwin";
-          modules = attrValues self.darwinModules ++ [
-            ./darwin/bootstrap.nix
-            # `home-manager` module
-            home-manager.darwinModules.home-manager
-            {
-              nixpkgs = nixpkgsConfig;
-              nix.nixPath = { nixpkgs = "${inputs.nixpkgs-unstable}"; };
-              # `home-manager` config
-              users.users.dario = {
-                home = "/Users/dario";
-                name = "dario";
-              };
 
-              networking.computerName = "DarioBook";
-              networking.hostName = "DarioBook";
-              networking.knownNetworkServices =
-                [ "Wi-Fi" "USB 10/100/1000 LAN" ];
+      # Add some additional functions to `lib`.
+      lib = inputs.nixpkgs-unstable.lib.extend (_: _: {
+        mkDarwinSystem = import ./lib/mkDarwinSystem.nix inputs;
+      });
 
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.dario = import ./home/home.nix;
-              # Add a registry entry for this flake
-              nix.registry.my.flake = self;
-            }
-          ];
-        };
-      };
+      # Overlays --------------------------------------------------------------------------------{{{
 
       overlays = {
         # Overlays to add different versions `nixpkgs` into package set
-        pkgs-master = final: prev: {
+        pkgs-master = _: prev: {
           pkgs-master = import inputs.nixpkgs-master {
             inherit (prev.stdenv) system;
-            inherit (nixpkgsConfig) config;
+            inherit (nixpkgsDefaults) config;
           };
         };
-        pkgs-stable = final: prev: {
+        pkgs-stable = _: prev: {
           pkgs-stable = import inputs.nixpkgs-stable {
             inherit (prev.stdenv) system;
-            inherit (nixpkgsConfig) config;
+            inherit (nixpkgsDefaults) config;
           };
         };
         pkgs-unstable = final: prev: {
           pkgs-unstable = import inputs.nixpkgs-unstable {
             inherit (prev.stdenv) system;
-            inherit (nixpkgsConfig) config;
+            inherit (nixpkgsDefaults) config;
           };
         };
 
@@ -102,13 +83,15 @@
             # Add access to x86 packages system is running Apple Silicon
             pkgs-x86 = import inputs.nixpkgs-unstable {
               system = "x86_64-darwin";
-              inherit (nixpkgsConfig) config;
+              inherit (nixpkgsDefaults) config;
             };
           };
 
         # Overlay that adds `lib.colors` to reference colors elsewhere in system configs
         colors = import ./overlays/colors.nix;
       };
+
+      # Modules -------------------------------------------------------------------------------- {{{
 
       darwinModules = {
         # My configurations
@@ -118,5 +101,78 @@
 
         users-primaryUser = import ./modules/darwin/users.nix;
       };
+
+      homeManagerModules = {
+        dario-colors = import ./home/colors.nix;
+        dario-fish = import ./home/fish.nix;
+        dario-git = import ./home/git.nix;
+        dario-kitty = import ./home/kitty.nix;
+        dario-packages = import ./home/packages.nix;
+        dario-starship = import ./home/starship.nix;
+
+        colors = import ./modules/home/colors;
+        programs-kitty-extras = import ./modules/home/programs/kitty/extras.nix;
+        home-user-info = { lib, ... }: {
+          options.home.user-info =
+            (self.darwinModules.users-primaryUser { inherit lib; }).options.users.primaryUser;
+        };
+      };
+
+      # System configurations ------------------------------------------------------------------ {{{
+
+      darwinConfigurations = {
+        # Minimal macOS configurations to bootstrap systems
+        bootstrap-x86 = makeOverridable darwin.lib.darwinSystem {
+          system = "x86_64-darwin";
+          modules = [ ./darwin/bootstrap.nix { nixpkgs = nixpkgsDefaults; } ];
+        };
+        bootstrap-arm = self.darwinConfigurations.bootstrap-x86.override {
+          system = "aarch64-darwin";
+        };
+
+        DarioBook = makeOverridable self.lib.mkDarwinSystem (primaryUserDefaults // {
+          modules = attrValues self.darwinModules ++ singleton {
+            nixpkgs = nixpkgsDefaults;
+            networking.computerName = "DarioBook";
+            networking.hostName = "DarioBook";
+            networking.knownNetworkServices = [
+              "Wi-Fi"
+              "USB 10/100/1000 LAN"
+            ];
+            nix.registry.my.flake = inputs.self;
+          };
+
+          extraModules = singleton { nix.linux-builder.enable = true; };
+          inherit homeStateVersion;
+          homeModules = attrValues self.homeManagerModules;
+
+            # # `home-manager` module
+            # home-manager.darwinModules.home-manager
+            # {
+            #   nixpkgs = nixpkgsDefaults;
+
+
+            #   nix.nixPath = { nixpkgs = "${inputs.nixpkgs-unstable}"; };
+            #   # `home-manager` config
+            #   users.users.dario = {
+            #     home = "/Users/dario";
+            #     name = "dario";
+            #   };
+
+            #   home-manager.useGlobalPkgs = true;
+            #   home-manager.useUserPackages = true;
+
+
+            #   home-manager.users.dario = { pkgs, ... }: {
+            #     home.stateVersion = homeStateVersion;
+            #     home.username = primaryUserDefaults.username;
+            #     home.homeDirectory = "/Users/${primaryUserDefaults.username}";
+            #     home.sessionVariables = { EDITOR = "nvim"; };
+            #   };
+            # }
+            # ];
+        });
+      };
+
     };
 }

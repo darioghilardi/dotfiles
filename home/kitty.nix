@@ -1,26 +1,6 @@
 { config, lib, pkgs, ... }:
-# Let-In --------------------------------------------------------------------------------------- {{{
-let
-  inherit (lib) mkIf;
-  backgroundDependantColors = colors:
-    with colors; {
-      background = "#${base}";
-      foreground = "#${main}";
 
-      # Cursor
-      cursor = "#${blue}";
-      cursor_text_color = "#${base}";
-
-      # Selection
-      selection_background = "#${muted}";
-      selection_foreground = "#${base}";
-
-      # Tab bar
-      tab_bar_background = "#${basehl}";
-      inactive_tab_background = "#${strong}";
-    };
-  # }}}
-in {
+{
   # Kitty terminal
   # https://sw.kovidgoyal.net/kitty/conf.html
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.kitty.enable
@@ -53,45 +33,10 @@ in {
   '';
 
   programs.kitty.extras.useSymbolsFromNerdFont = "Fira Code";
-  # }}}
 
   # Colors config ------------------------------------------------------------------------------ {{{
   programs.kitty.extras.colors = with pkgs.lib.colors; {
     enable = true;
-
-    # Colors that aren't dependent on background
-    common = with pkgs.lib.colors.solarized.colors; {
-      # black
-      color0 = "#${darkBasehl}";
-      color8 = "#${darkBase}";
-      # red
-      color1 = "#${red}";
-      color9 = "#${orange}";
-      # green
-      color2 = "#${green}";
-      color10 = "#${darkestTone}";
-      # yellow
-      color3 = "#${yellow}";
-      color11 = "#${darkTone}";
-      # blue
-      color4 = "#${blue}";
-      color12 = "#${lightTone}";
-      # magenta
-      color5 = "#${magenta}";
-      color13 = "#${violet}";
-      # cyan
-      color6 = "#${cyan}";
-      color14 = "#${lightestTone}";
-      # white
-      color7 = "#${lightBasehl}";
-      color15 = "#${lightBase}";
-      # url underline color to fit colors
-      url_color = "#${blue}";
-      # tab bar
-      active_tab_foreground = "#${lightBase}";
-      active_tab_background = "#${green}";
-      inactive_tab_foreground = "#${lightBase}";
-    };
 
     # Background dependent colors
     dark = backgroundDependantColors solarized.dark;
@@ -106,5 +51,4 @@ in {
     # Set term colors based on value of `$term_backdround` when shell starts up.
     set-term-colors
   '';
-  # }}}
 }
