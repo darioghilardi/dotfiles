@@ -1,7 +1,5 @@
-{ lib, ... }:
-
-let inherit (lib) mkOption types;
-
+{lib, ...}: let
+  inherit (lib) mkOption types;
 in {
   options.users.primaryUser = {
     username = mkOption {
@@ -22,4 +20,3 @@ in {
     };
   };
 }
-

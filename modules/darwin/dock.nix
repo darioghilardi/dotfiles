@@ -1,6 +1,10 @@
-{ config, pkgs, lib, ... }:
-with lib;
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib; let
   cfg = config.local.dock;
   stdenv = pkgs.stdenv;
 in {
@@ -16,7 +20,7 @@ in {
       type = with types;
         listOf (submodule {
           options = {
-            path = lib.mkOption { type = str; };
+            path = lib.mkOption {type = str;};
             section = lib.mkOption {
               type = str;
               default = "apps";
@@ -32,13 +36,17 @@ in {
   };
 
   config = mkIf (cfg.enable) (let
-    dockutil = (import ./dockutil.nix);
+    dockutil = import ./dockutil.nix;
     du = "env PYTHONIOENCODING=utf-8 ${dockutil}/bin/dockutil";
-    normalize = path: if hasSuffix ".app" path then path + "/" else path;
+    normalize = path:
+      if hasSuffix ".app" path
+      then path + "/"
+      else path;
     entryURI = path:
-      "file://" + (builtins.replaceStrings
+      "file://"
+      + (builtins.replaceStrings
         # TODO: This is entirely too naive and works only with the bundles that I have seen on my system so far:
-        [ " " "!" ''"'' "#" "$" "%" "&" "'" "(" ")" ] [
+        [" " "!" ''"'' "#" "$" "%" "&" "'" "(" ")"] [
           "%20"
           "%21"
           "%22"
@@ -50,12 +58,16 @@ in {
           "%28"
           "%29"
         ] (normalize path));
-    wantURIs = concatMapStrings (entry: ''
-      ${entryURI entry.path}
-    '') cfg.entries;
-    createEntries = concatMapStrings (entry: ''
-      ${du} --no-restart --add '${entry.path}' --section ${entry.section} ${entry.options}
-    '') cfg.entries;
+    wantURIs =
+      concatMapStrings (entry: ''
+        ${entryURI entry.path}
+      '')
+      cfg.entries;
+    createEntries =
+      concatMapStrings (entry: ''
+        ${du} --no-restart --add '${entry.path}' --section ${entry.section} ${entry.options}
+      '')
+      cfg.entries;
   in {
     system.activationScripts.postUserActivation.text = ''
       echo >&2 "Setting up persistent dock items..."

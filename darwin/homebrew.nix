@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (lib) mkIf;
   mkIfCaskPresent = cask: mkIf (lib.any (x: x == cask) config.homebrew.casks);
   brewEnabled = config.homebrew.enable;
-
 in {
   environment.shellInit = mkIf brewEnabled ''
     eval "$(${config.homebrew.brewPrefix}/brew shellenv)"
@@ -112,9 +114,10 @@ in {
   ];
 
   # Until these are managed by nix.
-  homebrew.brews = [ "tfenv" ]; # [ "asdf" "unixodbc" "wxwidgets" ];
+  homebrew.brews = ["tfenv"]; # [ "asdf" "unixodbc" "wxwidgets" ];
 
   # Configuration related to casks
-  environment.variables.SSH_AUTH_SOCK = mkIfCaskPresent "1password-cli"
+  environment.variables.SSH_AUTH_SOCK =
+    mkIfCaskPresent "1password-cli"
     "/Users/dario/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
 }

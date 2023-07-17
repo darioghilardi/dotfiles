@@ -7,9 +7,9 @@
     # See docs here: https://starship.rs/config/
     # Symbols config configured ./starship-symbols.nix.
 
-    elixir = { disabled = true; };
-    package = { disabled = true; };
-    aws = { symbol = ""; };
+    elixir = {disabled = true;};
+    package = {disabled = true;};
+    aws = {symbol = "";};
     nix_shell = {
       symbol = "❄ ️";
       format = "[$symbol]($style)";

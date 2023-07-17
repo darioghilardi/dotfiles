@@ -24,7 +24,7 @@
   };
 
   # Firewall
-  system.defaults.alf = { globalstate = 1; };
+  system.defaults.alf = {globalstate = 1;};
 
   system.defaults.finder = {
     AppleShowAllExtensions = true;
@@ -35,7 +35,7 @@
 
   system.defaults.loginwindow.GuestEnabled = false;
 
-  system.defaults.magicmouse = { MouseButtonMode = "TwoButton"; };
+  system.defaults.magicmouse = {MouseButtonMode = "TwoButton";};
 
   system.defaults.trackpad = {
     Clicking = true;

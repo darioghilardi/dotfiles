@@ -1,14 +1,16 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   programs.git.enable = true;
 
   programs.git.userName = "Dario Ghilardi";
   programs.git.userEmail = "darioghilardi@webrain.it";
-  programs.git.ignores = [ ".DS_Store" ];
+  programs.git.ignores = [".DS_Store"];
   programs.git.extraConfig = {
     color.ui = "auto";
-    init = { defaultBranch = "master"; };
+    init = {defaultBranch = "master";};
   };
 
   # Enhanced diffs

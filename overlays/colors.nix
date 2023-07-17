@@ -1,6 +1,5 @@
 # Colors from: https://ethanschoonover.com/solarized
 # Used in Kitty terminal config: `./kitty-configs.nix`
-
 # SOLARIZED HEX     16/8 TERMCOL  XTERM/HEX   L*A*B      RGB         HSB
 # --------- ------- ---- -------  ----------- ---------- ----------- -----------
 # base03    #002b36  8/4 brblack  234 #1c1c1c 15 -12 -12   0  43  54 193 100  21
@@ -19,54 +18,55 @@
 # blue      #268bd2  4/4 blue      33 #0087ff 55 -10 -45  38 139 210 205  82  82
 # cyan      #2aa198  6/6 cyan      37 #00afaf 60 -35 -05  42 161 152 175  74  63
 # green     #859900  2/2 green     64 #5f8700 60 -20  65 133 153   0  68 100  60
-
 final: prev: {
-  lib = prev.lib // {
-    colors = {
-      solarized = rec {
-        colors = {
-          darkBase = "002b36"; # base03
-          darkBasehl = "073642"; # base02
-          darkestTone = "586e75"; # base01
-          darkTone = "657b83"; # base00
-          lightTone = "839496"; # base0
-          lightestTone = "93a1a1"; # base1
-          lightBasehl = "eee8d5"; # base2
-          lightBase = "fdf6e3"; # base3
-          yellow = "b58900";
-          orange = "cb4b16";
-          red = "dc322f";
-          magenta = "d33682";
-          violet = "6c71c4";
-          blue = "268bd2";
-          cyan = "2aa198";
-          green = "859900";
-        };
+  lib =
+    prev.lib
+    // {
+      colors = {
+        solarized = rec {
+          colors = {
+            darkBase = "002b36"; # base03
+            darkBasehl = "073642"; # base02
+            darkestTone = "586e75"; # base01
+            darkTone = "657b83"; # base00
+            lightTone = "839496"; # base0
+            lightestTone = "93a1a1"; # base1
+            lightBasehl = "eee8d5"; # base2
+            lightBase = "fdf6e3"; # base3
+            yellow = "b58900";
+            orange = "cb4b16";
+            red = "dc322f";
+            magenta = "d33682";
+            violet = "6c71c4";
+            blue = "268bd2";
+            cyan = "2aa198";
+            green = "859900";
+          };
 
-        light = with colors; {
-          base = lightBase;
-          basehl = lightBasehl;
-          invbase = darkBase;
-          invbasehl = darkBasehl;
-          main = darkTone;
-          faded = lightTone;
-          muted = lightestTone;
-          strong = darkestTone;
-          inherit (colors) yellow orange red megenta violet blue cyan green;
-        };
+          light = with colors; {
+            base = lightBase;
+            basehl = lightBasehl;
+            invbase = darkBase;
+            invbasehl = darkBasehl;
+            main = darkTone;
+            faded = lightTone;
+            muted = lightestTone;
+            strong = darkestTone;
+            inherit (colors) yellow orange red megenta violet blue cyan green;
+          };
 
-        dark = with colors; {
-          base = darkBase;
-          basehl = darkBasehl;
-          invbase = lightBase;
-          invbasehl = lightBasehl;
-          main = lightTone;
-          faded = darkTone;
-          muted = darkestTone;
-          strong = lightestTone;
-          inherit (colors) yellow orange red megenta violet blue cyan green;
+          dark = with colors; {
+            base = darkBase;
+            basehl = darkBasehl;
+            invbase = lightBase;
+            invbasehl = lightBasehl;
+            main = lightTone;
+            faded = darkTone;
+            muted = darkestTone;
+            strong = lightestTone;
+            inherit (colors) yellow orange red megenta violet blue cyan green;
+          };
         };
       };
     };
-  };
 }

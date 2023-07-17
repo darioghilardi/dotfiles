@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.fish.enable = true;
 
   programs.fish.plugins = [
@@ -57,7 +60,7 @@
 
     # asdf
     # source (brew --prefix asdf)/libexec/asdf.fish
-    # fish_add_path --path $HOME/.asdf/shims 
+    # fish_add_path --path $HOME/.asdf/shims
   '';
 
   programs.fish.functions = {
@@ -134,10 +137,8 @@
     gbdate = "git branch --sort=-committerdate";
     gf = "git fetch";
     gm = "git merge";
-    gum =
-      "git checkout master && git fetch upstream && git merge upstream/master";
-    gom =
-      "git checkout master && git fetch origin && git merge origin/master";
+    gum = "git checkout master && git fetch upstream && git merge upstream/master";
+    gom = "git checkout master && git fetch origin && git merge origin/master";
 
     # Tmuxinator
     tx = "tmuxinator";
