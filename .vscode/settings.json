@@ -1,0 +1,46 @@
+{
+  "editor.formatOnSave": true,
+  "vspacecode.bindingOverrides": [
+    {
+      "keys": "F",
+      "name": "Flake...",
+      "type": "bindings",
+      "bindings": [
+        {
+          "key": "u",
+          "name": "Update Flake",
+          "type": "command",
+          "command": "workbench.action.tasks.runTask",
+          "args": "Update flake"
+        },
+        {
+          "key": "b",
+          "name": "Build Flake",
+          "type": "command",
+          "command": "workbench.action.tasks.runTask",
+          "args": "Build flake"
+        },
+        {
+          "key": "a",
+          "name": "Apply Flake",
+          "type": "command",
+          "command": "workbench.action.tasks.runTask",
+          "args": "Apply flake"
+        }
+      ]
+    },
+    {
+      "keys": "t",
+      "name": "Terminal...",
+      "type": "bindings",
+      "bindings": [
+        {
+          "key": "c",
+          "name": "Close Tests Terminal",
+          "type": "command",
+          "command": "workbench.action.closePanel"
+        }
+      ]
+    }
+  ],
+}

@@ -3,7 +3,9 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  inherit (config.home.user-info) nixConfigDirectory;
+in {
   programs.fish.enable = true;
 
   programs.fish.plugins = [
@@ -114,8 +116,9 @@
 
   programs.fish.shellAliases = {
     # Nix
-    nfb = "cd ~/dotfiles; nix build .#darwinConfigurations.DarioBook.system";
-    drs = "cd ~/dotfiles; darwin-rebuild switch --flake ~/dotfiles/";
+    drb = "cd ~/dotfiles; nix build .#darwinConfigurations.DarioBook.system";
+    drs = "darwin-rebuild switch --flake ~/dotfiles";
+    flakeup = "nix flake update ~/dotfiles";
 
     # General
     cat = "bat";

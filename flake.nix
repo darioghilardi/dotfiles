@@ -49,7 +49,7 @@
       username = "dario";
       fullName = "Dario Ghilardi";
       email = "darioghilardi@webrain.it";
-      nixConfigDirectory = "/Users/dario/.config/nixpkgs";
+      nixConfigDirectory = "/Users/dario/dotfiles";
     };
   in {
     # nix-darwin config
