@@ -28,7 +28,15 @@
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["aarch64-darwin"];
 
-      perSystem = {config, ...}: {};
+      debug = true;
+
+      perSystem = {
+        config,
+        pkgs,
+        ...
+      }: {
+        formatter = pkgs.alejandra;
+      };
 
       flake = {
         flake-parts,
@@ -86,7 +94,7 @@
 
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
-                  home-manager.users.dario = import ./home/home.nix;
+                  home-manager.users.dario = import ./home/default.nix;
                   # Add a registry entry for this flake
                   nix.registry.my.flake = self;
                 }

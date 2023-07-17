@@ -29,7 +29,7 @@
     },
     {
       "label": "Build flake",
-      "command": "cd ~/dotfiles; nix build .#darwinConfigurations.DarioBook.system --show-trace",
+      "command": "cd ~/dotfiles; nix build .#darwinConfigurations.DarioBook.system",
       "type": "shell",
       "group": "build",
       "presentation": {
