@@ -1,24 +1,28 @@
 {
+  pkgs,
   config,
   lib,
-  pkgs,
   ...
 }: {
-  programs.home-manager.enable = true;
+  config = {
+    programs.home-manager.enable = true;
 
-  home = {
-    username = "dario";
-    homeDirectory = "/Users/dario";
-    sessionVariables = {EDITOR = "nvim";};
+    home = {
+      username = "dario";
+      homeDirectory = "/Users/dario";
+      sessionVariables = {EDITOR = "nvim";};
 
-    # Home Manager release
-    stateVersion = "23.11";
+      # Home Manager release
+      stateVersion = "23.11";
+    };
+
+    # Fixes some weird compilation bug
+    manual = {
+      manpages.enable = false;
+      html.enable = false;
+      json.enable = false;
+    };
   };
-
-  # Fixes some weird compilation bug
-  manual.manpages.enable = false;
-  manual.html.enable = false;
-  manual.json.enable = false;
 
   imports = [
     ./programs/kitty

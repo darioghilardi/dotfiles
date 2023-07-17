@@ -33,14 +33,22 @@
       perSystem = {
         config,
         pkgs,
+        self',
+        system,
         ...
       }: {
         formatter = pkgs.alejandra;
+
+        debug = {
+          system = system;
+          self = self';
+        };
       };
 
       flake = {
         flake-parts,
         flake-utils,
+        system,
         ...
       }: let
         inherit (darwin.lib) darwinSystem;
@@ -61,22 +69,31 @@
           overlays = attrValues self.overlays;
         };
 
-        primaryUserInfo = {
+        userInfo = {
           username = "dario";
           fullName = "Dario Ghilardi";
           email = "darioghilardi@webrain.it";
           home = "/Users/dario";
           nixConfigDirectory = "/Users/dario/dotfiles";
         };
+
+        darwinModules = {
+          # My configurations
+          dario-bootstrap = import ./darwin/bootstrap.nix;
+          dario-defaults = import ./darwin/defaults.nix;
+          dario-general = import ./darwin/general.nix;
+          dario-homebrew = import ./darwin/homebrew.nix;
+
+          users-primaryUser = import ./modules/darwin/users.nix;
+        };
       in {
         # nix-darwin config
-        darwinConfigurations = rec {
+        darwinConfigurations = {
           DarioBook = darwinSystem {
             system = "aarch64-darwin";
             modules =
-              attrValues self.darwinModules
+              attrValues darwinModules
               ++ [
-                ./darwin/bootstrap.nix
                 # `home-manager` module
                 home-manager.darwinModules.home-manager
                 {
@@ -84,8 +101,8 @@
                   nix.nixPath = {nixpkgs = "${inputs.nixpkgs-unstable}";};
                   # `home-manager` config
                   users.users.dario = {
-                    name = primaryUserInfo.username;
-                    home = primaryUserInfo.home;
+                    name = userInfo.username;
+                    home = userInfo.home;
                   };
 
                   networking.computerName = "DarioBook";
@@ -106,15 +123,6 @@
           inputs = inputs;
           nixpkgsConfig = nixpkgsConfig;
           optionalAttrs = optionalAttrs;
-        };
-
-        darwinModules = {
-          # My configurations
-          dario-defaults = import ./darwin/defaults.nix;
-          dario-general = import ./darwin/general.nix;
-          dario-homebrew = import ./darwin/homebrew.nix;
-
-          users-primaryUser = import ./modules/darwin/users.nix;
         };
       };
     };
