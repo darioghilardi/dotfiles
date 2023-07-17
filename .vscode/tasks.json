@@ -2,6 +2,19 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Nix repl",
+      "command": "nix repl ~/dotfiles/flake.nix",
+      "type": "shell",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Update flake",
       "command": "nix flake update ~/dotfiles",
       "type": "shell",
@@ -16,7 +29,7 @@
     },
     {
       "label": "Build flake",
-      "command": "cd ~/dotfiles; nix build .#darwinConfigurations.DarioBook.system",
+      "command": "cd ~/dotfiles; nix build .#darwinConfigurations.DarioBook.system --show-trace",
       "type": "shell",
       "group": "build",
       "presentation": {
@@ -35,7 +48,7 @@
       "presentation": {
         "echo": true,
         "reveal": "always",
-        "focus": false,
+        "focus": true,
         "panel": "shared"
       },
       "problemMatcher": []

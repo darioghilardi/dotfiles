@@ -7,6 +7,13 @@
       "type": "bindings",
       "bindings": [
         {
+          "key": "r",
+          "name": "Nix Repl",
+          "type": "command",
+          "command": "workbench.action.tasks.runTask",
+          "args": "Nix repl"
+        },
+        {
           "key": "u",
           "name": "Update Flake",
           "type": "command",
