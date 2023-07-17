@@ -78,7 +78,7 @@
 
     # Nix
     statix # lints and suggestions for the Nix programming language
-    nixfmt
+    alejandra
     nix-prefetch-git
 
     # Code
