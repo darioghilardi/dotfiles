@@ -66,8 +66,6 @@ in {
     "affinity-designer"
     "alfred"
     "amethyst"
-    "balenaetcher"
-    "calibre"
     "cardhop"
     "discord"
     "docker"
