@@ -38,11 +38,6 @@
         ...
       }: {
         formatter = pkgs.alejandra;
-
-        debug = {
-          system = system;
-          self = self';
-        };
       };
 
       flake = {
@@ -83,8 +78,7 @@
           dario-defaults = import ./darwin/defaults.nix;
           dario-general = import ./darwin/general.nix;
           dario-homebrew = import ./darwin/homebrew.nix;
-
-          users-primaryUser = import ./modules/darwin/users.nix;
+          users-primaryUser = import ./darwin/modules/users.nix;
         };
       in {
         # nix-darwin config
