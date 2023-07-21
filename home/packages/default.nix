@@ -68,7 +68,6 @@
     # wxmac
     gettext
     azure-cli
-    direnv
     pcre
     gnugrep
     bfg-repo-cleaner
@@ -83,6 +82,7 @@
     statix # lints and suggestions for the Nix programming language
     alejandra
     nix-prefetch-git
+    cachix
 
     # Code
     heroku
