@@ -69,7 +69,7 @@
           fullName = "Dario Ghilardi";
           email = "darioghilardi@webrain.it";
           home = "/Users/dario";
-          nixConfigDirectory = "/Users/dario/dotfiles";
+          nixConfigDirectory = "~/dotfiles";
         };
 
         darwinModules = {
@@ -93,19 +93,21 @@
                 {
                   nixpkgs = nixpkgsConfig;
                   nix.nixPath = {nixpkgs = "${inputs.nixpkgs-unstable}";};
-                  # `home-manager` config
-                  users.users.dario = {
-                    name = userInfo.username;
-                    home = userInfo.home;
-                  };
 
                   networking.computerName = "DarioBook";
                   networking.hostName = "DarioBook";
                   networking.knownNetworkServices = ["Wi-Fi" "USB 10/100/1000 LAN"];
 
-                  home-manager.useGlobalPkgs = true;
-                  home-manager.useUserPackages = true;
-                  home-manager.users.dario = import ./home/default.nix;
+                  users.users.dario = {
+                    name = userInfo.username;
+                    home = userInfo.home;
+                  };
+
+                  home-manager = {
+                    useGlobalPkgs = true;
+                    useUserPackages = true;
+                    users.dario = import ./home/default.nix;
+                  };
                   # Add a registry entry for this flake
                   nix.registry.my.flake = self;
                 }
