@@ -67,7 +67,6 @@
     automake
     # wxmac
     gettext
-    azure-cli
     pcre
     gnugrep
     bfg-repo-cleaner

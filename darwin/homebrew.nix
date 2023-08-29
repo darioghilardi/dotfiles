@@ -57,6 +57,7 @@ in {
     "1password for Safari" = 1569813296;
     rcmd = 1596283165;
     amphetamine = 937984704;
+    wireguard = 1451685025;
   };
 
   # If an app isn't available in the Mac App Store, or the version in the App Store has
@@ -81,7 +82,6 @@ in {
     "meld"
     "microsoft-teams"
     "notion"
-    "pritunl"
     "postman"
     "powershell"
     "qmk-toolbox"
