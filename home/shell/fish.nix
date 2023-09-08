@@ -123,7 +123,7 @@ in {
     # General
     cat = "bat";
     du = "dust";
-    ls = "exa";
+    ls = "eza";
     ll = "ls -l --time-style long-iso --icons";
 
     # Git
