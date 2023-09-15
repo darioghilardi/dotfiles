@@ -98,6 +98,7 @@ in {
     "tor-browser"
     "transmission"
     "transmit"
+    "typora"
     "utm"
     "visual-studio-code"
     "vlc"
