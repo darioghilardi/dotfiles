@@ -84,7 +84,6 @@
     cachix
 
     # Code
-    heroku
     awscli2
     nodejs-18_x
     earthly
