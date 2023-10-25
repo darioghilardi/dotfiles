@@ -104,7 +104,6 @@ in {
     "visual-studio-code"
     "vlc"
     "vmware-fusion"
-    "whatsapp"
     "zoom"
 
     # Those other apps comes from setapp:

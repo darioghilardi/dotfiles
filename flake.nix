@@ -3,7 +3,6 @@
 
   inputs = {
     # Package sets
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     # Environment/system management
