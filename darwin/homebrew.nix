@@ -115,7 +115,7 @@ in {
   ];
 
   # Until these are managed by nix.
-  homebrew.brews = ["tfenv"]; # [ "asdf" "unixodbc" "wxwidgets" ];
+  # homebrew.brews = ["tfenv"]; # [ "tfenv" "asdf" "unixodbc" "wxwidgets" ];
 
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK =
