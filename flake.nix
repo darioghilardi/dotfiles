@@ -14,6 +14,7 @@
     # Other utilities
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-utils.url = "github:numtide/flake-utils";
+    alejandra.url = "github:kamadorueda/alejandra/3.0.0";
   };
 
   outputs = {
@@ -105,7 +106,7 @@
                   home-manager = {
                     useGlobalPkgs = true;
                     useUserPackages = true;
-                    users.dario = import ./home/default.nix;
+                    users.dario = import ./home/dariobook.nix;
                   };
                   # Add a registry entry for this flake
                   nix.registry.my.flake = self;
@@ -126,7 +127,7 @@
 
                   networking.computerName = "DarioAir";
                   networking.hostName = "DarioAir";
-                  networking.knownNetworkServices = [ "Wi-Fi" "USB 10/100/1000 LAN" ];
+                  networking.knownNetworkServices = ["Wi-Fi" "USB 10/100/1000 LAN"];
 
                   users.users.dario = {
                     name = userInfo.username;
@@ -136,12 +137,12 @@
                   home-manager = {
                     useGlobalPkgs = true;
                     useUserPackages = true;
-                    users.dario = import ./home/default.nix;
+                    users.dario = import ./home/darioair.nix;
                   };
                   # Add a registry entry for this flake
                   nix.registry.my.flake = self;
-              }
-            ];
+                }
+              ];
           };
         };
 
