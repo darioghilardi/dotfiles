@@ -12,6 +12,13 @@
       homeDirectory = "/Users/dario";
       sessionVariables = {EDITOR = "nvim";};
 
+      # Generate ssh agent config for 1Password
+      file.".config/1Password/ssh/agent.toml".text = ''
+        [[ssh-keys]]
+        item = "DarioBook SSH Key"
+        vault = "Private"
+      '';
+
       # Home Manager release
       stateVersion = "23.11";
     };
