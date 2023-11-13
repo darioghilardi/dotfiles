@@ -1,6 +1,13 @@
 # Dotfiles
 
-This repository contains my MacBook configuration based on [nix-darwin](https://github.com/LnL7/nix-darwin) and [home-manager](https://rycee.gitlab.io/home-manager/).
+Machines configurations based on Nix.
+
+## Installation
+
+1. Install Nix using the [Nix Installer](https://github.com/DeterminateSystems/nix-installer).
+2. Clone this repository into `~/dotfiles` (on MacOS install the command line tools when prompted, as git is not installed on a fresh MacOS installation).
+3. Run `nix build` for the machine to provision.
+4. `switch` the configuration.
 
 ### Credits
 

@@ -51,6 +51,7 @@
     "visual-studio-code"
     "vlc"
     "vmware-fusion"
+    "whatsapp"
     "zoom"
   ];
 
