@@ -10,11 +10,6 @@
   config,
   ...
 }: {
-  # Zoxide, a faster way to navigate the filesystem
-  # https://github.com/ajeetdsouza/zoxide
-  # https://rycee.gitlab.io/home-manager/options.html#opt-programs.zoxide.enable
-  programs.zoxide.enable = true;
-
   # neovim
   programs.neovim.enable = true;
 
