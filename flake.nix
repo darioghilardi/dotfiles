@@ -44,22 +44,7 @@
   #   overlays = attrValues self.overlays;
   # };
 
-  # userInfo = {
-  #   username = "dario";
-  #   fullName = "Dario Ghilardi";
-  #   email = "darioghilardi@webrain.it";
-  #   home = "/Users/dario";
-  #   nixConfigDirectory = "~/dotfiles";
-  # };
-
   # darwinModules = {
-  #   # My configurations
-  #   dario-bootstrap = import ./darwin/bootstrap.nix;
-  #   dario-defaults = import ./darwin/defaults.nix;
-  #   dario-general = import ./darwin/general.nix;
-  #   dario-homebrew = import ./darwin/homebrew.nix;
-  #   users-primaryUser = import ./darwin/modules/users.nix;
-  # };
   #   in {
   #     # nix-darwin config
   #     darwinConfigurations = {
@@ -93,44 +78,4 @@
   #             }
   #           ];
   #       };
-
-  #       DarioAir = darwinSystem {
-  #         system = "aarch64-darwin";
-  #         modules =
-  #           attrValues darwinModules
-  #           ++ [
-  #             # `home-manager` module
-  #             home-manager.darwinModules.home-manager
-  #             {
-  #               nixpkgs = nixpkgsConfig;
-  #               nix.nixPath = {nixpkgs = "${inputs.nixpkgs-unstable}";};
-
-  #               networking.computerName = "DarioAir";
-  #               networking.hostName = "DarioAir";
-  #               networking.knownNetworkServices = ["Wi-Fi" "USB 10/100/1000 LAN"];
-
-  #               users.users.dario = {
-  #                 name = userInfo.username;
-  #                 home = userInfo.home;
-  #               };
-
-  #               home-manager = {
-  #                 useGlobalPkgs = true;
-  #                 useUserPackages = true;
-  #                 users.dario = import ./home/darioair.nix;
-  #               };
-  #               # Add a registry entry for this flake
-  #               nix.registry.my.flake = self;
-  #             }
-  #           ];
-  #       };
-  #     };
-
-  #     overlays = import ./overlays/default.nix {
-  #       inputs = inputs;
-  #       nixpkgsConfig = nixpkgsConfig;
-  #       optionalAttrs = optionalAttrs;
-  #     };
-  #   };
-  # };
 }
