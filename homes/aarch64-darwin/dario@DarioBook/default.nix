@@ -8,6 +8,10 @@ with lib.dariodots; {
   dariodots = {
     tools = {
       direnv = enabled;
+      git = enabled;
+    };
+    cli-apps = {
+      gh = enabled;
     };
   };
 

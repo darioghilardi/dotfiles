@@ -1,38 +1,34 @@
 {
-  # Snowfall Lib provides a customized `lib` instance with access to your flake's library
-  # as well as the libraries available from your flake's inputs.
   lib,
-  # An instance of `pkgs` with your overlays and packages applied is also available.
-  pkgs,
-  # You also have access to your flake's inputs.
   inputs,
-  # Additional metadata is provided by Snowfall Lib.
-  system, # The system architecture for this host (eg. `x86_64-linux`).
-  target, # The Snowfall Lib target for this system (eg. `x86_64-iso`).
-  format, # A normalized name for the system target (eg. `iso`).
-  virtual, # A boolean to determine whether this system is a virtual target using nixos-generators.
-  systems, # An attribute map of your defined hosts.
-  # All other arguments come from the module system.
   config,
   ...
-}: {
-  programs.git.enable = true;
-
-  programs.git.userName = "Dario Ghilardi";
-  programs.git.userEmail = "darioghilardi@webrain.it";
-  programs.git.ignores = [".DS_Store"];
-  programs.git.extraConfig = {
-    color.ui = "auto";
-    init = {defaultBranch = "master";};
+}:
+with lib;
+with lib.dariodots; let
+  cfg = config.dariodots.tools.git;
+  user = config.dariodots.user;
+in {
+  options.dariodots.tools.git = with types; {
+    enable = mkBoolOpt false "Whether or not to enable git.";
+    userName = mkOpt str user.fullName "The name to configure git with.";
+    userEmail = mkOpt str user.email "The email to configure git with.";
   };
 
-  # Enhanced diffs
-  programs.git.delta.enable = true;
+  config = mkIf cfg.enable {
+    programs.git = {
+      enable = true;
 
-  # GitHub CLI
-  programs.gh.enable = true;
-  programs.gh.settings = {
-    git_protocol = "https";
-    prompt = "enabled";
+      inherit (cfg) userName userEmail;
+
+      ignores = [".DS_Store"];
+      extraConfig = {
+        color.ui = "auto";
+        init = {defaultBranch = "master";};
+      };
+
+      # Enhanced diffs
+      delta.enable = true;
+    };
   };
 }
