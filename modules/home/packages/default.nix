@@ -15,12 +15,6 @@
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.zoxide.enable
   programs.zoxide.enable = true;
 
-  # tmux
-  programs.tmux.enable = true;
-  programs.tmux.keyMode = "vi";
-  programs.tmux.prefix = "C-b";
-  programs.tmux.tmuxinator.enable = true;
-
   # neovim
   programs.neovim.enable = true;
 

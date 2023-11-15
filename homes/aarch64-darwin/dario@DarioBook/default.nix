@@ -14,6 +14,7 @@ with lib.dariodots; {
       gh = enabled;
       bat = enabled;
       htop = enabled;
+      tmux = enabled;
     };
   };
 

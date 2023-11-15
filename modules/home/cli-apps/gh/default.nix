@@ -12,7 +12,7 @@ in {
     enable = mkBoolOpt false "Whether or not to enable `gh`, the Github CLI.";
   };
 
-  config = {
+  config = mkIf cfg.enable {
     programs.gh.enable = true;
     programs.gh.settings = {
       git_protocol = "https";

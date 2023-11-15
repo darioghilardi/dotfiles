@@ -12,7 +12,7 @@ in {
     enable = mkBoolOpt false "Whether or not to enable `htop`.";
   };
 
-  config = {
+  config = mkIf cfg.enable {
     programs.htop = {
       enable = true;
       settings.show_program_path = true;

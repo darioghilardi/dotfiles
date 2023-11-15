@@ -15,7 +15,7 @@ in {
     enable = mkBoolOpt false "Whether or not to enable `bat`.";
   };
 
-  config = {
+  config = mkIf cfg.enable {
     programs.bat = {
       enable = true;
       config = {
