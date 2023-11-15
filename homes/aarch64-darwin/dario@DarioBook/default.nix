@@ -13,6 +13,7 @@ with lib.dariodots; {
     cli-apps = {
       gh = enabled;
       bat = enabled;
+      htop = enabled;
     };
   };
 

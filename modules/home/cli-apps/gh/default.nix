@@ -6,7 +6,7 @@
 }:
 with lib;
 with lib.dariodots; let
-  cfg = config.dariodots.tools.gh;
+  cfg = config.dariodots.cli-apps.gh;
 in {
   options.dariodots.cli-apps.gh = with types; {
     enable = mkBoolOpt false "Whether or not to enable `gh`, the Github CLI.";
