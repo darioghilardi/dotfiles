@@ -11,11 +11,13 @@ with lib.dariodots; {
       git = enabled;
     };
     cli-apps = {
-      gh = enabled;
       bat = enabled;
       htop = enabled;
+      gh = enabled;
+      neovim = enabled;
       tmux = enabled;
       zoxide = enabled;
+      #awscli = enabled;
     };
   };
 
