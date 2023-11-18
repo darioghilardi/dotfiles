@@ -10,7 +10,6 @@
   config,
   ...
 }: {
-  # neovim
   home.packages = with pkgs; [
     bandwhich # display current network utilization by process
     bottom # fancy version of `top` with ASCII graphs
@@ -62,10 +61,6 @@
     # Code
     nodejs-18_x
     earthly
-
-    # Neovim
-    elixir_ls
-    sumneko-lua-language-server
 
     # Media
     imagemagick

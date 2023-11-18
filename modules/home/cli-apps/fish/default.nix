@@ -102,6 +102,10 @@
     drs = "darwin-rebuild switch --flake ~/dotfiles";
     flakeup = "nix flake update ~/dotfiles";
 
+    # Vim
+    vim = "nvim";
+    vi = "nvim";
+
     # General
     cat = "bat";
     du = "dust";

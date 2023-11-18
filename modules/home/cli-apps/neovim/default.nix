@@ -2,6 +2,7 @@
   lib,
   inputs,
   config,
+  pkgs,
   ...
 }:
 with lib;
@@ -13,10 +14,11 @@ in {
   };
 
   config = {
-    programs.neovim = {
-      enable = true;
-      viAlias = true;
-      vimAlias = true;
+    home.packages = [pkgs.neovim];
+
+    xdg.configFile.nvim = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/modules/home/cli-apps/neovim/nvim";
+      recursive = true;
     };
   };
 }
