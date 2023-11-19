@@ -17,6 +17,8 @@ in {
       enable = true;
       keyMode = "vi";
       prefix = "C-b";
+      escapeTime = 0;
+      extraConfig = "set -g status-interval 0";
       tmuxinator.enable = true;
     };
   };
