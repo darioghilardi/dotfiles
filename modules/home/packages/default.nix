@@ -27,7 +27,6 @@
     # Search tools
     silver-searcher
     ack
-    ripgrep
     fzf
 
     # Dev tools
