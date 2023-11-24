@@ -71,7 +71,6 @@
     kustomize
     kubernetes-helm
     helmfile
-    k9s
     argo
   ];
 }
