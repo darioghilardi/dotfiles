@@ -31,7 +31,6 @@
 
     # Dev tools
     docker-compose
-    jq # json parser
     colordiff
     mkcert
     autoconf
