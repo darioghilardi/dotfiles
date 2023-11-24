@@ -12,8 +12,9 @@ with lib.dariodots; {
     };
     cli-apps = {
       bat = enabled;
-      htop = enabled;
+      eza = enabled;
       gh = enabled;
+      htop = enabled;
       neovim = enabled;
       tmux = enabled;
       zoxide = enabled;

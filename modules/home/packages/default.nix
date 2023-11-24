@@ -14,9 +14,7 @@
     bandwhich # display current network utilization by process
     bottom # fancy version of `top` with ASCII graphs
     du-dust # fancy version of `du`
-    eza # fancy version of `ls`
     fd # fancy version of `find`
-    htop # fancy version of `top`
     mosh # wrapper for `ssh` that better and not dropping connections
     procs # fancy version of `ps`
     unzip
