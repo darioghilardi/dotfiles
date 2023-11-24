@@ -12,6 +12,7 @@ with lib.dariodots; {
     };
     cli-apps = {
       bat = enabled;
+      bottom = enabled;
       eza = enabled;
       gh = enabled;
       htop = enabled;

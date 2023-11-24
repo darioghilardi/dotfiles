@@ -12,7 +12,6 @@
 }: {
   home.packages = with pkgs; [
     bandwhich # display current network utilization by process
-    bottom # fancy version of `top` with ASCII graphs
     du-dust # fancy version of `du`
     fd # fancy version of `find`
     mosh # wrapper for `ssh` that better and not dropping connections
