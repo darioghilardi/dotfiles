@@ -14,6 +14,7 @@ with lib.dariodots; {
       bat = enabled;
       bottom = enabled;
       eza = enabled;
+      fzf = enabled;
       gh = enabled;
       htop = enabled;
       jq = enabled;

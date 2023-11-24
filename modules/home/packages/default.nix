@@ -27,7 +27,6 @@
     # Search tools
     silver-searcher
     ack
-    fzf
 
     # Dev tools
     docker-compose
