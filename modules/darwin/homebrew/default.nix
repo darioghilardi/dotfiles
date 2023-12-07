@@ -29,7 +29,6 @@
     "affinity-designer"
     "alfred"
     "amethyst"
-    "cardhop"
     "discord"
     "docker"
     "dropbox"

@@ -4,4 +4,5 @@
 
 local opt = vim.opt
 
-opt.relativenumber = false
+opt.relativenumber = false -- do not use relative numbers
+vim.opt.conceallevel = 0 -- don't hide quotes in json files
