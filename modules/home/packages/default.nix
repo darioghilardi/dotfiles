@@ -29,6 +29,7 @@
     ack
 
     # Dev tools
+    kubeseal
     docker-compose
     colordiff
     mkcert
