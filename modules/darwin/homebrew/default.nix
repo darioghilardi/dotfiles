@@ -52,6 +52,7 @@
     "spotify"
     "steam"
     "sublime-text"
+    "teamviewer"
     "telegram-desktop"
     "texturepacker"
     "tor-browser"
@@ -100,7 +101,6 @@ in {
   };
 
   homebrew.taps = [
-    "homebrew/cask"
     "homebrew/cask-fonts"
     "homebrew/cask-versions"
     "homebrew/services"
