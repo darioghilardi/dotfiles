@@ -29,6 +29,7 @@
     ack
 
     # Dev tools
+    zellij
     kubeseal
     docker-compose
     colordiff
