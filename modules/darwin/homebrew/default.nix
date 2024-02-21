@@ -32,12 +32,10 @@
     "discord"
     "docker"
     "dropbox"
-    "fantastical"
     "figma"
     "firefox"
     "google-chrome"
     "google-drive"
-    "lima"
     "linear-linear"
     "microsoft-teams"
     "notion"
@@ -132,7 +130,7 @@ in {
   homebrew.casks = greedyCasks;
 
   # Until these are managed by nix.
-  homebrew.brews = ["tfenv" "awscli"]; # [ "tfenv" "asdf" "unixodbc" "wxwidgets" ];
+  homebrew.brews = ["tfenv" "awscli" "lima"]; # [ "tfenv" "asdf" "unixodbc" "wxwidgets" ];
 
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK =
