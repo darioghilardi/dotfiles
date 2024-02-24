@@ -18,7 +18,13 @@ in {
       enableFishIntegration = true;
       settings = {
         theme = "solarized-dark";
+        pane_frames = false;
       };
+    };
+
+    xdg.configFile."zellij/layouts" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/modules/home/cli-apps/zellij/layouts";
+      recursive = true;
     };
   };
 }
