@@ -16,8 +16,8 @@ in {
   # https://sw.kovidgoyal.net/kitty/conf.html
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.kitty.enable
   programs.kitty.enable = true;
-
-  # General config ----------------------------------------------------------------------------- {{{
+  programs.kitty.theme = "Solarized Dark";
+  programs.kitty.shellIntegration.enableFishIntegration = false;
 
   programs.kitty.settings = {
     font_family = "FiraCode Nerd Font Mono";
@@ -34,14 +34,4 @@ in {
     inactive_tab_font_style = "normal";
     tab_activity_symbol = "";
   };
-
-  programs.kitty.theme = "Solarized Dark";
-
-  # Change the style of italic font variants
-  # programs.kitty.extraConfig = ''
-  #   font_features FiraCodeNerdFontCompleteM-Retina +cv01 +cv06
-  # '';
-
-  # programs.kitty.extras.useSymbolsFromNerdFont = "FiraCode Nerd Font Mono";
-  # }}}
 }
