@@ -22,6 +22,7 @@ with lib.dariodots; {
       neovim = enabled;
       ripgrep = enabled;
       tmux = enabled;
+      zellij = enabled;
       zoxide = enabled;
       #awscli = enabled;
     };
