@@ -1,7 +1,49 @@
 layout {
-    pane
-    pane split_direction="vertical" {
-        pane
-        pane command="htop"
+  default_tab_template {
+    pane size=1 borderless=true {
+        plugin location="zellij:tab-bar"
     }
+    children
+    pane size=2 borderless=true {
+        plugin location="zellij:status-bar"
+    }
+  }
+
+  tab name="NablaCore" split_direction="horizontal" cwd="~/www/nabla_core" focus=true {
+    pane split_direction="vertical" {
+      pane {
+        name "editor"
+        focus true
+      }
+      pane stacked=true {
+        pane {
+          name "server"
+          command "fish"
+          args "-c" "source ~/.config/fish/config.fish && direnv exec . mix phx.server"
+          expanded true
+        }
+        pane {
+          name "services"
+          command "fish"
+          args "-c" "source ~/.config/fish/config.fish && direnv exec . make up"
+        }
+        pane {
+          name "preprocessor"
+          command "fish"
+          args "-c" "source ~/.config/fish/config.fish && direnv exec . mix run --no-halt"
+          cwd "~/www/new-preprocessor"
+        }
+      }
+    }
+  }
+
+  tab name="nabla_aws" split_direction="vertical" cwd="~/www/nabla_aws" {
+    pane name="editor"
+    pane name="cmd"
+  }
+
+  tab name="dotfiles" split_direction="vertical" cwd="~/dotfiles" {
+    pane name="editor"
+    pane name="cmd"
+  }
 }
