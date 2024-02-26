@@ -1,11 +1,8 @@
 layout {
   default_tab_template {
-    pane size=1 borderless=true {
-        plugin location="zellij:tab-bar"
-    }
     children
-    pane size=2 borderless=true {
-        plugin location="zellij:status-bar"
+    pane size=1 borderless=true {
+        plugin location="zellij:compact-bar"
     }
   }
 
@@ -41,6 +38,29 @@ layout {
     pane name="editor"
     pane name="cmd"
   }
+
+  // Make sure this cohexists with nablacore
+  // tab name="Mario" split_direction="horizontal" cwd="~/www/mario" focus=true {
+  //   pane split_direction="vertical" {
+  //     pane {
+  //       name "editor"
+  //       focus true
+  //     }
+  //     pane stacked=true {
+  //       pane {
+  //         name "server"
+  //         command "fish"
+  //         args "-c" "source ~/.config/fish/config.fish && direnv exec . mix phx.server"
+  //         expanded true
+  //       }
+  //       pane {
+  //         name "services"
+  //         command "fish"
+  //         args "-c" "source ~/.config/fish/config.fish && direnv exec . make up"
+  //       }
+  //     }
+  //   }
+  // }
 
   tab name="dotfiles" split_direction="vertical" cwd="~/dotfiles" {
     pane name="editor"
