@@ -19,6 +19,7 @@ with lib.dariodots; {
       htop = enabled;
       jq = enabled;
       k9s = enabled;
+      lazygit = enabled;
       neovim = enabled;
       ripgrep = enabled;
       tmux = enabled;
