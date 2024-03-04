@@ -52,6 +52,7 @@
     alejandra
     nix-prefetch-git
     cachix
+    devbox
 
     # Code
     nodejs-18_x
