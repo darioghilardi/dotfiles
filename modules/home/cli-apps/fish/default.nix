@@ -110,7 +110,6 @@
     cat = "bat";
     du = "dust";
     ls = "eza";
-    ll = "ls -l --time-style long-iso --icons";
 
     # Git
     gd = "git diff";
