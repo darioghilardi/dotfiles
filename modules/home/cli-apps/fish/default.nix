@@ -205,7 +205,7 @@
     yup = "cd assets/ && yarn && cd ..";
 
     # Terraform
-    tf = "terraform";
+    tf = "tofu";
 
     # Helm
     hfd = "helmfile diff";
