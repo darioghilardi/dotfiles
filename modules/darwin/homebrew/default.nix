@@ -62,6 +62,7 @@
     "vlc"
     "vmware-fusion"
     "whatsapp"
+    "zed"
     "zoom"
   ];
 
