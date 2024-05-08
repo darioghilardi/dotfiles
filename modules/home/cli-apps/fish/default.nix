@@ -99,7 +99,16 @@
 
   programs.fish.shellAliases = {
     # Nix
-    drs = "darwin-rebuild switch --flake ~/dotfiles";
+    dbb = ''
+      cd ~/dotfiles
+      nix build .#darwinConfigurations.DarioBook.system
+      ./result/sw/bin/darwin-rebuild switch --flake .
+    '';
+    dab = ''
+      cd ~/dotfiles
+      nix build .#darwinConfigurations.DarioAir.system
+      ./result/sw/bin/darwin-rebuild switch --flake .
+    '';
     flakeup = "nix flake update ~/dotfiles";
 
     # Vim
