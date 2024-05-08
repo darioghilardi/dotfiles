@@ -16,6 +16,7 @@
     # Snowfall Lib
     snowfall-lib.url = "github:snowfallorg/lib?ref=v2.1.1";
     snowfall-lib.inputs.nixpkgs.follows = "nixpkgs";
+    snowfall-lib.inputs.flake-utils-plus.url = "github:fl42v/flake-utils-plus";
 
     # Other utilities
     alejandra.url = "github:kamadorueda/alejandra/3.0.0";
