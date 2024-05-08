@@ -27,6 +27,9 @@ with lib.dariodots; {
       zoxide = enabled;
       #awscli = enabled;
     };
+    apps = {
+      zed = enabled;
+    };
   };
 
   programs.home-manager.enable = true;
@@ -37,7 +40,7 @@ with lib.dariodots; {
     sessionVariables = {EDITOR = "nvim";};
 
     # Home Manager release
-    stateVersion = "23.11";
+    stateVersion = "24.05";
   };
 
   # Fixes some weird compilation bug
