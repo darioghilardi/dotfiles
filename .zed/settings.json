@@ -1,9 +1,9 @@
 {
   "formatter": {
     "external": {
-      "command": "alejandra",
-      "arguments": ["./**/*.nix"]
+      "command": ".zed/formatter.sh",
+      "arguments": []
     }
   },
-  "format_on_save": "off"
+  "format_on_save": "on"
 }
