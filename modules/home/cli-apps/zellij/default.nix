@@ -15,7 +15,8 @@ in {
   config = mkIf cfg.enable {
     programs.zellij = {
       enable = true;
-      enableFishIntegration = true;
+      # This avoid zellij to autostarts on every new terminal.
+      enableFishIntegration = false;
       settings = {
         theme = "solarized-dark";
         pane_frames = false;
