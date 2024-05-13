@@ -16,7 +16,7 @@ in {
   # https://sw.kovidgoyal.net/kitty/conf.html
   # https://rycee.gitlab.io/home-manager/options.html#opt-programs.kitty.enable
   programs.kitty.enable = true;
-  programs.kitty.theme = "Solarized Dark";
+  programs.kitty.theme = "Solarized Dark - Patched";
   programs.kitty.shellIntegration.enableFishIntegration = false;
 
   programs.kitty.settings = {
