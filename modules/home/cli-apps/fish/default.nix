@@ -104,6 +104,7 @@
     dab = ''
       cd ~/dotfiles && nix build .#darwinConfigurations.DarioAir.system && ./result/sw/bin/darwin-rebuild switch --flake .'';
     flakeup = "nix flake update ~/dotfiles";
+    nixclean = "nix store gc && nix store optimise";
 
     # Vim
     vim = "nvim";
