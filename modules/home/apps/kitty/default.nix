@@ -25,6 +25,7 @@ in {
     adjust_line_height = "110%";
     disable_ligatures = "cursor"; # disable ligatures when cursor is on them
     shell_integration = "no-cursor";
+    macos_option_as_alt = "yes";
 
     # Window layout
     window_padding_width = "10";

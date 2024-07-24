@@ -23,8 +23,8 @@
   brewEnabled = config.homebrew.enable;
 
   casks = [
-    "1password-beta"
-    "1password-cli"
+    "1password@beta"
+    "1password-cli@beta"
     "airflow"
     "affinity-designer"
     "alfred"
@@ -135,6 +135,6 @@ in {
 
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK =
-    mkIfCaskPresent "1password-cli"
+    mkIfCaskPresent "1password-cli@beta"
     "/Users/dario/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
 }
