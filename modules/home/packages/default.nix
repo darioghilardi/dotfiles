@@ -53,6 +53,7 @@
     nix-prefetch-git
     cachix
     devbox
+    nil
 
     # Code
     nodejs-18_x
