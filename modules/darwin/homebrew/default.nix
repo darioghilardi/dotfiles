@@ -104,6 +104,7 @@ in {
     "homebrew/cask-versions"
     "homebrew/services"
     "nrlquaker/createzap"
+    "cloudflare/cloudflare"
   ];
 
   # Prefer installing application from the Mac App Store
@@ -131,7 +132,7 @@ in {
   homebrew.casks = greedyCasks;
 
   # Until these are managed by nix.
-  homebrew.brews = ["awscli" "lima"]; # [ "unixodbc" "wxwidgets" ];
+  homebrew.brews = ["awscli" "lima" "cloudflare/cloudflare/cf-terraforming"]; # [ "unixodbc" "wxwidgets" ];
 
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK =
