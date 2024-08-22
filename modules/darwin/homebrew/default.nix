@@ -29,6 +29,7 @@
     "affinity-designer"
     "alfred"
     "amethyst"
+    "balenaetcher"
     "discord"
     "docker"
     "dropbox"

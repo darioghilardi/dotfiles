@@ -8,7 +8,23 @@ Nix based configuration for my machines.
 2. Clone this repository into `~/dotfiles` (on MacOS install the command line tools when prompted, as git is not installed on a fresh MacOS installation).
 3. Run `nix build` for the machine to provision.
 4. Run `darwin-rebuild switch --flake .`
-5. After the first run just run `drs` to switch the configuration.
+5. After the first run just run the aliased commands to switch the configuration.
+
+## Saturn
+
+To deploy a new configuration run:
+
+```
+deploy --hostname MACHINE_IP/HOSTNAME .#saturn
+```
+
+The `saturn` machine was initially provisioned using `nixos-anywhere`. 
+In the unlikely case it needs to be provisioned again, the following command can be used:
+
+```
+nix run github:nix-community/nixos-anywhere -- --debug --build-on-remote --flake .#saturn root@MACHINE_IP
+```
+
 
 ### Credits
 
