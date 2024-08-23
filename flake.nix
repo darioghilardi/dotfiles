@@ -74,7 +74,7 @@
 
       outputs-builder = channel: {
         # Outputs in the outputs builder are transformed to support each system.
-        #checks = inputs.deploy-rs.lib.${channel.nixpkgs.system}.deployChecks self.deploy;
+        checks = inputs.deploy-rs.lib.${channel.nixpkgs.system}.deployChecks self.deploy;
         formatter = channel.nixpkgs.alejandra;
       };
     };
