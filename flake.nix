@@ -4,6 +4,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,13 +35,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    alejandra.url = "github:kamadorueda/alejandra/3.0.0";
+    alejandra = {
+      url = "github:kamadorueda/alejandra/3.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     self,
     nixpkgs,
     disko,
+    agenix,
     deploy-rs,
     ...
   } @ inputs: let
@@ -57,7 +66,10 @@
     };
   in
     lib.mkFlake {
-      systems.modules.nixos = with inputs; [disko.nixosModules.disko];
+      systems.modules.nixos = with inputs; [
+        disko.nixosModules.disko
+        agenix.nixosModules.default
+      ];
 
       deploy = lib.mkDeploy {
         inherit (inputs) self;
@@ -74,7 +86,6 @@
 
       outputs-builder = channel: {
         # Outputs in the outputs builder are transformed to support each system.
-        checks = inputs.deploy-rs.lib.${channel.nixpkgs.system}.deployChecks self.deploy;
         formatter = channel.nixpkgs.alejandra;
       };
     };

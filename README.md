@@ -10,6 +10,32 @@ Nix based configuration for my machines.
 4. Run `darwin-rebuild switch --flake .`
 5. After the first run just run the aliased commands to switch the configuration.
 
+## Secrets
+
+Secrets are encrypted using [agenix](https://github.com/ryantm/agenix).
+
+To create a new secret, add first an entry to `secrets/secrets.nix`, declaring which public key should be used to encrypt the secret. Then run:
+
+```
+RULES=secrets/secrets.nix agenix -e NEW_SECRET.age && mv NEW_SECRET.age secrets/
+```
+
+An editor will open, write the secrets content then save and quit.
+
+Declare the secret in the configuration using:
+
+```
+age.secrets = {
+  secret = {file = PATH_TO_SECRETS/SECRET.age;};
+};
+```
+
+Use the secret with:
+
+```
+config.age.secrets.SECRET.path;
+```
+
 ## Saturn
 
 To deploy a new configuration run:
