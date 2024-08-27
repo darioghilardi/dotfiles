@@ -36,6 +36,16 @@ Use the secret with:
 config.age.secrets.SECRET.path;
 ```
 
+## Testvm
+
+A testvm host has been added to test the partitioning using disko. It runs on top of UTM.
+
+Since the disk is LUKS encrypted the encryption key must be passed in when running nixos anywhere for the first setup:
+
+```
+nix run github:nix-community/nixos-anywhere -- --debug --build-on-remote --disk-encryption-keys /tmp/disk.key ./secrets/disk.key --flake .#testvm root@192.168.65.2
+```
+
 ## Saturn
 
 To deploy a new configuration run:
