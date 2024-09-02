@@ -29,6 +29,7 @@ with lib.${namespace}; {
 
   networking = {
     hostName = "testvm";
+    hostId = "4e98120d";
     useDHCP = true;
     firewall = {
       enable = true;

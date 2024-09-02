@@ -29,6 +29,7 @@ with lib.dariodots; {
     };
     apps = {
       zed = enabled;
+      kitty = enabled;
     };
   };
 

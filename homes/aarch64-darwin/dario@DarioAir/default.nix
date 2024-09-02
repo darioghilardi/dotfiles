@@ -27,6 +27,10 @@ with lib.dariodots; {
       zoxide = enabled;
       #awscli = enabled;
     };
+    apps = {
+      zed = enabled;
+      kitty = enabled;
+    };
   };
 
   programs.home-manager.enable = true;

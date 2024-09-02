@@ -43,29 +43,41 @@
                 passwordFile = "/tmp/disk.key";
                 additionalKeyFiles = [];
                 content = {
-                  type = "lvm_pv";
-                  vg = "pool";
+                  type = "filesystem";
+                  format = "ext4";
+                  mountpoint = "/";
                 };
               };
             };
           };
         };
       };
-    };
-    lvm_vg = {
-      pool = {
-        type = "lvm_vg";
-        lvs = {
-          root = {
-            size = "100%FREE";
-            content = {
-              type = "filesystem";
-              format = "ext4";
-              mountpoint = "/";
-              mountOptions = [
-                "defaults"
-              ];
+      disk2 = {
+        type = "disk";
+        device = "/dev/vdb";
+        content = {
+          type = "gpt";
+          partitions = {
+            zfs = {
+              size = "100%";
+              content = {
+                type = "zfs";
+                pool = "storage";
+              };
             };
+          };
+        };
+      };
+    };
+    zpool = {
+      storage = {
+        type = "zpool";
+        mountpoint = "/storage";
+
+        datasets = {
+          dataset = {
+            type = "zfs_fs";
+            mountpoint = "/storage/dataset";
           };
         };
       };

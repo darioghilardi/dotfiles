@@ -24,13 +24,13 @@
     };
   };
 
-  imports = [
-    ./programs/ssh
-    ./programs/git
-    ./programs/kitty
-    ./programs/kitty/extras.nix
-    ./packages
-    ./shell/fish.nix
-    ./shell/starship.nix
-  ];
+  # imports = [
+  #   ./programs/ssh
+  #   ./programs/git
+  #   ./programs/kitty
+  #   ./programs/kitty/extras.nix
+  #   ./packages
+  #   ./shell/fish.nix
+  #   ./shell/starship.nix
+  # ];
 }
