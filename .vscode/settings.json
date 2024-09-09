@@ -1,6 +1,7 @@
 {
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
+  "editor.stickyScroll.enabled": false,
   "editor.insertSpaces": true,
   "vspacecode.bindingOverrides": [
     {
