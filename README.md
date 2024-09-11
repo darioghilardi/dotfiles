@@ -38,12 +38,34 @@ config.age.secrets.SECRET.path;
 
 ## Testvm
 
-A testvm host has been added to test the partitioning using disko. It runs on top of UTM.
+A testvm host has been added to test the NAS partitioning and setup. It runs on top of UTM.
 
-Since the disk is LUKS encrypted the encryption key must be passed in when running nixos anywhere for the first setup:
+To reinstall everything follow these steps:
+
+- Setup a VM with 4 disks, two with same size to simulate the NAS main storage and other 2 to simulate the main disks.
+- Add a USB device with the nixos minimal image loaded and boot priority to 1
+- Start the VM
+- Use `passwd` to setup a password for the `nixos` user
+
+Then on the source computer add your public key to login without password through ssh:
 
 ```
-nix run github:nix-community/nixos-anywhere -- --debug --build-on-remote --disk-encryption-keys /tmp/disk.key ./secrets/disk.key --flake .#testvm root@192.168.65.2
+export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock
+ssh-copy-id nixos@192.168.65.2
+```
+
+Now push the installer script from the source computer to the target machine:
+
+```
+scp scripts/testvm-install.sh nixos@192.168.65.2:/home/nixos/installer.sh
+```
+
+Run the install script:
+
+```
+ssh nixos@192.168.65.2 'chmod +x ~/installer.sh'
+ssh nixos@192.168.65.2 'sudo ~/installer.sh'
+sudo nixos-install
 ```
 
 ## Saturn

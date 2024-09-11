@@ -12,9 +12,10 @@
 }:
 with lib;
 with lib.${namespace}; {
-  imports = [
-    ./hardware.nix
-  ];
+  # Not using disko anymore
+  # imports = [
+  #   ./hardware.nix
+  # ];
 
   boot.initrd.availableKernelModules = ["xhci_pci" "sr_mod"];
   boot.initrd.kernelModules = ["dm-snapshot"];

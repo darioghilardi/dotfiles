@@ -13,7 +13,7 @@
   disko.devices = {
     disk = {
       disk1 = {
-        device = lib.mkDefault "/dev/vda";
+        device = "/dev/vda";
         type = "disk";
         content = {
           type = "gpt";
@@ -52,35 +52,22 @@
           };
         };
       };
-      disk2 = {
-        type = "disk";
-        device = "/dev/vdb";
-        content = {
-          type = "gpt";
-          partitions = {
-            zfs = {
-              size = "100%";
-              content = {
-                type = "zfs";
-                pool = "storage";
-              };
-            };
-          };
-        };
-      };
     };
-    zpool = {
-      storage = {
-        type = "zpool";
-        mountpoint = "/storage";
+    # zpool = {
+    #   storage = {
+    #     type = "zpool";
+    #     rootFsOptions = {
+    #       canmount = "off";
+    #     };
 
-        datasets = {
-          dataset = {
-            type = "zfs_fs";
-            mountpoint = "/storage/dataset";
-          };
-        };
-      };
-    };
+    #     datasets = {
+    #       root = {
+    #         type = "zfs_fs";
+    #         mountpoint = "/storage";
+    #         options.mountpoint = "legacy";
+    #       };
+    #     };
+    #   };
+    # };
   };
 }
