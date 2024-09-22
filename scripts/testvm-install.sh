@@ -143,19 +143,6 @@ cat <<EOT >> boot-config.txt
   # want to but in UEFI mode
   boot.loader.grub.efiInstallAsRemovable = true;
 
-  boot.initrd.supportedFilesystems = [ "zfs" ];
-  boot.initrd.luks.devices = {
-    root = {
-      device = "/dev/disk/by-uuid/$VDA2_UUID";
-      preLVM = true;
-    };
-    root2 = {
-      device = "/dev/disk/by-uuid/$VDB2_UUID";
-      preLVM = true;
-    };
-  };
-  boot.initrd.postDeviceCommands = "zpool import -a -d /dev/disk/by-uuid";
-
   # This will mirror all UEFI files, kernels, grub menus and things
   # needed to boot to the other drive.
   boot.loader.grub.mirroredBoots = [
@@ -166,6 +153,21 @@ cat <<EOT >> boot-config.txt
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.extraPools = [ "zpool" ];
   boot.zfs.devNodes = "/dev/disk/by-uuid";
+
+  boot.initrd = {
+    supportedFilesystems = [ "zfs" ];
+    luks.devices = {
+      root = {
+        device = "/dev/disk/by-uuid/$VDA2_UUID";
+        preLVM = true;
+      };
+      root2 = {
+        device = "/dev/disk/by-uuid/$VDB2_UUID";
+        preLVM = true;
+      };
+    };
+    postDeviceCommands = "zpool import -a -d /dev/disk/by-uuid";
+  };
 
   services.zfs.autoScrub.enable = true;
   systemd.services.zfs-mount.enable = false;
