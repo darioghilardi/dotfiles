@@ -54,7 +54,7 @@
     };
 
     # This was supposed to speed up the zpool import on boot but it doesn't work
-    postDeviceCommands = "zpool import -a -d /dev/disk/by-uuid";
+    postDeviceCommands = "zpool import -a -f -d /dev/disk/by-uuid";
   };
 
   services.zfs.autoScrub.enable = true;
