@@ -12,6 +12,7 @@
     ./hardware-configuration.nix
   ];
 
+  boot.loader.efi.efiSysMountPoint = "/boot";
   boot.loader.grub = {
     enable = true;
     efiSupport = true;
@@ -21,6 +22,17 @@
     # Needed when the installer is booted in legacy mode but you
     # want to but in UEFI mode
     efiInstallAsRemovable = true;
+
+    # Add extra entries on grub
+    extraEntriesBeforeNixOS = true;
+    extraEntries = ''
+      menuentry "Reboot" {
+        reboot
+      }
+      menuentry "Poweroff" {
+        halt
+      }
+    '';
 
     # This will mirror all UEFI files, kernels, grub menus and things
     # needed to boot to the other drive.
@@ -42,6 +54,13 @@
 
   boot.initrd = {
     supportedFilesystems = ["zfs"];
+    availableKernelModules = ["virtio_net" "virtio_pci" "xhci_pci" "sr_mod"];
+    kernelModules = [];
+
+    # Wait a bit before starting
+    # See https://github.com/NixOS/nixpkgs/issues/98741
+    preLVMCommands = "sleep 1";
+
     luks.devices = {
       root = {
         device = "/dev/disk/by-uuid/$VDA2_UUID";
@@ -53,6 +72,18 @@
       };
     };
 
+    network = {
+      enable = true;
+      ssh = {
+        enable = true;
+        port = 9999;
+        authorizedKeys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJlcsiLTBnj6tGb5P49Zcg5svvT6qIDLbfar7ac8YLwi"
+        ];
+        hostKeys = ["/home/ssh_host_ed25519_key"];
+      };
+    };
+
     # This was supposed to speed up the zpool import on boot but it doesn't work
     postDeviceCommands = "zpool import -a -f -d /dev/disk/by-uuid";
   };
@@ -61,6 +92,7 @@
   systemd.services.zfs-mount.enable = false;
 
   networking.hostId = "37636429";
+  # networking.useDHCP = true;
 
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
