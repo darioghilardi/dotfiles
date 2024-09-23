@@ -38,7 +38,9 @@ with lib.dariodots; {
   home = {
     username = "dario";
     homeDirectory = "/Users/dario";
-    sessionVariables = {EDITOR = "nvim";};
+    sessionVariables = {
+      EDITOR = "nvim";
+    };
 
     # Home Manager release
     stateVersion = "24.05";
