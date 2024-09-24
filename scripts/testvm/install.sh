@@ -2,104 +2,181 @@
 
 set -ev
 
-export DISK1='/dev/vda'
-export DISK2='/dev/vdb'
+export DISK_KEY=$1
+echo "read disk key"
+echo $DISK_KEY
 
-export BOOT1='/dev/vda1'
-export BOOT2='/dev/vdb1'
-export OS1='/dev/vda2'
-export OS2='/dev/vdb2'
-export SWAP1='/dev/vda3'
-export SWAP2='/dev/vdb3'
+# Available disks
+export DISK_OS_1='/dev/vda'
+export DISK_OS_2='/dev/vdb'
+export DISK_STORAGE_1='/dev/vdc'
+export DISK_STORAGE_2='/dev/vdd'
 
-export CRYPTED1='crypted-1'
-export CRYPTED2='crypted-2'
+# Disks OS_1 and OS_2, mirror with Boot, OS, Swap
+export BOOT_1='/dev/vda1'
+export BOOT_2='/dev/vdb1'
+export OS_1='/dev/vda2'
+export OS_2='/dev/vdb2'
+export SWAP_1='/dev/vda3'
+export SWAP_2='/dev/vdb3'
+export CRYPTED_OS_1='crypted-os-1'
+export CRYPTED_OS_2='crypted-os-2'
+
+# Disks STORAGE_1 and STORAGE_2, mirror with data storage
+export STORAGE_1='/dev/vdc1'
+export STORAGE_2='/dev/vdd1'
+export CRYPTED_STORAGE_1='crypted-storage-1'
+export CRYPTED_STORAGE_2='crypted-storage-2'
 
 export SWAPSIZE=8
 
-# Create a new partition table
-parted -s $DISK1 -- mklabel gpt
+partition_disk_os() {
+  # Create a new partition table
+  parted -s $DISK_OS_1 -- mklabel gpt
 
-# Create ESP/Boot partition at the beginning of the disk
-parted -s $DISK1 -- mkpart ESP fat32 1MiB 512MiB
-parted -s $DISK1 -- set 1 boot on
+  # Create ESP/Boot partition at the beginning of the disk
+  parted -s $DISK_OS_1 -- mkpart ESP fat32 1MiB 512MiB
+  parted -s $DISK_OS_1 -- set 1 boot on
 
-# Create the storage partition
-parted -s $DISK1 -- mkpart primary 512MiB -$((SWAPSIZE))GiB
+  # Create the storage partition
+  parted -s $DISK_OS_1 -- mkpart primary 512MiB -$((SWAPSIZE))GiB
 
-# Create the swap partition
-parted -s $DISK1 -- mkpart swap -${SWAPSIZE}GiB 100%
+  # Create the swap partition
+  parted -s $DISK_OS_1 -- mkpart swap -${SWAPSIZE}GiB 100%
 
-# Clone the partition scheme to the other disk
-sfdisk --dump $DISK1 | sfdisk $DISK2
+  # Clone the partition scheme to the other disk
+  sfdisk --dump $DISK_OS_1 | sfdisk $DISK_OS_2
 
-# Create ESP partitions
-mkfs.vfat $BOOT1
-mkfs.vfat $BOOT2
+  # Create ESP partitions
+  mkfs.vfat $BOOT_1
+  mkfs.vfat $BOOT_2
 
-# Create the swap partitions
-mkswap $SWAP1
-mkswap $SWAP2
+  # Create the swap partitions
+  mkswap $SWAP_1
+  mkswap $SWAP_2
 
-# Activate the swap partitions
-swapon $SWAP1
-swapon $SWAP2
+  # Activate the swap partitions
+  swapon $SWAP_1
+  swapon $SWAP_2
+}
 
-# Create the encrypted LUKS containers
-echo "password" | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $OS1
-echo "password" | cryptsetup luksOpen $OS1 $CRYPTED1
+encrypt_disk_os() {
+  # Create the encrypted LUKS containers
+  echo $DISK_KEY | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $OS_1
+  echo $DISK_KEY | cryptsetup luksOpen $OS_1 $CRYPTED_OS_1
 
-echo "password" | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $OS2
-echo "password" | cryptsetup luksOpen $OS2 $CRYPTED2
+  echo $DISK_KEY | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $OS_2
+  echo $DISK_KEY | cryptsetup luksOpen $OS_2 $CRYPTED_OS_2
 
-# Check status of LUKS container
-sudo cryptsetup -v status $CRYPTED1
-sudo cryptsetup -v status $CRYPTED2
+  # Check status of LUKS container
+  sudo cryptsetup -v status $CRYPTED_OS_1
+  sudo cryptsetup -v status $CRYPTED_OS_2
+}
 
-# Create the zfs zpool
-zpool create -f -o ashift=12 -O mountpoint=none -O acltype=posixacl -O xattr=sa -O compression=zstd zpool mirror /dev/mapper/$CRYPTED1 /dev/mapper/$CRYPTED2
+create_zpool_os() {
+  # Create the zfs zpool
+  zpool create -f -o ashift=12 -O mountpoint=none -O acltype=posixacl -O xattr=sa -O compression=zstd zpool_os mirror /dev/mapper/$CRYPTED_OS_1 /dev/mapper/$CRYPTED_OS_2
 
-# Print the zpool status
-zpool status
+  # Print the zpool status
+  zpool status
 
-# Create zfs filesystem
-zfs create -o mountpoint=legacy zpool/root
-zfs create -o mountpoint=legacy zpool/home
-zfs create -o mountpoint=legacy zpool/nix
-zfs create -o mountpoint=legacy zpool/var
+  # Create zfs filesystem
+  zfs create -o mountpoint=legacy zpool_os/root
+  zfs create -o mountpoint=legacy zpool_os/home
+  zfs create -o mountpoint=legacy zpool_os/nix
+  zfs create -o mountpoint=legacy zpool_os/var
 
-# Print the filesystems
-zfs list
+  # Print the filesystems
+  zfs list
+}
 
-# Mount the filesystem
-mount -t zfs zpool/root /mnt
+partition_disk_storage() {
+  # Create a new partition table
+  parted -s $DISK_STORAGE_1 -- mklabel gpt
 
-# Create the directories to mount filesystem on
-mkdir -p /mnt/{nix,home,var,boot,boot-fallback}
+  # Create the storage partition
+  parted -s $DISK_STORAGE_1 -- mkpart primary 0% 100%
 
-# Mount the rest of the ZFS filesystem
-mount -t zfs zpool/nix /mnt/nix
-mount -t zfs zpool/home /mnt/home
-mount -t zfs zpool/var /mnt/var
+  # Clone the partition scheme to the other disk
+  sfdisk --dump $DISK_STORAGE_1 | sfdisk $DISK_STORAGE_2
+}
 
-# Mount both of the ESP's
-mount $BOOT1 /mnt/boot
-mount $BOOT2 /mnt/boot-fallback
+encrypt_disk_storage() {
+  # Create the encrypted LUKS containers
+  echo $DISK_KEY | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $STORAGE_1
+  echo $DISK_KEY | cryptsetup luksOpen $STORAGE_1 $CRYPTED_STORAGE_1
 
-# Check mounted directories
-ls -la /mnt
+  echo $DISK_KEY | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $STORAGE_2
+  echo $DISK_KEY | cryptsetup luksOpen $STORAGE_2 $CRYPTED_STORAGE_2
+
+  # Check status of LUKS container
+  sudo cryptsetup -v status $CRYPTED_STORAGE_1
+  sudo cryptsetup -v status $CRYPTED_STORAGE_2
+}
+
+create_zpool_storage() {
+  # Create the zfs zpool
+  zpool create -f -o ashift=12 -O mountpoint=none -O acltype=posixacl -O xattr=sa -O compression=zstd zpool_storage mirror /dev/mapper/$CRYPTED_STORAGE_1 /dev/mapper/$CRYPTED_STORAGE_2
+
+  # Print the zpool status
+  zpool status
+
+  # Create zfs filesystem
+  zfs create -o mountpoint=legacy zpool_storage/storage
+
+  # Print the filesystems
+  zfs list
+}
+
+mount_filesystems() {
+  # Mount the filesystem
+  mount -t zfs zpool_os/root /mnt
+
+  # Create the directories to mount filesystem on
+  mkdir -p /mnt/{nix,home,var,boot,boot-fallback}
+
+  # Mount the rest of the ZFS filesystem
+  mount -t zfs zpool_os/nix /mnt/nix
+  mount -t zfs zpool_os/home /mnt/home
+  mount -t zfs zpool_os/var /mnt/var
+
+  # Create the storage directory in home
+  mkdir -p /mnt/home/storage
+
+  # Mount the storage zpool
+  mount -t zfs zpool_storage/storage /mnt/home/storage
+
+  # Mount both of the ESP's
+  mount $BOOT_1 /mnt/boot
+  mount $BOOT_2 /mnt/boot-fallback
+
+  # Check mounted directories
+  ls -la /mnt
+}
+
+partition_disk_os
+encrypt_disk_os
+create_zpool_os
+partition_disk_storage
+encrypt_disk_storage
+create_zpool_storage
+mount_filesystems
 
 # Get disks boot partitions UUIDs
-export VDA1_UUID=$(lsblk -no UUID $BOOT1)
-export VDB1_UUID=$(lsblk -no UUID $BOOT2)
+export VDA1_UUID=$(lsblk -no UUID $BOOT_1)
+export VDB1_UUID=$(lsblk -no UUID $BOOT_2)
 
 # Get disks data OS partitions UUIDs
-export VDA2_UUID=$(blkid $OS1 -s UUID -o value)
-export VDB2_UUID=$(blkid $OS2 -s UUID -o value)
+export VDA2_UUID=$(blkid $OS_1 -s UUID -o value)
+export VDB2_UUID=$(blkid $OS_2 -s UUID -o value)
+
+# Get disks storage partitions UUIDs
+export VDC1_UUID=$(blkid $STORAGE_1 -s UUID -o value)
+export VDD1_UUID=$(blkid $STORAGE_2 -s UUID -o value)
 
 # Get swap partuuids
-export SWAP1_PARTUUID=$(blkid $SWAP1 -s PARTUUID -o value)
-export SWAP2_PARTUUID=$(blkid $SWAP2 -s PARTUUID -o value)
+export SWAP1_PARTUUID=$(blkid $SWAP_1 -s PARTUUID -o value)
+export SWAP2_PARTUUID=$(blkid $SWAP_2 -s PARTUUID -o value)
 
 # Generate the nixos configuration
 nixos-generate-config --root /mnt
