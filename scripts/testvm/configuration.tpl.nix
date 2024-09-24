@@ -24,7 +24,6 @@
     efiInstallAsRemovable = true;
 
     # Add extra entries on grub
-    extraEntriesBeforeNixOS = true;
     extraEntries = ''
       menuentry "Reboot" {
         reboot
@@ -49,7 +48,7 @@
   };
 
   boot.supportedFilesystems = ["zfs"];
-  boot.zfs.extraPools = ["zpool"];
+  boot.zfs.extraPools = ["zpool_os" "zpool_storage"];
   boot.zfs.devNodes = "/dev/disk/by-uuid";
 
   boot.initrd = {
@@ -59,15 +58,23 @@
 
     # Wait a bit before starting
     # See https://github.com/NixOS/nixpkgs/issues/98741
-    preLVMCommands = lib.mkBefore 400 "sleep 1";
+    preLVMCommands = "sleep 1";
 
     luks.devices = {
-      root = {
+      os_1 = {
         device = "/dev/disk/by-uuid/$VDA2_UUID";
         preLVM = true;
       };
-      root2 = {
+      os_2 = {
         device = "/dev/disk/by-uuid/$VDB2_UUID";
+        preLVM = true;
+      };
+      storage_1 = {
+        device = "/dev/disk/by-uuid/$VDC1_UUID";
+        preLVM = true;
+      };
+      storage_2 = {
+        device = "/dev/disk/by-uuid/$VDD1_UUID";
         preLVM = true;
       };
     };
@@ -80,8 +87,10 @@
         authorizedKeys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJlcsiLTBnj6tGb5P49Zcg5svvT6qIDLbfar7ac8YLwi"
         ];
-        hostKeys = ["/home/ssh_host_ed25519_key"];
+        hostKeys = ["/etc/ssh/ssh_host_ed25519_key"];
       };
+
+      postCommands = "/bin/cryptsetup-askpass";
     };
 
     # This was supposed to speed up the zpool import on boot but it doesn't work
@@ -92,7 +101,6 @@
   systemd.services.zfs-mount.enable = false;
 
   networking.hostId = "37636429";
-  # networking.useDHCP = true;
 
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.

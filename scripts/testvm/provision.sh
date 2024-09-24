@@ -1,18 +1,26 @@
 #!/bin/sh
 
+set -e
+
+ADDRESS=$1
+TARGET=nixos@$ADDRESS
+ssh_opts=( -o StrictHostKeyChecking=no -o "UserKnownHostsFile /dev/null" )
+
 # Add the host ssh public key
-ssh-copy-id -o StrictHostKeyChecking=no -o "UserKnownHostsFile /dev/null" nixos@192.168.65.2
+ssh-copy-id "${ssh_opts[@]}" $TARGET
 
 # Copy the install.sh script and make it executable
-scp -q -o StrictHostKeyChecking=no -o "UserKnownHostsFile /dev/null" scripts/testvm/install.sh nixos@192.168.65.2:/home/nixos/install.sh
-ssh -q -o StrictHostKeyChecking=no -o "UserKnownHostsFile /dev/null" nixos@192.168.65.2 'chmod +x ~/install.sh'
+scp -q "${ssh_opts[@]}" scripts/testvm/install.sh $TARGET:/home/nixos/install.sh
+ssh -q "${ssh_opts[@]}" $TARGET 'chmod +x ~/install.sh'
 
 # Copy the configuration files templates
-scp -q -o StrictHostKeyChecking=no -o "UserKnownHostsFile /dev/null" scripts/testvm/hardware-configuration.tpl.nix nixos@192.168.65.2:/home/nixos/hardware-configuration.tpl.nix
-scp -q -o StrictHostKeyChecking=no -o "UserKnownHostsFile /dev/null" scripts/testvm/configuration.tpl.nix nixos@192.168.65.2:/home/nixos/configuration.tpl.nix
-
-# Generate the host ssh keypair
-ssh -q -o StrictHostKeyChecking=no -o "UserKnownHostsFile /dev/null" nixos@192.168.65.2 'sudo ssh-keygen -t ed25519 -N "" -f /home/ssh_host_ed25519_key'
+scp -q "${ssh_opts[@]}" scripts/testvm/hardware-configuration.tpl.nix $TARGET:/home/nixos/hardware-configuration.tpl.nix
+scp -q "${ssh_opts[@]}" scripts/testvm/configuration.tpl.nix $TARGET:/home/nixos/configuration.tpl.nix
 
 # Run the install script
-ssh -q -o StrictHostKeyChecking=no -o "UserKnownHostsFile /dev/null" nixos@192.168.65.2 'sudo ~/install.sh'
+read -s -p "Disk encryption key: " KEY
+ssh -q "${ssh_opts[@]}" $TARGET "sudo ~/install.sh $KEY"
+
+# Generate the host ssh keypair
+ssh -q "${ssh_opts[@]}" $TARGET 'sudo mkdir -p /mnt/etc/ssh'
+ssh -q "${ssh_opts[@]}" $TARGET 'sudo ssh-keygen -t ed25519 -N "" -f /mnt/etc/ssh/ssh_host_ed25519_key'
