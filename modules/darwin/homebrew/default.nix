@@ -37,6 +37,7 @@
     "firefox"
     "google-chrome"
     "google-drive"
+    "kobo"
     "linear-linear"
     "microsoft-teams"
     "notion"
