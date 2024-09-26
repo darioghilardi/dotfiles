@@ -93,8 +93,8 @@
       postCommands = "/bin/cryptsetup-askpass";
     };
 
-    # This was supposed to speed up the zpool import on boot but it doesn't work
-    postDeviceCommands = "zpool import -a -f -d /dev/disk/by-uuid";
+    # This speeds up the zpool import on boot otherwise it takes 2 minutes.
+    postDeviceCommands = "zpool import -a -f -d /dev/mapper";
   };
 
   services.zfs.autoScrub.enable = true;
