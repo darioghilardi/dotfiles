@@ -19,6 +19,7 @@ scp -q "${ssh_opts[@]}" scripts/testvm/configuration.tpl.nix $TARGET:/home/nixos
 
 # Run the install script
 read -s -p "Disk encryption key OS: " KEY_OS
+printf "\n"
 read -s -p "Disk encryption key Storage: " KEY_STORAGE
 ssh -q "${ssh_opts[@]}" $TARGET "sudo ~/install.sh $KEY_OS $KEY_STORAGE"
 

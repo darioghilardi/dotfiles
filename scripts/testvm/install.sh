@@ -28,6 +28,7 @@ export CRYPTED_STORAGE_1='crypted-storage-1'
 export CRYPTED_STORAGE_2='crypted-storage-2'
 
 export SWAPSIZE=1
+export ZFS_REFRESERVATION=1
 
 partition_disk_os() {
   # Create a new partition table
@@ -74,7 +75,21 @@ encrypt_disk_os() {
 
 create_zpool_os() {
   # Create the zfs zpool
-  zpool create -f -o ashift=12 -O mountpoint=none -O acltype=posixacl -O xattr=sa -O compression=zstd zpool_os mirror /dev/mapper/$CRYPTED_OS_1 /dev/mapper/$CRYPTED_OS_2
+  zpool create \
+  -f \
+  -o ashift=12 \
+  -O acltype=posixacl \
+  -O atime=off \
+  -O compression=zstd \
+  -O dnodesize=auto \
+  -O mountpoint=none \
+  -O normalization=formD \
+  -O relatime=on \
+  -O xattr=sa \
+  zpool_os \
+  mirror \
+  /dev/mapper/$CRYPTED_OS_1 \
+  /dev/mapper/$CRYPTED_OS_2
 
   # Print the zpool status
   zpool status
@@ -84,6 +99,7 @@ create_zpool_os() {
   zfs create -o mountpoint=legacy zpool_os/home
   zfs create -o mountpoint=legacy zpool_os/nix
   zfs create -o mountpoint=legacy zpool_os/var
+  zfs create -o canmount=off -o mountpoint=none -o refreservation=$((ZFS_REFRESERVATION))G zpool_os/reserved
 
   # Print the filesystems
   zfs list
@@ -115,13 +131,29 @@ encrypt_disk_storage() {
 
 create_zpool_storage() {
   # Create the zfs zpool
-  zpool create -f -o ashift=12 -O mountpoint=none -O acltype=posixacl -O xattr=sa -O compression=zstd zpool_storage mirror /dev/mapper/$CRYPTED_STORAGE_1 /dev/mapper/$CRYPTED_STORAGE_2
+  zpool create \
+  -f \
+  -O acltype=posixacl \
+  -O atime=off \
+  -O compression=zstd \
+  -O dnodesize=auto \
+  -O mountpoint=none \
+  -O normalization=formD \
+  -O recordsize=1M \
+  -O relatime=on \
+  -O xattr=sa \
+  -o ashift=12 \
+  zpool_storage \
+  mirror \
+  /dev/mapper/$CRYPTED_STORAGE_1 \
+  /dev/mapper/$CRYPTED_STORAGE_2
 
   # Print the zpool status
   zpool status
 
   # Create zfs filesystem
   zfs create -o mountpoint=legacy zpool_storage/storage
+  zfs create -o canmount=off -o mountpoint=none -o refreservation=$((ZFS_REFRESERVATION))G zpool_storage/reserved
 
   # Print the filesystems
   zfs list
