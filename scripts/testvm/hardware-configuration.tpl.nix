@@ -40,13 +40,13 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/$VDA1_UUID";
+    device = "/dev/disk/by-uuid/$SDA1_UUID";
     fsType = "vfat";
     options = ["fmask=0022" "dmask=0022"];
   };
 
   fileSystems."/boot-fallback" = {
-    device = "/dev/disk/by-uuid/$VDB1_UUID";
+    device = "/dev/disk/by-uuid/$SDB1_UUID";
     fsType = "vfat";
     options = ["fmask=0022" "dmask=0022"];
   };

@@ -2,33 +2,33 @@
 
 set -ev
 
-export DISK_KEY=$1
-echo "read disk key"
-echo $DISK_KEY
+export DISK_KEY_1=$1
+export DISK_KEY_2=$2
 
 # Available disks
-export DISK_OS_1='/dev/vda'
-export DISK_OS_2='/dev/vdb'
-export DISK_STORAGE_1='/dev/vdc'
-export DISK_STORAGE_2='/dev/vdd'
+export DISK_OS_1='/dev/sda'
+export DISK_OS_2='/dev/sdb'
+export DISK_STORAGE_1='/dev/sdc'
+export DISK_STORAGE_2='/dev/sdd'
 
 # Disks OS_1 and OS_2, mirror with Boot, OS, Swap
-export BOOT_1='/dev/vda1'
-export BOOT_2='/dev/vdb1'
-export OS_1='/dev/vda2'
-export OS_2='/dev/vdb2'
-export SWAP_1='/dev/vda3'
-export SWAP_2='/dev/vdb3'
+export BOOT_1='/dev/sda1'
+export BOOT_2='/dev/sdb1'
+export OS_1='/dev/sda2'
+export OS_2='/dev/sdb2'
+export SWAP_1='/dev/sda3'
+export SWAP_2='/dev/sdb3'
 export CRYPTED_OS_1='crypted-os-1'
 export CRYPTED_OS_2='crypted-os-2'
 
 # Disks STORAGE_1 and STORAGE_2, mirror with data storage
-export STORAGE_1='/dev/vdc1'
-export STORAGE_2='/dev/vdd1'
+export STORAGE_1='/dev/sdc1'
+export STORAGE_2='/dev/sdd1'
 export CRYPTED_STORAGE_1='crypted-storage-1'
 export CRYPTED_STORAGE_2='crypted-storage-2'
 
-export SWAPSIZE=8
+export SWAPSIZE=1
+export ZFS_REFRESERVATION=1
 
 partition_disk_os() {
   # Create a new partition table
@@ -62,11 +62,11 @@ partition_disk_os() {
 
 encrypt_disk_os() {
   # Create the encrypted LUKS containers
-  echo $DISK_KEY | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $OS_1
-  echo $DISK_KEY | cryptsetup luksOpen $OS_1 $CRYPTED_OS_1
+  echo $DISK_KEY_1 | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $OS_1
+  echo $DISK_KEY_1 | cryptsetup luksOpen $OS_1 $CRYPTED_OS_1
 
-  echo $DISK_KEY | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $OS_2
-  echo $DISK_KEY | cryptsetup luksOpen $OS_2 $CRYPTED_OS_2
+  echo $DISK_KEY_1 | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $OS_2
+  echo $DISK_KEY_1 | cryptsetup luksOpen $OS_2 $CRYPTED_OS_2
 
   # Check status of LUKS container
   sudo cryptsetup -v status $CRYPTED_OS_1
@@ -75,7 +75,21 @@ encrypt_disk_os() {
 
 create_zpool_os() {
   # Create the zfs zpool
-  zpool create -f -o ashift=12 -O mountpoint=none -O acltype=posixacl -O xattr=sa -O compression=zstd zpool_os mirror /dev/mapper/$CRYPTED_OS_1 /dev/mapper/$CRYPTED_OS_2
+  zpool create \
+  -f \
+  -o ashift=12 \
+  -O acltype=posixacl \
+  -O atime=off \
+  -O compression=zstd \
+  -O dnodesize=auto \
+  -O mountpoint=none \
+  -O normalization=formD \
+  -O relatime=on \
+  -O xattr=sa \
+  zpool_os \
+  mirror \
+  /dev/mapper/$CRYPTED_OS_1 \
+  /dev/mapper/$CRYPTED_OS_2
 
   # Print the zpool status
   zpool status
@@ -85,6 +99,7 @@ create_zpool_os() {
   zfs create -o mountpoint=legacy zpool_os/home
   zfs create -o mountpoint=legacy zpool_os/nix
   zfs create -o mountpoint=legacy zpool_os/var
+  zfs create -o canmount=off -o mountpoint=none -o refreservation=$((ZFS_REFRESERVATION))G zpool_os/reserved
 
   # Print the filesystems
   zfs list
@@ -103,11 +118,11 @@ partition_disk_storage() {
 
 encrypt_disk_storage() {
   # Create the encrypted LUKS containers
-  echo $DISK_KEY | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $STORAGE_1
-  echo $DISK_KEY | cryptsetup luksOpen $STORAGE_1 $CRYPTED_STORAGE_1
+  echo $DISK_KEY_2 | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $STORAGE_1
+  echo $DISK_KEY_2 | cryptsetup luksOpen $STORAGE_1 $CRYPTED_STORAGE_1
 
-  echo $DISK_KEY | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $STORAGE_2
-  echo $DISK_KEY | cryptsetup luksOpen $STORAGE_2 $CRYPTED_STORAGE_2
+  echo $DISK_KEY_2 | cryptsetup luksFormat --type luks1 --hash sha256 --iter-time 3000 --use-random $STORAGE_2
+  echo $DISK_KEY_2 | cryptsetup luksOpen $STORAGE_2 $CRYPTED_STORAGE_2
 
   # Check status of LUKS container
   sudo cryptsetup -v status $CRYPTED_STORAGE_1
@@ -116,13 +131,29 @@ encrypt_disk_storage() {
 
 create_zpool_storage() {
   # Create the zfs zpool
-  zpool create -f -o ashift=12 -O mountpoint=none -O acltype=posixacl -O xattr=sa -O compression=zstd zpool_storage mirror /dev/mapper/$CRYPTED_STORAGE_1 /dev/mapper/$CRYPTED_STORAGE_2
+  zpool create \
+  -f \
+  -O acltype=posixacl \
+  -O atime=off \
+  -O compression=zstd \
+  -O dnodesize=auto \
+  -O mountpoint=none \
+  -O normalization=formD \
+  -O recordsize=1M \
+  -O relatime=on \
+  -O xattr=sa \
+  -o ashift=12 \
+  zpool_storage \
+  mirror \
+  /dev/mapper/$CRYPTED_STORAGE_1 \
+  /dev/mapper/$CRYPTED_STORAGE_2
 
   # Print the zpool status
   zpool status
 
   # Create zfs filesystem
   zfs create -o mountpoint=legacy zpool_storage/storage
+  zfs create -o canmount=off -o mountpoint=none -o refreservation=$((ZFS_REFRESERVATION))G zpool_storage/reserved
 
   # Print the filesystems
   zfs list
@@ -163,16 +194,16 @@ create_zpool_storage
 mount_filesystems
 
 # Get disks boot partitions UUIDs
-export VDA1_UUID=$(lsblk -no UUID $BOOT_1)
-export VDB1_UUID=$(lsblk -no UUID $BOOT_2)
+export SDA1_UUID=$(lsblk -no UUID $BOOT_1)
+export SDB1_UUID=$(lsblk -no UUID $BOOT_2)
 
 # Get disks data OS partitions UUIDs
-export VDA2_UUID=$(blkid $OS_1 -s UUID -o value)
-export VDB2_UUID=$(blkid $OS_2 -s UUID -o value)
+export SDA2_UUID=$(blkid $OS_1 -s UUID -o value)
+export SDB2_UUID=$(blkid $OS_2 -s UUID -o value)
 
 # Get disks storage partitions UUIDs
-export VDC1_UUID=$(blkid $STORAGE_1 -s UUID -o value)
-export VDD1_UUID=$(blkid $STORAGE_2 -s UUID -o value)
+export SDC1_UUID=$(blkid $STORAGE_1 -s UUID -o value)
+export SDD1_UUID=$(blkid $STORAGE_2 -s UUID -o value)
 
 # Get swap partuuids
 export SWAP1_PARTUUID=$(blkid $SWAP_1 -s PARTUUID -o value)

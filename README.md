@@ -38,33 +38,25 @@ config.age.secrets.SECRET.path;
 
 ## Testvm
 
-A testvm host has been added to test the NAS partitioning and setup. It runs on top of UTM.
+A testvm host has been added to test the NAS partitioning and setup. It runs on top of VMWare Fusion.
 
 To reinstall everything follow these steps:
 
-- Setup a VM with 4 disks, two with same size to simulate the NAS main storage and other 2 to simulate the main disks.
+- Setup a VM with 4 SATA disks, two with same size to simulate the NAS main storage and other 2 to simulate the main disks.
 - Add a USB device with the nixos minimal image loaded and boot priority to 1
 - Start the VM
 - Use `passwd` to setup a password for the `nixos` user
 
-Then on the source computer add your public key to login without password through ssh:
+Then on the source computer run the provisioning script:
 
 ```
-export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock
-ssh-copy-id nixos@192.168.65.2
+./scripts/testvm/provision.sh 172.16.165.128
 ```
 
-Now push the installer script from the source computer to the target machine:
+This will generate the nixos configuration automatically.
+Then install nixos within the machine terminal:
 
 ```
-scp scripts/testvm-install.sh nixos@192.168.65.2:/home/nixos/installer.sh
-```
-
-Run the install script:
-
-```
-ssh nixos@192.168.65.2 'chmod +x ~/installer.sh'
-ssh nixos@192.168.65.2 'sudo ~/installer.sh'
 sudo nixos-install
 ```
 
