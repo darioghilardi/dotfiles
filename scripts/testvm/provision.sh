@@ -18,8 +18,9 @@ scp -q "${ssh_opts[@]}" scripts/testvm/hardware-configuration.tpl.nix $TARGET:/h
 scp -q "${ssh_opts[@]}" scripts/testvm/configuration.tpl.nix $TARGET:/home/nixos/configuration.tpl.nix
 
 # Run the install script
-read -s -p "Disk encryption key: " KEY
-ssh -q "${ssh_opts[@]}" $TARGET "sudo ~/install.sh $KEY"
+read -s -p "Disk encryption key OS: " KEY_OS
+read -s -p "Disk encryption key Storage: " KEY_STORAGE
+ssh -q "${ssh_opts[@]}" $TARGET "sudo ~/install.sh $KEY_OS $KEY_STORAGE"
 
 # Generate the host ssh keypair
 ssh -q "${ssh_opts[@]}" $TARGET 'sudo mkdir -p /mnt/etc/ssh'
