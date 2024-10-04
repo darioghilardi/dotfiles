@@ -10,12 +10,12 @@ ssh_opts=( -o StrictHostKeyChecking=no -o "UserKnownHostsFile /dev/null" )
 ssh-copy-id "${ssh_opts[@]}" $TARGET
 
 # Copy the install.sh script and make it executable
-scp -q "${ssh_opts[@]}" scripts/testvm/install.sh $TARGET:/home/nixos/install.sh
+scp -q "${ssh_opts[@]}" provisioners/testvm/install.sh $TARGET:/home/nixos/install.sh
 ssh -q "${ssh_opts[@]}" $TARGET 'chmod +x ~/install.sh'
 
 # Copy the configuration files templates
-scp -q "${ssh_opts[@]}" scripts/testvm/hardware-configuration.tpl.nix $TARGET:/home/nixos/hardware-configuration.tpl.nix
-scp -q "${ssh_opts[@]}" scripts/testvm/configuration.tpl.nix $TARGET:/home/nixos/configuration.tpl.nix
+scp -q "${ssh_opts[@]}" provisioners/testvm/hardware-configuration.tpl.nix $TARGET:/home/nixos/hardware-configuration.tpl.nix
+scp -q "${ssh_opts[@]}" provisioners/testvm/configuration.tpl.nix $TARGET:/home/nixos/configuration.tpl.nix
 
 # Run the install script
 read -s -p "Disk encryption key OS: " KEY_OS

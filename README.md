@@ -36,11 +36,17 @@ Use the secret with:
 config.age.secrets.SECRET.path;
 ```
 
-## Testvm
+## Hosts
+
+The `provisioners/` folder contains provision scripts for some hosts using Nixos.  
+Those scripts are intended to be run once and are able to partition and then install a minimal system with remote root ssh access.
+Further generations of those systems are deployed with `deploy-rs` and the flake in this project.
+
+### Testvm
 
 A testvm host has been added to test the NAS partitioning and setup. It runs on top of VMWare Fusion.
 
-To reinstall everything follow these steps:
+To reinstall the system from scratch follow these steps:
 
 - Setup a VM with 4 SATA disks, two with same size to simulate the NAS main storage and other 2 to simulate the main disks.
 - Add a USB device with the nixos minimal image loaded and boot priority to 1
@@ -50,7 +56,7 @@ To reinstall everything follow these steps:
 Then on the source computer run the provisioning script:
 
 ```
-./scripts/testvm/provision.sh 172.16.165.128
+./provisioners/testvm/provision.sh 172.16.165.128
 ```
 
 This will generate the nixos configuration automatically.
@@ -60,21 +66,28 @@ Then install nixos within the machine terminal:
 sudo nixos-install
 ```
 
-## Saturn
+### Saturn
+
+Saturn is the physical machine running as NAS.
+
+To reinstall the system from scratch, boot the system from a USB device using the Nixos minimal installer.
+Then run the provisioning script from a remote machine:
+
+```
+./provisioners/saturn/provision.sh MACHINE_IP
+```
+
+Then install nixos within the machine terminal:
+
+```
+sudo nixos-install
+```
 
 To deploy a new configuration run:
 
 ```
 deploy --hostname MACHINE_IP/HOSTNAME .#saturn
 ```
-
-The `saturn` machine was initially provisioned using `nixos-anywhere`. 
-In the unlikely case it needs to be provisioned again, the following command can be used:
-
-```
-nix run github:nix-community/nixos-anywhere -- --debug --build-on-remote --flake .#saturn root@MACHINE_IP
-```
-
 
 ### Credits
 
