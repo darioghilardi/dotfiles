@@ -42,54 +42,8 @@ The `provisioners/` folder contains provision scripts for some hosts using Nixos
 Those scripts are intended to be run once and are able to partition and then install a minimal system with remote root ssh access.
 Further generations of those systems are deployed with `deploy-rs` and the flake in this project.
 
-### Testvm
-
-A testvm host has been added to test the NAS partitioning and setup. It runs on top of VMWare Fusion.
-
-To reinstall the system from scratch follow these steps:
-
-- Setup a VM with 4 SATA disks, two with same size to simulate the NAS main storage and other 2 to simulate the main disks.
-- Add a USB device with the nixos minimal image loaded and boot priority to 1
-- Start the VM
-- Use `passwd` to setup a password for the `nixos` user
-
-Then on the source computer run the provisioning script:
-
-```
-./provisioners/testvm/provision.sh 172.16.165.128
-```
-
-This will generate the nixos configuration automatically.
-Then install nixos within the machine terminal:
-
-```
-sudo nixos-install
-```
-
-### Saturn
-
-Saturn is the machine running as NAS.
-
-To reinstall the system from scratch, use the Nixos minimal installer from a USB key, boot the system *in UEFI mode* (select the UEFI entry of the USB key from BIOS).
-Then run the provisioning script from a remote machine:
-
-```
-./provisioners/saturn/provision.sh MACHINE_IP
-```
-
-Then install nixos within the machine terminal:
-
-```
-sudo nixos-install
-```
-
-The provisioned installation has root ssh access available. Better access rules are configured after the provisioning step when deploying the Nixos configuration. 
-
-To deploy a new configuration run:
-
-```
-deploy --hostname MACHINE_IP/HOSTNAME .#saturn
-```
+- [saturn](./docs/saturn.md)
+- [testvm](./docs/testvm.md)
 
 ### Credits
 
