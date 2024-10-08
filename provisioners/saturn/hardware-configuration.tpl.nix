@@ -9,10 +9,10 @@
   ...
 }: {
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
+    (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.kernelModules = [];
+  boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
   fileSystems."/" = {
@@ -40,25 +40,25 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/$BOOT_1_UUID";
+    device = "$BOOT_1";
     fsType = "vfat";
     options = ["fmask=0022" "dmask=0022"];
   };
 
   fileSystems."/boot-fallback" = {
-    device = "/dev/disk/by-uuid/$BOOT_2_UUID";
+    device = "$BOOT_2";
     fsType = "vfat";
     options = ["fmask=0022" "dmask=0022"];
   };
 
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/$SWAP1_PARTUUID";
+      device = "$SWAP_1";
       randomEncryption = true;
       priority = 1;
     }
     {
-      device = "/dev/disk/by-partuuid/$SWAP2_PARTUUID";
+      device = "$SWAP_2";
       randomEncryption = true;
       priority = 2;
     }
@@ -72,4 +72,5 @@
   # networking.interfaces.enp0s1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

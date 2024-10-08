@@ -68,9 +68,9 @@ sudo nixos-install
 
 ### Saturn
 
-Saturn is the physical machine running as NAS.
+Saturn is the machine running as NAS.
 
-To reinstall the system from scratch, boot the system from a USB device using the Nixos minimal installer.
+To reinstall the system from scratch, use the Nixos minimal installer from a USB key, boot the system *in UEFI mode*.
 Then run the provisioning script from a remote machine:
 
 ```

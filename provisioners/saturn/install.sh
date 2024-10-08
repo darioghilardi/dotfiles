@@ -61,18 +61,6 @@ partition_disk_os() {
   # Activate the swap partitions
   swapon $SWAP_1
   swapon $SWAP_2
-
-  # Get disks boot partitions UUIDs
-  export BOOT_1_UUID=$(lsblk -no UUID $BOOT_1)
-  export BOOT_2_UUID=$(lsblk -no UUID $BOOT_2)
-
-  # Get disks data OS partitions UUIDs
-  export OS_1_UUID=$(blkid $OS_1 -s UUID -o value)
-  export OS_2_UUID=$(blkid $OS_2 -s UUID -o value)
-
-  # Get swap partuuids
-  export SWAP1_PARTUUID=$(blkid $SWAP_1 -s PARTUUID -o value)
-  export SWAP2_PARTUUID=$(blkid $SWAP_2 -s PARTUUID -o value)
 }
 
 encrypt_disk_os() {
@@ -130,10 +118,6 @@ partition_disk_storage() {
   # Clone the partition scheme to the other disk and wait for the operation to finish
   sfdisk --dump $DISK_STORAGE_1 | sfdisk $DISK_STORAGE_2
   sleep 2
-
-  # Get disks storage partitions UUIDs
-  export STORAGE_1_UUID=$(blkid $STORAGE_1 -s UUID -o value)
-  export STORAGE_2_UUID=$(blkid $STORAGE_2 -s UUID -o value)
 }
 
 encrypt_disk_storage() {

@@ -20,7 +20,7 @@
     enableCryptodisk = true;
 
     # Needed when the installer is booted in legacy mode but you
-    # want to but in UEFI mode
+    # want to boot in UEFI mode.
     efiInstallAsRemovable = true;
 
     # Add extra entries on grub
@@ -37,11 +37,11 @@
     # needed to boot to the other drive.
     mirroredBoots = [
       {
-        devices = ["/dev/disk/by-uuid/${BOOT_1_UUID}"];
+        devices = ["${BOOT_1}"];
         path = "/boot";
       }
       {
-        devices = ["/dev/disk/by-uuid/${BOOT_2_UUID}"];
+        devices = ["${BOOT_2}"];
         path = "/boot-fallback";
       }
     ];
@@ -49,11 +49,11 @@
 
   boot.supportedFilesystems = ["zfs"];
   boot.zfs.extraPools = ["zpool_os" "zpool_storage"];
-  boot.zfs.devNodes = "/dev/disk/by-uuid";
+  boot.zfs.devNodes = "/dev/disk/by-id";
 
   boot.initrd = {
     supportedFilesystems = ["zfs"];
-    availableKernelModules = ["virtio_net" "virtio_pci" "xhci_pci" "sr_mod"];
+    availableKernelModules = ["xhci_pci" "ehci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod"];
     kernelModules = [];
 
     # Wait a bit before starting
@@ -62,19 +62,19 @@
 
     luks.devices = {
       os_1 = {
-        device = "/dev/disk/by-uuid/$OS_1_UUID";
+        device = "$OS_1";
         preLVM = true;
       };
       os_2 = {
-        device = "/dev/disk/by-uuid/$OS_2_UUID";
+        device = "$OS_2";
         preLVM = true;
       };
       storage_1 = {
-        device = "/dev/disk/by-uuid/$STORAGE_1_UUID";
+        device = "$STORAGE_1";
         preLVM = true;
       };
       storage_2 = {
-        device = "/dev/disk/by-uuid/$STORAGE_2_UUID";
+        device = "$STORAGE_2";
         preLVM = true;
       };
     };
