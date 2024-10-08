@@ -70,7 +70,7 @@ sudo nixos-install
 
 Saturn is the machine running as NAS.
 
-To reinstall the system from scratch, use the Nixos minimal installer from a USB key, boot the system *in UEFI mode*.
+To reinstall the system from scratch, use the Nixos minimal installer from a USB key, boot the system *in UEFI mode* (select the UEFI entry of the USB key from BIOS).
 Then run the provisioning script from a remote machine:
 
 ```
@@ -82,6 +82,8 @@ Then install nixos within the machine terminal:
 ```
 sudo nixos-install
 ```
+
+The provisioned installation has root ssh access available. Better access rules are configured after the provisioning step when deploying the Nixos configuration. 
 
 To deploy a new configuration run:
 
