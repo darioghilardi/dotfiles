@@ -6,24 +6,26 @@ export DISK_KEY_1=$1
 export DISK_KEY_2=$2
 
 # Available disks
-export DISK_OS_1='/dev/sda'
-export DISK_OS_2='/dev/sdc'
-export DISK_STORAGE_1='/dev/sdb'
-export DISK_STORAGE_2='/dev/sdd'
+# Use the hardware id for identification as stated here:
+# https://unix.stackexchange.com/questions/559655/how-to-correctly-get-the-uuid-of-the-entire-disk
+export DISK_OS_1='/dev/disk/by-id/ata-CT500MX500SSD1_1834E14E1C41'
+export DISK_OS_2='/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2R8J9EC619301'
+export DISK_STORAGE_1='/dev/disk/by-id/ata-WDC_WD40EFPX-68C6CN0_WD-WX22D24C9VZJ'
+export DISK_STORAGE_2='/dev/disk/by-id/ata-WDC_WD40EFPX-68C6CN0_WD-WX22D24DMPCR'
 
-# Disks OS_1 and OS_2, mirror with Boot, OS, Swap
-export BOOT_1='/dev/sda1'
-export BOOT_2='/dev/sdc1'
-export OS_1='/dev/sda2'
-export OS_2='/dev/sdc2'
-export SWAP_1='/dev/sda3'
-export SWAP_2='/dev/sdc3'
+# Disk OS partitions
+export BOOT_1='/dev/disk/by-id/ata-CT500MX500SSD1_1834E14E1C41-part1'
+export BOOT_2='/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2R8J9EC619301-part1'
+export OS_1='/dev/disk/by-id/ata-CT500MX500SSD1_1834E14E1C41-part2'
+export OS_2='/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2R8J9EC619301-part2'
+export SWAP_1='/dev/disk/by-id/ata-CT500MX500SSD1_1834E14E1C41-part3'
+export SWAP_2='/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2R8J9EC619301-part3'
 export CRYPTED_OS_1='crypted-os-1'
 export CRYPTED_OS_2='crypted-os-2'
 
-# Disks STORAGE_1 and STORAGE_2, mirror with data storage
-export STORAGE_1='/dev/sdb1'
-export STORAGE_2='/dev/sdd1'
+# Disk storage partitions
+export STORAGE_1='/dev/disk/by-id/ata-WDC_WD40EFPX-68C6CN0_WD-WX22D24C9VZJ-part1'
+export STORAGE_2='/dev/disk/by-id/ata-WDC_WD40EFPX-68C6CN0_WD-WX22D24DMPCR-part1'
 export CRYPTED_STORAGE_1='crypted-storage-1'
 export CRYPTED_STORAGE_2='crypted-storage-2'
 
@@ -44,8 +46,9 @@ partition_disk_os() {
   # Create the swap partition
   parted -s $DISK_OS_1 -- mkpart swap -${SWAPSIZE}GiB 100%
 
-  # Clone the partition scheme to the other disk
+  # Clone the partition scheme to the other disk and wait for the operation to finish
   sfdisk --dump $DISK_OS_1 | sfdisk $DISK_OS_2
+  sleep 2
 
   # Create ESP partitions
   mkfs.vfat $BOOT_1
@@ -58,6 +61,18 @@ partition_disk_os() {
   # Activate the swap partitions
   swapon $SWAP_1
   swapon $SWAP_2
+
+  # Get disks boot partitions UUIDs
+  export BOOT_1_UUID=$(lsblk -no UUID $BOOT_1)
+  export BOOT_2_UUID=$(lsblk -no UUID $BOOT_2)
+
+  # Get disks data OS partitions UUIDs
+  export OS_1_UUID=$(blkid $OS_1 -s UUID -o value)
+  export OS_2_UUID=$(blkid $OS_2 -s UUID -o value)
+
+  # Get swap partuuids
+  export SWAP1_PARTUUID=$(blkid $SWAP_1 -s PARTUUID -o value)
+  export SWAP2_PARTUUID=$(blkid $SWAP_2 -s PARTUUID -o value)
 }
 
 encrypt_disk_os() {
@@ -112,8 +127,13 @@ partition_disk_storage() {
   # Create the storage partition
   parted -s $DISK_STORAGE_1 -- mkpart primary 0% 100%
 
-  # Clone the partition scheme to the other disk
+  # Clone the partition scheme to the other disk and wait for the operation to finish
   sfdisk --dump $DISK_STORAGE_1 | sfdisk $DISK_STORAGE_2
+  sleep 2
+
+  # Get disks storage partitions UUIDs
+  export STORAGE_1_UUID=$(blkid $STORAGE_1 -s UUID -o value)
+  export STORAGE_2_UUID=$(blkid $STORAGE_2 -s UUID -o value)
 }
 
 encrypt_disk_storage() {
@@ -192,22 +212,6 @@ partition_disk_storage
 encrypt_disk_storage
 create_zpool_storage
 mount_filesystems
-
-# Get disks boot partitions UUIDs
-export SDA1_UUID=$(lsblk -no UUID $BOOT_1)
-export SDC1_UUID=$(lsblk -no UUID $BOOT_2)
-
-# Get disks data OS partitions UUIDs
-export SDA2_UUID=$(blkid $OS_1 -s UUID -o value)
-export SDC2_UUID=$(blkid $OS_2 -s UUID -o value)
-
-# Get disks storage partitions UUIDs
-export SDB1_UUID=$(blkid $STORAGE_1 -s UUID -o value)
-export SDD1_UUID=$(blkid $STORAGE_2 -s UUID -o value)
-
-# Get swap partuuids
-export SWAP1_PARTUUID=$(blkid $SWAP_1 -s PARTUUID -o value)
-export SWAP2_PARTUUID=$(blkid $SWAP_2 -s PARTUUID -o value)
 
 # Generate the nixos configuration
 nixos-generate-config --root /mnt

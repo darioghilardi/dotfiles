@@ -37,11 +37,11 @@
     # needed to boot to the other drive.
     mirroredBoots = [
       {
-        devices = ["/dev/disk/by-uuid/${SDA1_UUID}"];
+        devices = ["/dev/disk/by-uuid/${BOOT_1_UUID}"];
         path = "/boot";
       }
       {
-        devices = ["/dev/disk/by-uuid/${SDC1_UUID}"];
+        devices = ["/dev/disk/by-uuid/${BOOT_2_UUID}"];
         path = "/boot-fallback";
       }
     ];
@@ -62,19 +62,19 @@
 
     luks.devices = {
       os_1 = {
-        device = "/dev/disk/by-uuid/$SDA2_UUID";
+        device = "/dev/disk/by-uuid/$OS_1_UUID";
         preLVM = true;
       };
       os_2 = {
-        device = "/dev/disk/by-uuid/$SDC2_UUID";
+        device = "/dev/disk/by-uuid/$OS_2_UUID";
         preLVM = true;
       };
       storage_1 = {
-        device = "/dev/disk/by-uuid/$SDB1_UUID";
+        device = "/dev/disk/by-uuid/$STORAGE_1_UUID";
         preLVM = true;
       };
       storage_2 = {
-        device = "/dev/disk/by-uuid/$SDD1_UUID";
+        device = "/dev/disk/by-uuid/$STORAGE_2_UUID";
         preLVM = true;
       };
     };
