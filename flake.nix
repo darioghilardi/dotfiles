@@ -25,11 +25,6 @@
       inputs.flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
     };
 
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -44,7 +39,6 @@
   outputs = {
     self,
     nixpkgs,
-    disko,
     agenix,
     deploy-rs,
     ...
@@ -67,7 +61,6 @@
   in
     lib.mkFlake {
       systems.modules.nixos = with inputs; [
-        disko.nixosModules.disko
         agenix.nixosModules.default
       ];
 
@@ -75,11 +68,14 @@
         inherit (inputs) self;
 
         overrides = {
-          saturn.remoteBuild = true;
-          saturn.sshUser = "root";
-          saturn.profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.saturn;
+          saturn = {
+            remoteBuild = true;
+            sshUser = "root";
+            sshOpts = ["-p" "2222"];
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.saturn;
+            };
           };
         };
       };

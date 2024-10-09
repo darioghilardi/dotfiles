@@ -17,7 +17,7 @@ Then run the provisioning script from a remote machine:
 ./provisioners/saturn/provision.sh MACHINE_IP
 ```
 
-Note that the script will configure a static IP for the machine which is `192.168.8.102`. Remember to change it if needed.
+Note that the script will configure a static IP for the machine which is `192.168.8.102`. Remember to change it if needed. Also remember that the private key of the system always change on new installations (this in turn requires secrets to be encrypted again).
 
 Then install nixos within the machine terminal:
 
@@ -25,9 +25,15 @@ Then install nixos within the machine terminal:
 sudo nixos-install
 ```
 
-## Upgrading the system configuration
+After installation run once the rebuild command on the machine:
 
-To update a configuration use this flake and `deploy-rs`:
+```
+sudo nixos-rebuild switch -I config=/etc/nixos/configuration.nix
+```
+
+## Deploying the system configuration
+
+After the first installation, deploy a new configuration using this flake and `deploy-rs`:
 
 ```
 deploy --hostname MACHINE_IP/HOSTNAME .#saturn

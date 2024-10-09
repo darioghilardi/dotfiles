@@ -1,19 +1,17 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 {
   config,
-  lib,
+  modulesPath,
   pkgs,
+  lib,
   ...
 }: {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
+  boot.kernelModules = ["kvm-intel"];
+  boot.kernelParams = ["ip=192.168.8.102::192.168.8.1:255.255.255.0:saturn::none"];
+  boot.extraModulePackages = [];
 
   boot.loader.efi.efiSysMountPoint = "/boot";
   boot.loader.efi.canTouchEfiVariables = true;
+
   boot.loader.grub = {
     enable = true;
     efiSupport = true;
@@ -34,11 +32,11 @@
     # needed to boot to the other drive.
     mirroredBoots = [
       {
-        devices = ["${BOOT_1}"];
+        devices = ["/dev/disk/by-id/ata-CT500MX500SSD1_1834E14E1C41-part1"];
         path = "/boot";
       }
       {
-        devices = ["${BOOT_2}"];
+        devices = ["/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2R8J9EC619301-part1"];
         path = "/boot-fallback";
       }
     ];
@@ -47,8 +45,6 @@
   boot.supportedFilesystems = ["zfs"];
   boot.zfs.extraPools = ["zpool_os" "zpool_storage"];
   boot.zfs.devNodes = "/dev/disk/by-id";
-
-  boot.kernelParams = ["ip=192.168.8.102::192.168.8.1:255.255.255.0:saturn::none"];
 
   boot.initrd = {
     supportedFilesystems = ["zfs"];
@@ -61,19 +57,19 @@
 
     luks.devices = {
       os_1 = {
-        device = "$OS_1";
+        device = "/dev/disk/by-id/ata-CT500MX500SSD1_1834E14E1C41-part2";
         preLVM = true;
       };
       os_2 = {
-        device = "$OS_2";
+        device = "/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2R8J9EC619301-part2";
         preLVM = true;
       };
       storage_1 = {
-        device = "$STORAGE_1";
+        device = "/dev/disk/by-id/ata-WDC_WD40EFPX-68C6CN0_WD-WX22D24C9VZJ-part1";
         preLVM = true;
       };
       storage_2 = {
-        device = "$STORAGE_2";
+        device = "/dev/disk/by-id/ata-WDC_WD40EFPX-68C6CN0_WD-WX22D24DMPCR-part1";
         preLVM = true;
       };
     };
@@ -90,43 +86,11 @@
       };
 
       # FIXME:
-      # This is not working at boot, need to run the command manually when
-      # connecting through ssh.
+      # This is not working properly.
       # postCommands = "/bin/cryptsetup-askpass";
     };
 
     # This speeds up the zpool import on boot otherwise it takes 2 minutes.
     postDeviceCommands = "zpool import -a -f -d /dev/mapper";
   };
-
-  services.zfs.autoScrub.enable = true;
-  systemd.services.zfs-mount.enable = false;
-
-  networking.hostId = "55536429";
-  networking.hostName = "saturn"; # Define your hostname.
-
-  services.openssh = {
-    enable = true;
-    permitRootLogin = "yes";
-    passwordAuthentication = true;
-    ports = [2222];
-    openFirewall = true;
-  };
-
-  time.timeZone = "Europe/Rome";
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  users.users.dario = {
-    isNormalUser = true;
-    extraGroups = ["wheel"];
-  };
-
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-    inotify-tools
-    vim
-  ];
-
-  system.stateVersion = "24.05";
 }

@@ -13,35 +13,34 @@
 with lib;
 with lib.${namespace}; {
   imports = [
-    ./hardware.nix
+    ./hardware-configuration.nix
+    ./boot-configuration.nix
   ];
 
-  boot = {
-    loader.grub.enable = true;
+  services.zfs.autoScrub.enable = true;
+  systemd.services.zfs-mount.enable = false;
 
-    initrd.availableKernelModules = ["ata_piix" "usbhid"];
-    initrd.kernelModules = [];
+  networking.hostId = "55536429";
+  networking.hostName = "saturn";
 
-    kernelModules = ["kvm-intel"];
-    extraModulePackages = [];
+  services.openssh = {
+    enable = true;
+    settings.PermitRootLogin = "yes";
+    settings.PasswordAuthentication = true;
+    ports = [2222];
+    openFirewall = true;
   };
 
   time.timeZone = "Europe/Rome";
-
-  networking = {
-    hostName = "saturn";
-    useDHCP = true;
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [22];
-    };
-  };
+  i18n.defaultLocale = "en_US.UTF-8";
 
   environment.systemPackages = with pkgs; [
     curl
-    gitMinimal
+    git
+    vim
     jq
     neovim
+    htop
   ];
 
   age.secrets = {
@@ -55,11 +54,6 @@ with lib.${namespace}; {
   };
 
   programs.fish.enable = true;
-
-  services.openssh = {
-    enable = true;
-    settings.PermitRootLogin = "yes";
-  };
 
   dariodots.services = {
     tailscale = {
@@ -91,9 +85,7 @@ with lib.${namespace}; {
 
   nix.settings.trusted-users = ["@wheel"];
 
-  security.sudo = {
-    enable = true;
-  };
+  security.sudo.enable = true;
 
   system.stateVersion = "24.05";
 }
