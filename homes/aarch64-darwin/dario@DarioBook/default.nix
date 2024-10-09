@@ -9,6 +9,10 @@ with lib.dariodots; {
     tools = {
       direnv = enabled;
       git = enabled;
+      ssh = {
+        enable = true;
+        use1Password = true;
+      };
     };
     cli-apps = {
       bat = enabled;
