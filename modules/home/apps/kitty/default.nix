@@ -15,23 +15,6 @@ with lib.dariodots; let
   cfg = config.dariodots.apps.kitty;
 
   colors = import ./colors.nix;
-
-  kitty-0_35 = pkgs.kitty.overrideAttrs (finalAttrs: oldAttrs: rec {
-    version = "0.35.2";
-    src = pkgs.fetchFromGitHub {
-      owner = "kovidgoyal";
-      repo = "kitty";
-      rev = "refs/tags/v${version}";
-      hash = "sha256-5ZkQfGlW7MWYCJZSwK/u8x9jKrZEqupsNvW30DLipDM=";
-    };
-    goModules =
-      (pkgs.buildGoModule {
-        pname = "kitty-go-modules";
-        inherit src version;
-        vendorHash = "sha256-NzDA9b3RAfMx+Jj7cSF8pEsKUkoBECBUXl2QFSmkmwM=";
-      })
-      .goModules;
-  });
 in {
   options.dariodots.apps.kitty = with types; {
     enable = mkBoolOpt false "Whether or not to enable `kitty`.";
@@ -42,7 +25,6 @@ in {
     # https://sw.kovidgoyal.net/kitty/conf.html
     programs.kitty = {
       enable = true;
-      package = kitty-0_35;
       theme = "Solarized Dark - Patched";
       shellIntegration.enableFishIntegration = false;
 
