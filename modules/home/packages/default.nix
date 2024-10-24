@@ -15,7 +15,6 @@
 
     du-dust # fancy version of `du`
     fd # fancy version of `find`
-    mosh # wrapper for `ssh` that better and not dropping connections
     procs # fancy version of `ps`
     unzip
     wget
