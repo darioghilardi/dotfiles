@@ -22,7 +22,7 @@ layout {
         pane {
           name "services"
           command "fish"
-          args "-c" "source ~/.config/fish/config.fish && direnv exec . make up"
+          args "-c" "source ~/.config/fish/config.fish && direnv exec . just up"
         }
         pane {
           name "preprocessor"
@@ -39,31 +39,7 @@ layout {
     pane name="cmd"
   }
 
-  // Make sure this cohexists with nablacore
-  // tab name="Mario" split_direction="horizontal" cwd="~/www/mario" focus=true {
-  //   pane split_direction="vertical" {
-  //     pane {
-  //       name "editor"
-  //       focus true
-  //     }
-  //     pane stacked=true {
-  //       pane {
-  //         name "server"
-  //         command "fish"
-  //         args "-c" "source ~/.config/fish/config.fish && direnv exec . mix phx.server"
-  //         expanded true
-  //       }
-  //       pane {
-  //         name "services"
-  //         command "fish"
-  //         args "-c" "source ~/.config/fish/config.fish && direnv exec . make up"
-  //       }
-  //     }
-  //   }
-  // }
-
   tab name="dotfiles" split_direction="vertical" cwd="~/dotfiles" {
     pane name="editor"
-    pane name="cmd"
   }
 }
