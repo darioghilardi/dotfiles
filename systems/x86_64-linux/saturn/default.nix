@@ -34,6 +34,10 @@ with lib.${namespace}; {
   time.timeZone = "Europe/Rome";
   i18n.defaultLocale = "en_US.UTF-8";
 
+  environment.sessionVariables = {
+    TERM = "xterm-256color";
+  };
+
   environment.systemPackages = with pkgs; [
     curl
     git
