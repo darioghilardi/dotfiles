@@ -43,8 +43,6 @@ with lib.${namespace}; {
     git
     vim
     jq
-    neovim
-    htop
   ];
 
   age.secrets = {

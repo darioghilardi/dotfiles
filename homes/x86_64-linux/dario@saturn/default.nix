@@ -5,6 +5,8 @@
   ...
 }:
 with lib.dariodots; {
+  programs.home-manager.enable = true;
+
   dariodots = {
     tools = {
       direnv = enabled;
@@ -23,13 +25,13 @@ with lib.dariodots; {
     };
   };
 
-  programs.home-manager.enable = true;
-
   home = {
     username = "dario";
     homeDirectory = "/home/dario";
+
     sessionVariables = {
       EDITOR = "vim";
+      TERM = "xterm-256color";
     };
 
     # Home Manager release
