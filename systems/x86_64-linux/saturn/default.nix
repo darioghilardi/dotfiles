@@ -91,5 +91,9 @@ with lib.${namespace}; {
 
   security.sudo.enable = true;
 
+  # On activation move existing files by appending the given file
+  # extension rather than exiting with an error.
+  home-manager.backupFileExtension = "backup";
+
   system.stateVersion = "24.05";
 }
