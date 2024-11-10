@@ -56,7 +56,10 @@ with lib.${namespace}; {
   ];
 
   age.secrets = {
-    tailscale-key = {file = ../../../secrets/tailscale-key.age;};
+    "tailscale-key".file = ../../../secrets/tailscale-key.age;
+    "restic/env".file = ../../../secrets/restic/env.age;
+    "restic/repo".file = ../../../secrets/restic/repo.age;
+    "restic/password".file = ../../../secrets/restic/password.age;
   };
 
   # Clean up packages automatically
@@ -76,6 +79,14 @@ with lib.${namespace}; {
         enable = true;
         key = "$(cat ${config.age.secrets.tailscale-key.path})";
       };
+    };
+
+    restic = {
+      enable = true;
+      paths = ["/home/storage"];
+      envFile = config.age.secrets."restic/env".path;
+      repositoryFile = config.age.secrets."restic/repo".path;
+      passwordFile = config.age.secrets."restic/password".path;
     };
   };
 
