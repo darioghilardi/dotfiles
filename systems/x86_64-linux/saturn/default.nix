@@ -20,6 +20,20 @@ with lib.${namespace}; {
   services.zfs.autoScrub.enable = true;
   systemd.services.zfs-mount.enable = false;
 
+  # Trick to assign the correct permissions to the
+  # /home/storage folder.
+  systemd.tmpfiles.settings = {
+    "10-mypackage" = {
+      "/home/storage" = {
+        z = {
+          group = "wheel";
+          mode = "0755";
+          user = "dario";
+        };
+      };
+    };
+  };
+
   networking.hostId = "55536429";
   networking.hostName = "saturn";
 
@@ -33,10 +47,6 @@ with lib.${namespace}; {
 
   time.timeZone = "Europe/Rome";
   i18n.defaultLocale = "en_US.UTF-8";
-
-  environment.sessionVariables = {
-    TERM = "xterm-256color";
-  };
 
   environment.systemPackages = with pkgs; [
     curl
@@ -55,12 +65,13 @@ with lib.${namespace}; {
     dates = "weekly UTC";
   };
 
-  programs.fish.enable = true;
-
   dariodots.services = {
+    samba = {
+      enable = true;
+    };
+
     tailscale = {
       enable = true;
-
       autoconnect = {
         enable = true;
         key = "$(cat ${config.age.secrets.tailscale-key.path})";
@@ -68,11 +79,13 @@ with lib.${namespace}; {
     };
   };
 
+  programs.fish.enable = true;
+
   users.users = {
     dario = {
       isNormalUser = true;
       shell = pkgs.fish;
-      extraGroups = ["wheel"];
+      extraGroups = ["wheel" "samba"];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJlcsiLTBnj6tGb5P49Zcg5svvT6qIDLbfar7ac8YLwi"
       ];
