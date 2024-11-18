@@ -1,9 +1,0 @@
-{
-  "formatter": {
-    "external": {
-      "command": ".zed/formatter.sh",
-      "arguments": []
-    }
-  },
-  "format_on_save": "on"
-}
