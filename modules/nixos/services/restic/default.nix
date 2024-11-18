@@ -35,8 +35,8 @@ in {
 
         pruneOpts = [
           "--keep-daily 5"
-          "--keep-weekly 6"
-          "--keep-monthly 8"
+          "--keep-weekly 4"
+          "--keep-monthly 4"
         ];
       };
     };

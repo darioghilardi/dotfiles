@@ -26,7 +26,7 @@ with lib.${namespace}; {
     "10-mypackage" = {
       "/home/storage" = {
         z = {
-          group = "wheel";
+          group = "users";
           mode = "0755";
           user = "dario";
         };
@@ -87,6 +87,13 @@ with lib.${namespace}; {
       envFile = config.age.secrets."restic/env".path;
       repositoryFile = config.age.secrets."restic/repo".path;
       passwordFile = config.age.secrets."restic/password".path;
+    };
+
+    borgbackup = {
+      enable = true;
+      paths = ["/home/storage"];
+      repo = "ssh://u433810@u433810.your-storagebox.de:23/./backups/saturn";
+      passwordFile = config.age.secrets."borgbackup/password".path;
     };
   };
 

@@ -38,3 +38,44 @@ After the first installation, deploy a new configuration using this flake and `d
 ```
 deploy --hostname MACHINE_IP/HOSTNAME .#saturn
 ```
+
+## Backups
+
+Backups are executed daily with:
+
+- Restic, at 00:00, to Backblaze B2
+- BorgBackup, at 3:00, to Hetzner
+
+### BorgBackup
+
+Some useful commands to interact with Borg Backup.
+
+View the list of backups with the follwing command (repository password is required):
+
+```
+borg list ssh://u433810@u433810.your-storagebox.de:23/./backups/saturn
+```
+
+Mount a backup to `tmp`:
+
+```
+borg mount ssh://u433810@u433810.your-storagebox.de:23/./backups/saturn /tmp/backup
+```
+
+Then unmount:
+
+```
+borg umount /tmp/backup
+```
+
+View info about the repository:
+
+```
+borg info ssh://u433810@u433810.your-storagebox.de:23/./backups/saturn
+```
+
+Delete a backup using the repository url and the archive name:
+
+```
+borg delete ssh://u433810@u433810.your-storagebox.de:23/./backups/saturn saturn-storage-2024-11-18T17:49:36
+```
