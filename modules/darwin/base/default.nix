@@ -57,6 +57,7 @@
   fonts.packages = with pkgs; [
     recursive
     inter
-    (nerdfonts.override {fonts = ["FiraCode"];})
+    nerd-fonts.fira-code
+    #(nerd-fonts.override {fonts = ["FiraCode"];})
   ];
 }
