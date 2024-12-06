@@ -19,6 +19,7 @@
     efiSupport = true;
     device = "nodev";
     enableCryptodisk = true;
+    configurationLimit = 5;
 
     # Add extra entries on grub
     extraEntries = ''

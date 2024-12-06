@@ -18,6 +18,7 @@
     efiSupport = true;
     device = "nodev";
     enableCryptodisk = true;
+    configurationLimit = 5;
 
     # Needed when the installer is booted in legacy mode but you
     # want to but in UEFI mode
