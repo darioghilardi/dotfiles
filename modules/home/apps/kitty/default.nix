@@ -13,8 +13,6 @@
 with lib;
 with lib.dariodots; let
   cfg = config.dariodots.apps.kitty;
-
-  colors = import ./colors.nix;
 in {
   options.dariodots.apps.kitty = with types; {
     enable = mkBoolOpt false "Whether or not to enable `kitty`.";
@@ -25,7 +23,7 @@ in {
     # https://sw.kovidgoyal.net/kitty/conf.html
     programs.kitty = {
       enable = true;
-      theme = "Solarized Dark - Patched";
+      #theme = "Solarized Dark - Patched";
       shellIntegration.enableFishIntegration = false;
 
       settings = {

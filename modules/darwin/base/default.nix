@@ -27,10 +27,6 @@
     terminal-notifier
     inputs.alejandra.defaultPackage.aarch64-darwin
   ];
-  # https://github.com/nix-community/home-manager/issues/423
-  # environment.variables = {
-  #   TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
-  # };
 
   # Add shells installed by nix to /etc/shells file
   environment.shells = with pkgs; [bashInteractive fish zsh];

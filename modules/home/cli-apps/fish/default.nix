@@ -27,6 +27,7 @@
       };
     }
   ];
+  programs.fish.generateCompletions = false;
 
   programs.fish.shellInit = ''
     # Fish syntax highlighting

@@ -19,6 +19,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    mac-app-util = {
+      url = "github:hraban/mac-app-util";
+    };
+
     snowfall-lib = {
       url = "github:snowfallorg/lib?ref=v3.0.3";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,6 +45,7 @@
     nixpkgs,
     agenix,
     deploy-rs,
+    mac-app-util,
     ...
   } @ inputs: let
     inherit (inputs) deploy-rs;
@@ -60,8 +65,19 @@
     };
   in
     lib.mkFlake {
+      # External modules only for nixos
       systems.modules.nixos = with inputs; [
         agenix.nixosModules.default
+      ];
+
+      # External modules only for darwin
+      systems.modules.darwin = with inputs; [
+        mac-app-util.darwinModules.default
+      ];
+
+      # External modules for home-manager
+      homes.modules = with inputs; [
+        mac-app-util.homeManagerModules.default
       ];
 
       deploy = lib.mkDeploy {
