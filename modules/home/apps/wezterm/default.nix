@@ -29,6 +29,9 @@ in {
           front_end = "WebGpu",
           font = wezterm.font("JetBrains Mono"),
           font_size = 14.0,
+          freetype_load_target = 'Light',
+          freetype_render_target = 'HorizontalLcd',
+          cell_width = 0.9,
           hide_tab_bar_if_only_one_tab = true,
           use_fancy_tab_bar = true,
         }
