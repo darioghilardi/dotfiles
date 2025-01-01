@@ -32,8 +32,9 @@ with lib.dariodots; {
       #awscli = enabled;
     };
     apps = {
-      zed = enabled;
+      kitty = disabled;
       wezterm = enabled;
+      zed = enabled;
     };
   };
 
