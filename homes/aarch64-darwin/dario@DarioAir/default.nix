@@ -6,13 +6,10 @@
 }:
 with lib.dariodots; {
   dariodots = {
-    tools = {
-      direnv = enabled;
-      git = enabled;
-      ssh = {
-        enable = true;
-        use1Password = true;
-      };
+    apps = {
+      kitty = disabled;
+      wezterm = enabled;
+      zed = enabled;
     };
     cli-apps = {
       bat = enabled;
@@ -31,10 +28,13 @@ with lib.dariodots; {
       zoxide = enabled;
       #awscli = enabled;
     };
-    apps = {
-      kitty = disabled;
-      wezterm = enabled;
-      zed = enabled;
+    tools = {
+      direnv = enabled;
+      git = enabled;
+      ssh = {
+        enable = true;
+        use1Password = true;
+      };
     };
   };
 
