@@ -45,7 +45,6 @@
     "powershell"
     "qmk-toolbox"
     "rectangle-pro"
-    "scummvm"
     "setapp"
     "signal"
     "skype"
