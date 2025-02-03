@@ -37,6 +37,7 @@
     "firefox"
     "google-chrome"
     "google-drive"
+    "keyboard-maestro"
     "kobo"
     "linear-linear"
     "microsoft-teams"
@@ -44,7 +45,6 @@
     "postman"
     "powershell"
     "qmk-toolbox"
-    "rectangle-pro"
     "setapp"
     "signal"
     "skype"
@@ -123,7 +123,6 @@ in {
     "Things 3" = 904280696;
     Twitter = 1482454543;
     "1password for Safari" = 1569813296;
-    rcmd = 1596283165;
     amphetamine = 937984704;
     wireguard = 1451685025;
   };
@@ -133,7 +132,7 @@ in {
   homebrew.casks = greedyCasks;
 
   # Until these are managed by nix.
-  homebrew.brews = ["awscli" "duckdb" "cloudflare/cloudflare/cf-terraforming"]; # [ "unixodbc" "wxwidgets" ];
+  homebrew.brews = ["awscli" "php" "duckdb" "cloudflare/cloudflare/cf-terraforming"]; # [ "unixodbc" "wxwidgets" ];
 
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK =
