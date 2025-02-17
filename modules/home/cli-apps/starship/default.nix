@@ -12,20 +12,26 @@
     # See docs here: https://starship.rs/config/
     # Symbols config configured ./starship-symbols.nix.
 
-    elixir = {disabled = true;};
-    package = {disabled = true;};
-    aws = {symbol = "";};
+    elixir.disabled = true;
+    gcloud.disabled = true; # annoying to always have on
+    package.disabled = true;
+
+    aws.symbol = "";
+
+    add_newline = false;
+    character = {
+      success_symbol = "[➜](bold green)";
+      error_symbol = "[✗](bold red)";
+    };
+    line_break.disabled = true;
+    memory_usage.disabled = true;
+    hostname.style = "bold green";
+    username.style_user = "bold blue";
+
     nix_shell = {
       symbol = "❄ ️";
       format = "[$symbol]($style)";
     };
-
-    line_break.disabled = true;
-    add_newline = false;
-    gcloud.disabled = true; # annoying to always have on
-    hostname.style = "bold green"; # don't like the default
-    memory_usage.disabled = true;
-    username.style_user = "bold blue"; # don't like the default
 
     directory = {
       fish_style_pwd_dir_length = 1; # turn on fish directory truncation
