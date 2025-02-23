@@ -25,7 +25,7 @@
   casks = [
     "1password@beta"
     "1password-cli@beta"
-    # "airflow"
+    "airflow"
     "affinity-designer"
     "alfred"
     "amethyst"
