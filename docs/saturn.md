@@ -39,6 +39,32 @@ After the first installation, deploy a new configuration using this flake and `d
 deploy --hostname MACHINE_IP/HOSTNAME .#saturn
 ```
 
+## Starting the server
+
+The disks are encrypted so at any restart you need to:
+
+```
+ssh root@saturn -p 9999
+```
+
+Then decrypt the disks
+
+```
+/bin/cryptsetup-askpass
+
+Passphrase for /dev/disk/by-id/ata-CT500MX500SSD1_1834E14E1C41-part2:
+# Enter the OS secret key
+
+Passphrase for /dev/disk/by-id/ata-WDC_WD40EFPX-68C6CN0_WD-WX22D24C9VZJ-part1:
+# Enter the Storage secret key
+```
+
+Now the server can be accessed with:
+
+```
+ssh root@saturn -p 2222
+```
+
 ## Backups
 
 Backups are executed daily with:
