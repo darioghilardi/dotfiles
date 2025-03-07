@@ -45,6 +45,7 @@
     "postman"
     "powershell"
     "qmk-toolbox"
+    "rider"
     "setapp"
     "signal"
     "spotify"
