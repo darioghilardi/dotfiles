@@ -45,6 +45,7 @@
     "postman"
     "powershell"
     "qmk-toolbox"
+    "rectangle-pro"
     "rider"
     "setapp"
     "signal"
