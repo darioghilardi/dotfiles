@@ -47,7 +47,9 @@
     "qmk-toolbox"
     "rectangle-pro"
     "rider"
-    "setapp"
+    # setapp is commented because it gets uninstalled by brew all
+    # the times, even if it says "updated".
+    # "setapp"
     "signal"
     "spotify"
     "steam"
