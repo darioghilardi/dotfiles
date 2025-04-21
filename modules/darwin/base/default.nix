@@ -25,7 +25,7 @@
   # Issue: https://github.com/nix-community/home-manager/issues/1341
   environment.systemPackages = with pkgs; [
     terminal-notifier
-    inputs.alejandra.defaultPackage.aarch64-darwin
+    # inputs.alejandra.defaultPackage.aarch64-darwin
   ];
 
   # Add shells installed by nix to /etc/shells file

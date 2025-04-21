@@ -32,7 +32,8 @@
     "balenaetcher"
     "discord"
     "docker"
-    "dropbox"
+    # Stopped working on 21/4/25
+    # "dropbox"
     "figma"
     "firefox"
     "google-chrome"
