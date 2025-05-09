@@ -13,7 +13,7 @@ in {
     enable = mkBoolOpt false "Whether or not to configure Tailscale";
     autoconnect = {
       enable = mkBoolOpt false "Whether or not to enable automatic connection to Tailscale";
-      key = mkOpt str "" "The authentication key to use";
+      key = mkOpt str "" "The path to the authentication key to use";
     };
   };
 
@@ -71,7 +71,7 @@ in {
         fi
 
         # Otherwise authenticate with tailscale
-        ${tailscale}/bin/tailscale up -authkey "${cfg.autoconnect.key}"
+        # ${tailscale}/bin/tailscale up -authkey file:${cfg.autoconnect.key}
       '';
     };
   };

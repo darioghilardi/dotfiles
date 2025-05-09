@@ -77,7 +77,7 @@ with lib.${namespace}; {
       enable = true;
       autoconnect = {
         enable = true;
-        key = "$(cat ${config.age.secrets.tailscale-key.path})";
+        key = config.age.secrets."tailscale-key".path;
       };
     };
 

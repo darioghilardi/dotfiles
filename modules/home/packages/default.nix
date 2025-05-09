@@ -56,7 +56,7 @@
     nil
 
     # Code
-    nodejs-18_x
+    nodejs
     earthly
 
     # Media
