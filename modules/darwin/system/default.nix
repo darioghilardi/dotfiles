@@ -63,4 +63,6 @@
     enableKeyMapping = true;
     remapCapsLockToControl = true;
   };
+
+  system.primaryUser = "dario";
 }
