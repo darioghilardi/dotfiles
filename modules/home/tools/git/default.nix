@@ -25,6 +25,7 @@ in {
       extraConfig = {
         color.ui = "auto";
         init = {defaultBranch = "master";};
+        core.editor = "code --wait";
       };
 
       # Enhanced diffs
