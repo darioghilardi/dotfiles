@@ -41,8 +41,6 @@
   };
 
   # Firewall
-  system.defaults.alf = {globalstate = 1;};
-
   system.defaults.finder = {
     AppleShowAllExtensions = true;
     AppleShowAllFiles = true;

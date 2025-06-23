@@ -54,6 +54,7 @@
     nix-prefetch-git
     cachix
     nil
+    devenv
 
     # Code
     nodejs
