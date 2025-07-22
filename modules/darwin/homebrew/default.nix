@@ -31,7 +31,8 @@
     "amethyst"
     "balenaetcher"
     "discord"
-    "docker"
+    # Stopped working on 22/7/25
+    # "docker"
     # Stopped working on 21/4/25
     # "dropbox"
     "figma"
