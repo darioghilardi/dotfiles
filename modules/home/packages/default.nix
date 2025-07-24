@@ -41,6 +41,7 @@
     gnugrep
     bfg-repo-cleaner
     zstd
+    gitu
 
     # Elixir, to be able to run mix commands when not in a project
     # beam.interpreters.erlangR25
@@ -58,7 +59,6 @@
 
     # Code
     nodejs
-    earthly
 
     # Media
     imagemagick

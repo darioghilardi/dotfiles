@@ -47,7 +47,7 @@ in {
             "space s p": "project_panel::NewSearchInDirectory",
             "space w v": "pane::SplitLeft",
             "space w s": "pane::SplitUp",
-            "space w d": ["pane::CloseActiveItem", { "saveIntent": "skip" }],
+            "space w d": ["pane::CloseAllItems", { "close_pinned": false }],
             "space w h": ["workspace::ActivatePaneInDirection", "Left"],
             "space w l": ["workspace::ActivatePaneInDirection", "Right"],
             "space w k": ["workspace::ActivatePaneInDirection", "Up"],
