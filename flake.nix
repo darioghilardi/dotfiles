@@ -24,7 +24,7 @@
     };
 
     snowfall-lib = {
-      url = "github:snowfallorg/lib?ref=v3.0.3";
+      url = "github:snowfallorg/lib";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
     };
