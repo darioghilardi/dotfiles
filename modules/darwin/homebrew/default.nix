@@ -39,6 +39,7 @@
     "firefox"
     "google-chrome"
     "google-drive"
+    "inkscape"
     "keyboard-maestro"
     "kobo"
     "linear-linear"
@@ -48,7 +49,6 @@
     "powershell"
     "qmk-toolbox"
     "rectangle-pro"
-    "rider"
     # setapp is commented because it gets uninstalled by brew all
     # the times, even if it says "updated".
     # "setapp"
