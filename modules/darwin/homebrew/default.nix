@@ -40,6 +40,7 @@
     "google-chrome"
     "google-drive"
     "inkscape"
+    "keka"
     "keyboard-maestro"
     "kobo"
     "linear-linear"
