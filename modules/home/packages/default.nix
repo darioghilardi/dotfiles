@@ -56,6 +56,7 @@
     cachix
     nil
     devenv
+    nh
 
     # Code
     nodejs

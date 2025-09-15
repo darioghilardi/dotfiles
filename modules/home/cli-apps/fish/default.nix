@@ -100,12 +100,13 @@
 
   programs.fish.shellAliases = {
     # Nix
+    # cd ~/dotfiles && nix build .#darwinConfigurations.DarioBook.system && sudo ./result/sw/bin/darwin-rebuild switch --flake .'';
     dbb = ''
-      cd ~/dotfiles && nix build .#darwinConfigurations.DarioBook.system && sudo ./result/sw/bin/darwin-rebuild switch --flake .'';
+      cd ~/dotfiles && nix build .#darwinConfigurations.DarioBook.system && nh darwin switch .'';
     dab = ''
-      cd ~/dotfiles && nix build .#darwinConfigurations.DarioAir.system && sudo ./result/sw/bin/darwin-rebuild switch --flake .'';
+      cd ~/dotfiles && nix build .#darwinConfigurations.DarioAir.system && nh darwin switch .'';
     flakeup = "nix flake update ~/dotfiles";
-    nixclean = "nix store gc && nix store optimise";
+    nixclean = "sudo nh clean all --ask && nix store optimise";
 
     # Vim
     vim = "nvim";
