@@ -19,17 +19,23 @@ in {
     programs.git = {
       enable = true;
 
-      inherit (cfg) userName userEmail;
-
       ignores = [".DS_Store"];
-      extraConfig = {
-        color.ui = "auto";
-        init = {defaultBranch = "master";};
-        core.editor = "code --wait";
-      };
 
-      # Enhanced diffs
-      delta.enable = true;
+      settings = {
+        user = {
+          name = cfg.userName;
+          email = cfg.userEmail;
+        };
+
+        extraConfig = {
+          color.ui = "auto";
+          init = {defaultBranch = "master";};
+          core.editor = "code --wait";
+        };
+
+        # Enhanced diffs
+        delta.enable = true;
+      };
     };
   };
 }
