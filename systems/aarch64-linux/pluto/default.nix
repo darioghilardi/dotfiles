@@ -13,34 +13,18 @@
 with lib;
 with lib.${namespace}; {
   imports = [
-    ./hardware-configuration.nix
-    ./boot-configuration.nix
+    ./configuration.nix
   ];
 
-  networking.hostName = "pluto";
+  # environment.systemPackages = with pkgs; [
+  #   curl
+  #   git
+  #   vim
+  #   jq
+  # ];
 
   services.openssh = {
     enable = true;
-    settings.PermitRootLogin = "yes";
-    settings.PasswordAuthentication = true;
-    ports = [2222];
-    openFirewall = true;
-  };
-
-  time.timeZone = "Europe/Rome";
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  environment.systemPackages = with pkgs; [
-    curl
-    git
-    vim
-    jq
-  ];
-
-  # Clean up packages automatically
-  nix.gc = {
-    automatic = true;
-    dates = "weekly UTC";
   };
 
   programs.fish.enable = true;
@@ -48,27 +32,35 @@ with lib.${namespace}; {
   users.users = {
     dario = {
       isNormalUser = true;
+      home = "/home/dario.linux";
+      group = "users";
+      extraGroups = ["wheel"];
       shell = pkgs.fish;
-      extraGroups = ["wheel" "samba"];
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJlcsiLTBnj6tGb5P49Zcg5svvT6qIDLbfar7ac8YLwi"
-      ];
-    };
-
-    root = {
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJlcsiLTBnj6tGb5P49Zcg5svvT6qIDLbfar7ac8YLwi"
-      ];
     };
   };
 
-  nix.settings.trusted-users = ["@wheel"];
+  time.timeZone = "Europe/Rome";
+  i18n.defaultLocale = "en_US.UTF-8";
 
-  security.sudo.enable = true;
+  networking.hostName = "pluto";
+
+  security.sudo.wheelNeedsPassword = false;
 
   # On activation move existing files by appending the given file
   # extension rather than exiting with an error.
   home-manager.backupFileExtension = "backup";
 
-  system.stateVersion = "24.05";
+  nix.settings = {
+    experimental-features = ["nix-command" "flakes"];
+    # Give users in the `wheel` group additional rights when connecting to the Nix daemon
+    # This simplifies remote deployment to the instance's nix store.
+    trusted-users = ["@wheel"];
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly UTC";
+  };
+
+  system.stateVersion = "25.11";
 }
