@@ -26,9 +26,8 @@
     "1password@beta"
     "1password-cli@beta"
     "airflow"
-    "affinity-designer"
+    "affinity"
     "alfred"
-    "amethyst"
     "balenaetcher"
     "discord"
     # Stopped working on 22/7/25
@@ -127,7 +126,6 @@ in {
     "Things 3" = 904280696;
     Twitter = 1482454543;
     "1password for Safari" = 1569813296;
-    amphetamine = 937984704;
     wireguard = 1451685025;
   };
 
