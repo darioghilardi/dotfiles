@@ -91,7 +91,7 @@
             sshOpts = ["-p" "2222"];
             profiles.system = {
               user = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.saturn;
+              path = deploy-rs.lib.activate.nixos self.nixosConfigurations.saturn;
             };
           };
 

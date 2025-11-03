@@ -13,7 +13,7 @@
   home.packages = with pkgs; [
     bandwhich # display current network utilization by process
 
-    du-dust # fancy version of `du`
+    dust # fancy version of `du`
     fd # fancy version of `find`
     procs # fancy version of `ps`
     unzip
@@ -76,6 +76,6 @@
     kustomize
     kubernetes-helm
     helmfile
-    argo
+    argo-workflows
   ];
 }
