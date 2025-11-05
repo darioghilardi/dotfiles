@@ -9,6 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -68,6 +73,7 @@
       # External modules only for nixos
       systems.modules.nixos = with inputs; [
         agenix.nixosModules.default
+        disko.nixosModules.disko
       ];
 
       # External modules only for darwin
@@ -95,16 +101,15 @@
             };
           };
 
-          # pluto = {
-          #   remoteBuild = true;
-          #   interactiveSudo = false;
-          #   sshUser = "dario";
-          #   sshOpts = ["-p" "50006" "-i" "~/.lima/_config/user" "-o" "NoHostAuthenticationForLocalhost=yes"];
-          #   profiles.system = {
-          #     user = "root";
-          #     path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.pluto;
-          #   };
-          # };
+          osaka = {
+            remoteBuild = true;
+            interactiveSudo = true;
+            sshUser = "dario";
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.osaka;
+            };
+          };
         };
       };
 

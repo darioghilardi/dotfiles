@@ -8,20 +8,20 @@ with lib.dariodots; {
   programs.home-manager.enable = true;
 
   dariodots = {
-    # tools = {
-    #   direnv = enabled;
-    #   git = enabled;
-    # };
-    # cli-apps = {
-    #   bat = enabled;
-    #   bottom = enabled;
-    #   eza = enabled;
-    #   fzf = enabled;
-    #   htop = enabled;
-    #   jq = enabled;
-    #   ripgrep = enabled;
-    #   zoxide = enabled;
-    # };
+    tools = {
+      direnv = enabled;
+      git = enabled;
+    };
+    cli-apps = {
+      bat = enabled;
+      bottom = enabled;
+      eza = enabled;
+      fzf = enabled;
+      htop = enabled;
+      jq = enabled;
+      ripgrep = enabled;
+      zoxide = enabled;
+    };
   };
 
   home = {
