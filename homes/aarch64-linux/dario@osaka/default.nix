@@ -11,6 +11,7 @@ with lib.dariodots; {
     tools = {
       direnv = enabled;
       git = enabled;
+      tmux = enabled;
     };
     cli-apps = {
       bat = enabled;
