@@ -9,69 +9,22 @@
           partitions = {
             esp = {
               type = "EF00";
-              size = "1G";
+              size = "500M";
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
-                mountOptions = [
-                  "defaults"
-                ];
+                mountOptions = ["umask=0077"];
               };
             };
             root = {
               size = "100%";
               content = {
-                type = "zfs";
-                pool = "zpool";
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/";
               };
             };
-          };
-        };
-      };
-    };
-    zpool = {
-      "zpool" = {
-        type = "zpool";
-        options = {
-          ashift = "12";
-        };
-        rootFsOptions = {
-          mountpoint = "none";
-          acltype = "posixacl";
-          xattr = "sa";
-          atime = "off";
-          encryption = "off";
-        };
-        datasets = {
-          "safe" = {
-            type = "zfs_fs";
-            options.mountpoint = "none";
-          };
-          "safe/root" = {
-            type = "zfs_fs";
-            options.mountpoint = "legacy";
-            mountpoint = "/";
-          };
-          "local" = {
-            type = "zfs_fs";
-            options.mountpoint = "none";
-          };
-          "local/reserved" = {
-            type = "zfs_fs";
-            options.mountpoint = "none";
-            options.refreservation = "2G";
-          };
-          "local/nix" = {
-            type = "zfs_fs";
-            options.mountpoint = "legacy";
-            options.compression = "lz4";
-            mountpoint = "/nix";
-          };
-          "local/tmp" = {
-            type = "zfs_fs";
-            options.mountpoint = "legacy";
-            mountpoint = "/tmp";
           };
         };
       };
