@@ -14,6 +14,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -74,6 +76,7 @@
       systems.modules.nixos = with inputs; [
         agenix.nixosModules.default
         disko.nixosModules.disko
+        vscode-server.nixosModules.default
       ];
 
       # External modules only for darwin

@@ -27,6 +27,9 @@ with lib.${namespace}; {
     jq
   ];
 
+  services.vscode-server.enable = true;
+  programs.nix-ld.enable = true;
+
   services.openssh = {
     enable = true;
     settings.PermitRootLogin = "yes";
@@ -39,6 +42,9 @@ with lib.${namespace}; {
 
   time.timeZone = "Europe/Rome";
   i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocaleSettings = {
+    LC_ALL = "en_US.UTF-8";
+  };
 
   networking.hostName = "osaka";
   networking.hostId = "cfcfbe32";
@@ -50,6 +56,7 @@ with lib.${namespace}; {
   # For parallels, as /mnt/psf doesn't exist on nixos by default
   systemd.tmpfiles.rules = [
     "d /mnt/psf 0777 dario users -"
+    "d /media/psf 0777 dario users -"
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
