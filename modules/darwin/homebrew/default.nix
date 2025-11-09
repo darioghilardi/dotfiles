@@ -36,7 +36,8 @@
     # "dropbox"
     "figma"
     "firefox"
-    "google-chrome"
+    # Will update using the autoupdates in chrome.
+    # "google-chrome"
     "google-drive"
     "inkscape"
     "keka"
@@ -65,6 +66,7 @@
     "utm"
     "visual-studio-code"
     "vlc"
+    "wezterm"
     "whatsapp"
     "zed"
     "zoom"
