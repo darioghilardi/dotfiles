@@ -18,6 +18,7 @@ with lib.dariodots; {
       bottom = enabled;
       eza = enabled;
       fzf = enabled;
+      neovim = enabled;
       htop = enabled;
       jq = enabled;
       ripgrep = enabled;

@@ -21,6 +21,7 @@ with lib.${namespace}; {
   ];
 
   environment.systemPackages = with pkgs; [
+    clang
     curl
     git
     vim
@@ -48,6 +49,7 @@ with lib.${namespace}; {
 
   networking.hostName = "osaka";
   networking.hostId = "cfcfbe32";
+  networking.firewall.enable = false;
 
   # On activation move existing files by appending the given file
   # extension rather than exiting with an error.

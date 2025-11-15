@@ -4,6 +4,16 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
+    darwin = {
+      url = "github:LnL7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,16 +25,7 @@
     };
 
     vscode-server.url = "github:nix-community/nixos-vscode-server";
-
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    darwin = {
-      url = "github:LnL7/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixCats.url = "github:BirdeeHub/nixCats-nvim";
 
     mac-app-util = {
       url = "github:hraban/mac-app-util";
@@ -87,6 +88,7 @@
       # External modules for home-manager
       homes.modules = with inputs; [
         mac-app-util.homeManagerModules.default
+        nixCats.homeModule
       ];
 
       deploy = lib.mkDeploy {
@@ -106,8 +108,8 @@
 
           osaka = {
             remoteBuild = true;
-            interactiveSudo = true;
-            sshUser = "dario";
+            interactiveSudo = false;
+            sshUser = "root";
             profiles.system = {
               user = "root";
               path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.osaka;
