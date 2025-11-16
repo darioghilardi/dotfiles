@@ -20,7 +20,10 @@ in {
       keyMode = "vi";
       prefix = "C-b";
       escapeTime = 0;
-      extraConfig = "set -g status-interval 0";
+      extraConfig = ''
+      set -g status-interval 0
+      set-option -ga terminal-overrides ",xterm-256color:Tc"
+      '';
 
       tmuxinator.enable = true;
 
