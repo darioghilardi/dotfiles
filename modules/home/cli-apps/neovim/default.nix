@@ -55,6 +55,9 @@ in {
           general = with pkgs; [
             lazygit
           ];
+          elixir = with pkgs;[
+            
+          ];
           lua = with pkgs; [
             lua-language-server
             stylua
@@ -97,6 +100,9 @@ in {
           ];
           lua = with pkgs.vimPlugins; [
             lazydev-nvim
+          ];
+          elixir = with pkgs.vimPlugins; [
+            elixir-tools-nvim
           ];
         };
 
@@ -157,6 +163,7 @@ in {
           # (and other information to pass to lua)
           categories = {
             general = true;
+            elixir = true;
             lua = true;
             nix = true;
           };
