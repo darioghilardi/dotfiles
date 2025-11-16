@@ -10,7 +10,7 @@ vim.keymap.set("n", "<leader>_", function() Snacks.lazygit.open() end, { desc = 
 -- Files
 vim.keymap.set("n", "<leader>fs", "<cmd>w<cr><esc>", { desc = "Save file" })
 vim.keymap.set('n', "<leader>ff", function() Snacks.picker.files() end, { desc = "Find Files" })
-vim.keymap.set('n', "<leader>fg", function() Snacks.picker.git_files() end, { desc = "Find Git Files" })
+vim.keymap.set('n', "<leader>pf", function() Snacks.picker.git_files() end, { desc = "Find Git Files" })
 vim.keymap.set('n', "<leader>sf", function() Snacks.picker.smart() end, { desc = "Smart Find Files" })
 
 -- Search

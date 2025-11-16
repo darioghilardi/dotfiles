@@ -56,7 +56,7 @@ in {
             lazygit
           ];
           elixir = with pkgs;[
-            
+            elixir-ls
           ];
           lua = with pkgs; [
             lua-language-server
@@ -73,6 +73,7 @@ in {
           general = with pkgs.vimPlugins; [
             lze
             lzextras
+            plenary-nvim
             snacks-nvim
             onedark-nvim
             vim-sleuth
