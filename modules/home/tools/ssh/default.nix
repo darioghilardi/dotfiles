@@ -15,7 +15,9 @@ in {
   };
 
   config = mkIf cfg.enable (mkMerge [
-    {programs.ssh.enable = true;}
+    {
+      programs.ssh.enable = true;
+    }
 
     (mkIf cfg.use1Password {
       # The IdentityAgent config works only for the ssh command, not for

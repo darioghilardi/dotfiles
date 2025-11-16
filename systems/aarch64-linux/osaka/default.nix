@@ -35,6 +35,12 @@ with lib.${namespace}; {
     enable = true;
     settings.PermitRootLogin = "yes";
     settings.PasswordAuthentication = false;
+    knownHosts = {
+      "github/ed25519" = {
+        publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+        hostNames = [ "github.com" ];
+      };
+    };
   };
 
   programs.fish.enable = true;
