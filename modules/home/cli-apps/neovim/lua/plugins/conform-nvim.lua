@@ -11,11 +11,11 @@ return {
     conform.setup({
       format_on_save = {
         lsp_format = "fallback",
-        timeout_ms = 500,
+        timeout_ms = 1000,
       },
       formatters_by_ft = {
         lua = nixCats("lua") and { "stylua" } or nil,
-        elixir = nixCats("elixir") and { "mix" },
+        elixir = nixCats("elixir") and { "mix" } or nil,
       },
       formatters = {
         stylua = {
