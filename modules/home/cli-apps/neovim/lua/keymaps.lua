@@ -5,15 +5,16 @@
 
 -- General
 vim.keymap.set("i", "fd", "<esc>", { silent = true, desc = "Back to normal mode" })
-vim.keymap.set("n", "-", function() Snacks.explorer.open() end, { desc = 'Snacks Explorer' })
-vim.keymap.set("n", "<c-\\>", function() Snacks.terminal.open() end, { desc = 'Snacks Terminal' })
-vim.keymap.set("n", "<leader>_", function() Snacks.lazygit.open() end, { desc = 'Snacks LazyGit' })
+vim.keymap.set("n", "e", function() Snacks.explorer.open() end, { desc = 'Explorer' })
+vim.keymap.set("n", "<c-\\>", function() Snacks.terminal.open() end, { desc = 'Terminal' })
+vim.keymap.set("n", "<leader>_", function() Snacks.lazygit.open() end, { desc = 'LazyGit' })
+vim.keymap.set("v", "J", ":join<CR>", { desc = "Join lines", silent = true })
 
 -- Files
 vim.keymap.set("n", "<leader>fs", "<cmd>w<cr><esc>", { desc = "Save file" })
+vim.keymap.set('n', "<leader>pf", function() Snacks.picker.smart({multi = {"files"}, matcher = { frecency = true }}) end, { desc = "Smart Find Files" })
 vim.keymap.set('n', "<leader>ff", function() Snacks.picker.files() end, { desc = "Find Files" })
-vim.keymap.set('n', "<leader>pf", function() Snacks.picker.git_files() end, { desc = "Find Git Files" })
-vim.keymap.set('n', "<leader>sf", function() Snacks.picker.smart() end, { desc = "Smart Find Files" })
+vim.keymap.set('n', "<leader>pg", function() Snacks.picker.git_files() end, { desc = "Find Git Files" })
 
 -- Search
 vim.keymap.set('n', "<leader><leader>s", function() Snacks.picker.buffers() end, { desc = "Search Buffers" })
@@ -31,9 +32,9 @@ vim.keymap.set('n', "<leader>sR", function() Snacks.picker.resume() end, { desc 
 vim.keymap.set('n', "<leader>su", function() Snacks.picker.undo() end, { desc = "Undo History" })
 
 -- Grep
+vim.keymap.set('n', "<leader>sp", function() Snacks.picker.grep() end, { desc = "Grep" })
 vim.keymap.set('n', "<leader>sb", function() Snacks.picker.lines() end, { desc = "Buffer Lines" })
 vim.keymap.set('n', "<leader>sB", function() Snacks.picker.grep_buffers() end, { desc = "Grep Open Buffers" })
-vim.keymap.set('n', "<leader>sg", function() Snacks.picker.grep() end, { desc = "Grep" })
 vim.keymap.set({ "n", "x" }, "<leader>sw", function() Snacks.picker.grep_word() end, { desc = "Visual selection or ord" })
 
 -- Word wrap
@@ -68,8 +69,8 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- Movement
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = 'Moves Line Down' })
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = 'Moves Line Up' })
+vim.keymap.set("v", "<C-j>", ":m '>+1<CR>gv=gv", { desc = 'Moves Line Down' })
+vim.keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv", { desc = 'Moves Line Up' })
 
 -- Yank/Paste
 vim.keymap.set({"v", "x", "n"}, '<leader>y', '"+y', { noremap = true, silent = true, desc = 'Yank to clipboard' })
