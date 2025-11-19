@@ -7,7 +7,7 @@ return {
     require("blink.cmp").setup({
       -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
       -- See :h blink-cmp-config-keymap for configuring keymaps
-      keymap = { preset = "default" },
+      keymap = { preset = "enter" },
       appearance = {
         nerd_font_variant = "mono",
       },
