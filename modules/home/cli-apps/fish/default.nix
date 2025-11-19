@@ -105,6 +105,10 @@
       cd ~/dotfiles && nix build .#darwinConfigurations.DarioBook.system && nh darwin switch .'';
     dab = ''
       cd ~/dotfiles && nix build .#darwinConfigurations.DarioAir.system && nh darwin switch .'';
+    rebuild-osaka = ''
+      pushd ~/dotfiles
+      sudo nixos-rebuild switch --flake .#osaka
+      popd'';
     flakeup = "nix flake update ~/dotfiles";
     nixclean = "sudo nh clean all --ask && nix store optimise";
 
@@ -135,7 +139,7 @@
     gom = "git checkout master && git fetch origin && git merge origin/master";
 
     # Tmuxinator
-    tx = "tmuxinator";
+    mux = "tmuxinator";
 
     # Elixir
     i = "iex";
