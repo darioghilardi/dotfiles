@@ -37,6 +37,9 @@ vim.o.expandtab = true
 -- stops line wrapping from being confusing
 vim.o.breakindent = true
 
+-- Treat - like a separated word
+vim.opt.iskeyword:remove("-")
+
 -- Save undo history
 vim.o.undofile = true
 
