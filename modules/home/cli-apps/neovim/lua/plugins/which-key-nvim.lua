@@ -1,10 +1,10 @@
 return {
   "which-key.nvim",
-  enabled = nixCats('general') or false,
+  enabled = nixCats("general") or false,
   event = "DeferredUIEnter",
-  after = function (plugin)
-    require('which-key').setup({})
-    require('which-key').add {
+  after = function(plugin)
+    require("which-key").setup({})
+    require("which-key").add({
       { "<leader><leader>", group = "buffer commands" },
       { "<leader><leader>_", hidden = true },
       { "<leader>c", group = "[c]ode" },
@@ -23,6 +23,6 @@ return {
       { "<leader>t_", hidden = true },
       { "<leader>w", group = "[w]orkspace" },
       { "<leader>w_", hidden = true },
-    }
+    })
   end,
 }

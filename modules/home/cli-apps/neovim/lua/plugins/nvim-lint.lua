@@ -1,9 +1,9 @@
 return {
   "nvim-lint",
-  enabled = nixCats('general') or false,
+  enabled = nixCats("general") or false,
   event = "FileType",
-  after = function (plugin)
-    require('lint').linters_by_ft = {
+  after = function(plugin)
+    require("lint").linters_by_ft = {
       -- NOTE: download some linters in lspsAndRuntimeDeps
       -- and configure them here
       -- markdown = {'vale',},

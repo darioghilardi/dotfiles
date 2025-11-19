@@ -1,6 +1,8 @@
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 
+-- stylua: ignore start
+
 -- General
 vim.keymap.set("i", "fd", "<esc>", { silent = true, desc = "Back to normal mode" })
 vim.keymap.set("n", "-", function() Snacks.explorer.open() end, { desc = 'Snacks Explorer' })
@@ -75,3 +77,5 @@ vim.keymap.set({"n", "v", "x"}, '<leader>Y', '"+yy', { noremap = true, silent = 
 vim.keymap.set({'n', 'v', 'x'}, '<leader>p', '"+p', { noremap = true, silent = true, desc = 'Paste from clipboard' })
 vim.keymap.set('i', '<C-p>', '<C-r><C-p>+', { noremap = true, silent = true, desc = 'Paste from clipboard from within insert mode' })
 vim.keymap.set("x", "<leader>P", '"_dP', { noremap = true, silent = true, desc = 'Paste over selection without erasing unnamed register' })
+
+-- stylua: ignore end

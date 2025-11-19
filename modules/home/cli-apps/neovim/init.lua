@@ -64,21 +64,21 @@ vim.o.termguicolors = true
 -- [[ Disable auto comment on enter ]]
 -- See :help formatoptions
 vim.api.nvim_create_autocmd("FileType", {
-	desc = "remove formatoptions",
-	callback = function()
-		vim.opt.formatoptions:remove({ "c", "r", "o" })
-	end,
+  desc = "remove formatoptions",
+  callback = function()
+    vim.opt.formatoptions:remove({ "c", "r", "o" })
+  end,
 })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-	callback = function()
-		vim.highlight.on_yank()
-	end,
-	group = highlight_group,
-	pattern = "*",
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = highlight_group,
+  pattern = "*",
 })
 
 vim.g.netrw_liststyle = 0
@@ -92,34 +92,34 @@ vim.g.netrw_banner = 0
 vim.cmd.colorscheme("onedark")
 
 require("snacks").setup({
-	explorer = {},
-	picker = {},
-	bigfile = {},
-	image = {},
-	lazygit = {},
-	terminal = {},
-	rename = {},
-	notifier = {},
-	indent = {},
-	gitbrowse = {},
-	scope = {},
+  explorer = {},
+  picker = {},
+  bigfile = {},
+  image = {},
+  lazygit = {},
+  terminal = {},
+  rename = {},
+  notifier = {},
+  indent = {},
+  gitbrowse = {},
+  scope = {},
 })
 
 -- [[ Keymaps ]]
 require("keymaps")
 
 require("lze").load({
-	require("plugins/blink-cmp"),
-	require("plugins/nvim-treesitter"),
-	require("plugins/mini-nvim"),
-	require("plugins/vim-startuptime"),
-	require("plugins/lualine-nvim"),
-	require("plugins/gitsigns-nvim"),
-	require("plugins/which-key-nvim"),
-	require("plugins/nvim-lint"),
-	require("plugins/conform-nvim"),
-	require("plugins/nvim-dap"),
-	require("plugins/lazydev-nvim"),
+  require("plugins/blink-cmp"),
+  require("plugins/nvim-treesitter"),
+  require("plugins/mini-nvim"),
+  require("plugins/vim-startuptime"),
+  require("plugins/lualine-nvim"),
+  require("plugins/gitsigns-nvim"),
+  require("plugins/which-key-nvim"),
+  require("plugins/nvim-lint"),
+  require("plugins/conform-nvim"),
+  require("plugins/nvim-dap"),
+  require("plugins/lazydev-nvim"),
 })
 
 -- NOTE: Register a handler from lzextras. This one makes it so that
@@ -130,14 +130,14 @@ require("lze").load({
 require("lze").register_handlers(require("lzextras").lsp)
 -- also replace the fallback filetype list retrieval function with a slightly faster one
 require("lze").h.lsp.set_ft_fallback(function(name)
-	return dofile(nixCats.pawsible({ "allPlugins", "opt", "nvim-lspconfig" }) .. "/lsp/" .. name .. ".lua").filetypes
-		or {}
+  return dofile(nixCats.pawsible({ "allPlugins", "opt", "nvim-lspconfig" }) .. "/lsp/" .. name .. ".lua").filetypes
+    or {}
 end)
 
 -- LSP config
 require("lze").load({
-	require("plugins/nvim-lspconfig"),
-	require("plugins/lua-ls"),
-	require("plugins/nixd"),
-	require("plugins/elixir-tools"),
+  require("plugins/nvim-lspconfig"),
+  require("plugins/lua-ls"),
+  require("plugins/nixd"),
+  require("plugins/elixir-tools"),
 })

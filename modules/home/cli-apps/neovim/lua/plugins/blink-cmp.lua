@@ -1,19 +1,19 @@
 return {
   "blink.cmp",
-  enabled = nixCats('general') or false,
+  enabled = nixCats("general") or false,
   event = "DeferredUIEnter",
   on_require = "blink",
-  after = function (plugin)
+  after = function(plugin)
     require("blink.cmp").setup({
       -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
       -- See :h blink-cmp-config-keymap for configuring keymaps
-      keymap = { preset = 'default' },
+      keymap = { preset = "default" },
       appearance = {
-        nerd_font_variant = 'mono'
+        nerd_font_variant = "mono",
       },
-      signature = { enabled = true, },
+      signature = { enabled = true },
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer' },
+        default = { "lsp", "path", "snippets", "buffer" },
       },
     })
   end,

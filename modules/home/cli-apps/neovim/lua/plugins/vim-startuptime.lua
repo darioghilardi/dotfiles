@@ -1,6 +1,6 @@
 return {
   "vim-startuptime",
-  enabled = nixCats('general') or false,
+  enabled = nixCats("general") or false,
   cmd = { "StartupTime" },
   before = function(_)
     vim.g.startuptime_event_width = 0

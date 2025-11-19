@@ -1,8 +1,8 @@
 return {
   "nixd",
-  enabled = nixCats('nix') or false,
+  enabled = nixCats("nix") or false,
   lsp = {
-    filetypes = { 'nix' },
+    filetypes = { "nix" },
     settings = {
       nixd = {
         -- nixd requires some configuration.
@@ -18,22 +18,22 @@ return {
         options = {
           nixos = {
             -- nixdExtras.nixos_options = ''(builtins.getFlake "path:${builtins.toString inputs.self.outPath}").nixosConfigurations.configname.options''
-            expr = nixCats.extra("nixdExtras.nixos_options")
+            expr = nixCats.extra("nixdExtras.nixos_options"),
           },
           ["home-manager"] = {
             -- nixdExtras.home_manager_options = ''(builtins.getFlake "path:${builtins.toString inputs.self.outPath}").homeConfigurations.configname.options''
-            expr = nixCats.extra("nixdExtras.home_manager_options")
-          }
+            expr = nixCats.extra("nixdExtras.home_manager_options"),
+          },
         },
         formatting = {
-          command = { "alejandra" }
+          command = { "alejandra" },
         },
         diagnostic = {
           suppress = {
-            "sema-escaping-with"
-          }
-        }
-      }
+            "sema-escaping-with",
+          },
+        },
+      },
     },
   },
 }
