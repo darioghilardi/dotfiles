@@ -3,6 +3,12 @@ root: ~/www
 enable_pane_titles: true
 
 windows:
+  - editor:
+      root: ~/www/nabla_core
+      pre_window: direnv allow .
+      panes:
+        - echo "editor"
+
   - nablacore:
       root: ~/www/nabla_core
       layout: even-horizontal
@@ -11,19 +17,19 @@ windows:
         - mps
         - just up
 
-  # - preprocessor:
-  #     root: /mnt/psf/www/new-preprocessor
-  #     layout: even-horizontal
-  #     pre_window: direnv allow .
-  #     panes:
-  #       - mix run --no-halt
-  #       - echo "test"
+  - preprocessor:
+      root: ~/www/preprocessor
+      layout: even-horizontal
+      pre_window: direnv allow .
+      panes:
+        - mix run --no-halt
+        - echo "test"
 
-  # - infrastructure:
-  #     root: /mnt/psf/www/infrastructure
-  #     pre_window: direnv allow .
-  #     panes:
-  #       - echo "editor"
+  - infrastructure:
+      root: ~/www/infrastructure
+      pre_window: direnv allow .
+      panes:
+        - echo "editor"
 
   # - oxiflow:
   #     root: /mnt/psf/www/oxiflow/web
