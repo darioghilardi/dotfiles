@@ -55,8 +55,11 @@ in {
           general = with pkgs; [
             lazygit
           ];
-          elixir = with pkgs;[
+          elixir = with pkgs; [
             elixir-ls
+          ];
+          fsharp = with pkgs; [
+            fsautocomplete
           ];
           lua = with pkgs; [
             lua-language-server
@@ -104,6 +107,9 @@ in {
           ];
           elixir = with pkgs.vimPlugins; [
             elixir-tools-nvim
+          ];
+          fsharp = with pkgs.vimPlugins; [
+            Ionide-vim
           ];
         };
 
@@ -165,6 +171,7 @@ in {
           categories = {
             general = true;
             elixir = true;
+            fsharp = true;
             lua = true;
             nix = true;
           };

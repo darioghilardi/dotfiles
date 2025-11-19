@@ -14,7 +14,7 @@ return {
         cmd = "/nix/store/cfb1qhw9i4iz3qhjvf2gmw27sj3cd1df-elixir-ls-0.29.3/bin/elixir-ls",
         settings = elixirls.settings({
           dialyzerEnabled = false,
-          enableTestLenses = true,
+          enableTestLenses = false,
         }),
       },
     })
