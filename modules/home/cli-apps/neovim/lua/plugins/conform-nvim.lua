@@ -1,11 +1,11 @@
 return {
   "conform.nvim",
-  enabled = nixCats('general') or false,
+  enabled = nixCats("general") or false,
   event = { "BufReadPost", "BufNewFile" },
   keys = {
     { "<leader>FF", desc = "[F]ormat [F]ile" },
   },
-  after = function (plugin)
+  after = function(plugin)
     local conform = require("conform")
 
     conform.setup({
@@ -14,8 +14,19 @@ return {
         timeout_ms = 500,
       },
       formatters_by_ft = {
-        lua = nixCats('lua') and { "stylua" } or nil,
-        elixir = { "mix" }
+        lua = nixCats("lua") and { "stylua" } or nil,
+        elixir = nixCats("elixir") and { "mix" },
+      },
+      formatters = {
+        stylua = {
+          args = {
+            "--indent-type",
+            "Spaces",
+            "--indent-width",
+            "2",
+            "-",
+          },
+        },
       },
     })
 
