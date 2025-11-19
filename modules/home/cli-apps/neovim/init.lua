@@ -140,4 +140,5 @@ require("lze").load({
   require("plugins/lua-ls"),
   require("plugins/nixd"),
   require("plugins/elixir-tools"),
+  require("plugins/ionide-vim"),
 })
