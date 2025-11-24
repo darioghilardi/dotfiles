@@ -122,7 +122,7 @@ in {
     Keynote = 409183694;
     Numbers = 409203825;
     Pages = 409201541;
-    Slack = 803453959;
+    # Slack = 803453959;
     "Spark - App email di Readdle" = 1176895641;
     Tailscale = 1475387142;
     "Things 3" = 904280696;
