@@ -58,6 +58,7 @@
     "spotify"
     "steam"
     "sublime-text"
+    "tailscale"
     "telegram-desktop"
     # "tor-browser"
     "transmission"
@@ -124,7 +125,7 @@ in {
     Pages = 409201541;
     # Slack = 803453959;
     "Spark - App email di Readdle" = 1176895641;
-    Tailscale = 1475387142;
+    # Tailscale = 1475387142;
     "Things 3" = 904280696;
     Twitter = 1482454543;
     "1password for Safari" = 1569813296;
