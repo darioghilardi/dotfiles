@@ -2,6 +2,7 @@
   lib,
   inputs,
   config,
+  system,
   pkgs,
   ...
 }:
@@ -17,12 +18,13 @@ in {
   config = mkIf cfg.enable {
     programs.tmux = {
       enable = true;
+      package = inputs.nixpkgs-stable.legacyPackages.${system}.tmux;
       keyMode = "vi";
       prefix = "C-b";
       escapeTime = 0;
       extraConfig = ''
-      set -g status-interval 0
-      set-option -ga terminal-overrides ",xterm-256color:Tc"
+        set -g status-interval 0
+        set-option -ga terminal-overrides ",xterm-256color:Tc"
       '';
 
       tmuxinator.enable = true;
@@ -35,7 +37,7 @@ in {
     };
 
     home.file."${config.xdg.configHome}/tmuxinator/dev.yml".text = builtins.readFile ./layouts/dev.yml;
-    home.file."${config.xdg.configHome}/tmux-powerline/config2.sh".text = builtins.readFile ./tmux-powerline/config.sh;
+    home.file."${config.xdg.configHome}/tmux-powerline/config.sh".text = builtins.readFile ./tmux-powerline/config.sh;
     home.file."${config.xdg.configHome}/tmux-powerline/themes/osaka.sh".text = builtins.readFile ./tmux-powerline/osaka.sh;
   };
 }
