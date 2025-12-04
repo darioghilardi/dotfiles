@@ -39,9 +39,7 @@
     # Will update using the autoupdates in chrome.
     # "google-chrome"
     "google-drive"
-    "inkscape"
     "keka"
-    "keyboard-maestro"
     "kobo"
     "linear-linear"
     "microsoft-teams"
@@ -64,12 +62,10 @@
     "transmission"
     "transmit"
     "typora"
-    "utm"
     "visual-studio-code"
     "vlc"
     "wezterm"
     "whatsapp"
-    "zed"
     "zoom"
   ];
 
@@ -127,7 +123,6 @@ in {
     "Spark - App email di Readdle" = 1176895641;
     # Tailscale = 1475387142;
     "Things 3" = 904280696;
-    Twitter = 1482454543;
     "1password for Safari" = 1569813296;
     wireguard = 1451685025;
   };
