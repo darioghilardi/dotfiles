@@ -69,6 +69,10 @@ in {
             nixd
             alejandra
           ];
+          javascript = with pkgs; [
+          ];
+          css = with pkgs; [
+          ];
         };
 
         # This is for plugins that will load at startup without using packadd:
@@ -110,6 +114,10 @@ in {
           ];
           fsharp = with pkgs.vimPlugins; [
             Ionide-vim
+          ];
+          javascript = with pkgs.vimPlugins; [
+          ];
+          css = with pkgs.vimPlugins; [
           ];
         };
 
@@ -174,6 +182,8 @@ in {
             fsharp = true;
             lua = true;
             nix = true;
+            javascript = true;
+            css = true;
           };
           # anything else to pass and grab in lua with `nixCats.extra`
           extra = {

@@ -18,6 +18,8 @@ return {
         elixir = nixCats("elixir") and { "mix" } or nil,
         nix = nixCats("nix") and { "alejandra" } or nil,
         fsharp = nixCats("fsharp") and { "fantomas" } or nil,
+        javascript = nixCats("javascript") and { "biome" } or nil,
+        css = nixCats("css") and { "biome" } or nil,
       },
       formatters = {
         stylua = {
