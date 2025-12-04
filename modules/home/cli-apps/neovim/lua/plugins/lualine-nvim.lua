@@ -38,7 +38,7 @@ return {
         lualine_x = { "filetype" },
       },
       tabline = {
-        lualine_a = { "buffers" },
+        lualine_a = { "filename" },
         lualine_b = { "lsp_progress" },
         lualine_z = { "tabs" },
       },
