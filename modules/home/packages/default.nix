@@ -42,6 +42,7 @@
     bfg-repo-cleaner
     zstd
     gitu
+    awscli2
 
     # Elixir, to be able to run mix commands when not in a project
     # beam.interpreters.erlangR25

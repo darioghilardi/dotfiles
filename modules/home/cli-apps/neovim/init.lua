@@ -93,7 +93,15 @@ vim.cmd.colorscheme("onedark")
 
 require("snacks").setup({
   explorer = {},
-  picker = {},
+  picker = {
+    win = {
+      input = {
+        keys = {
+          ["<Esc>"] = { "close", mode = { "n", "i" } },
+        },
+      },
+    },
+  },
   bigfile = {},
   image = {},
   lazygit = {},
@@ -104,6 +112,9 @@ require("snacks").setup({
   gitbrowse = {},
   scope = {},
 })
+
+-- Remove animation on indent guides
+vim.g.snacks_animate = false
 
 -- [[ Keymaps ]]
 require("keymaps")
