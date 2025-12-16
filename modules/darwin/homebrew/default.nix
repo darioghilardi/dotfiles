@@ -56,7 +56,7 @@
     "spotify"
     "steam"
     "sublime-text"
-    "tailscale"
+    "tailscale-app"
     "telegram-desktop"
     # "tor-browser"
     "transmission"
