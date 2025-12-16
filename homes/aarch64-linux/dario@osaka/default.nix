@@ -14,6 +14,7 @@ with lib.dariodots; {
       tmux = enabled;
     };
     cli-apps = {
+      awscli = enabled;
       bat = enabled;
       bottom = enabled;
       eza = enabled;
