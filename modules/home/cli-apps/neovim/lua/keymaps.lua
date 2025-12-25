@@ -79,4 +79,7 @@ vim.keymap.set({'n', 'v', 'x'}, '<leader>p', '"+p', { noremap = true, silent = t
 vim.keymap.set('i', '<C-p>', '<C-r><C-p>+', { noremap = true, silent = true, desc = 'Paste from clipboard from within insert mode' })
 vim.keymap.set("x", "<leader>P", '"_dP', { noremap = true, silent = true, desc = 'Paste over selection without erasing unnamed register' })
 
+-- vim-test
+vim.keymap.set("n", "<leader>a", "<cmd>TestSuite<CR>", { silent = true, noremap = true, desc = "Run test suite" })
+
 -- stylua: ignore end

@@ -105,6 +105,7 @@ in {
             nvim-dap
             nvim-dap-ui
             nvim-dap-virtual-text
+            vim-test
           ];
           lua = with pkgs.vimPlugins; [
             lazydev-nvim
