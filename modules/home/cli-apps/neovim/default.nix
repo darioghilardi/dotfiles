@@ -93,11 +93,13 @@ in {
           general = with pkgs.vimPlugins; [
             comment-nvim
             conform-nvim
+            diffview-nvim
             blink-cmp
             gitsigns-nvim
             lualine-nvim
             lualine-lsp-progress
             mini-nvim
+            neogit
             nvim-dap
             nvim-dap-ui
             nvim-dap-virtual-text

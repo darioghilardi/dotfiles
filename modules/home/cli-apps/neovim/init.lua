@@ -121,18 +121,19 @@ require("keymaps")
 
 require("lze").load({
   require("plugins/blink-cmp"),
-  require("plugins/nvim-treesitter"),
-  require("plugins/mini-nvim"),
-  require("plugins/vim-startuptime"),
-  require("plugins/lualine-nvim"),
-  require("plugins/gitsigns-nvim"),
-  require("plugins/which-key-nvim"),
-  require("plugins/nvim-lint"),
-  require("plugins/conform-nvim"),
-  require("plugins/nvim-dap"),
-  require("plugins/lazydev-nvim"),
-  require("plugins/vim-test"),
   require("plugins/comment-nvim"),
+  require("plugins/conform-nvim"),
+  require("plugins/gitsigns-nvim"),
+  require("plugins/lazydev-nvim"),
+  require("plugins/lualine-nvim"),
+  require("plugins/mini-nvim"),
+  require("plugins/neogit"),
+  require("plugins/nvim-dap"),
+  require("plugins/nvim-lint"),
+  require("plugins/nvim-treesitter"),
+  require("plugins/vim-startuptime"),
+  require("plugins/which-key-nvim"),
+  require("plugins/vim-test"),
 })
 
 -- NOTE: Register a handler from lzextras. This one makes it so that
