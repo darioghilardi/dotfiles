@@ -91,21 +91,22 @@ in {
         # use with packadd and an autocommand in config to achieve lazy loading
         optionalPlugins = {
           general = with pkgs.vimPlugins; [
-            mini-nvim
-            nvim-lspconfig
-            vim-startuptime
+            comment-nvim
+            conform-nvim
             blink-cmp
-            nvim-treesitter.withAllGrammars
+            gitsigns-nvim
             lualine-nvim
             lualine-lsp-progress
-            gitsigns-nvim
-            which-key-nvim
-            nvim-lint
-            conform-nvim
+            mini-nvim
             nvim-dap
             nvim-dap-ui
             nvim-dap-virtual-text
+            nvim-lint
+            nvim-treesitter.withAllGrammars
+            nvim-lspconfig
+            vim-startuptime
             vim-test
+            which-key-nvim
           ];
           lua = with pkgs.vimPlugins; [
             lazydev-nvim

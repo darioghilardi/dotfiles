@@ -132,6 +132,7 @@ require("lze").load({
   require("plugins/nvim-dap"),
   require("plugins/lazydev-nvim"),
   require("plugins/vim-test"),
+  require("plugins/comment-nvim"),
 })
 
 -- NOTE: Register a handler from lzextras. This one makes it so that
