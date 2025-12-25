@@ -17,6 +17,14 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       programs.ssh.enable = true;
+      programs.ssh.enableDefaultConfig = false;
+      programs.ssh.matchBlocks."*" = {
+        forwardAgent = false;
+        addKeysToAgent = "yes";
+        compression = true;
+        serverAliveInterval = 60;
+        serverAliveCountMax = 3;
+      };
     }
 
     (mkIf cfg.use1Password {
