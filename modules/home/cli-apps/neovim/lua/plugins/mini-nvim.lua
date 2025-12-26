@@ -4,6 +4,7 @@ return {
   event = "DeferredUIEnter",
   after = function(plugin)
     require("mini.pairs").setup()
+    require("mini.surround").setup()
     require("mini.icons").setup()
     require("mini.ai").setup()
   end,
