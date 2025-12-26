@@ -12,7 +12,7 @@ with lib.dariodots; let
   user = config.dariodots.user;
 in {
   options.dariodots.tools.tmux = with types; {
-    enable = mkBoolOpt false "Whether or not to enable git.";
+    enable = mkBoolOpt false "Whether or not to enable tmux.";
   };
 
   config = mkIf cfg.enable {
@@ -25,19 +25,18 @@ in {
       extraConfig = ''
         set -g status-interval 0
         set-option -ga terminal-overrides ",xterm-256color:Tc"
+        set -g @tmux_power_theme 'moon'
       '';
 
       tmuxinator.enable = true;
 
       plugins = with pkgs; [
-        {
-          plugin = tmuxPlugins.tmux-powerline;
-        }
+        tmuxPlugins.tmux-powerline
       ];
     };
 
     home.file."${config.xdg.configHome}/tmuxinator/dev.yml".text = builtins.readFile ./layouts/dev.yml;
     home.file."${config.xdg.configHome}/tmux-powerline/config.sh".text = builtins.readFile ./tmux-powerline/config.sh;
-    home.file."${config.xdg.configHome}/tmux-powerline/themes/osaka.sh".text = builtins.readFile ./tmux-powerline/osaka.sh;
+    home.file."${config.xdg.configHome}/tmux-powerline/themes/tmux-power.sh".text = builtins.readFile ./tmux-powerline/tmux-power.sh;
   };
 }
