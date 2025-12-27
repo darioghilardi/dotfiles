@@ -23,6 +23,9 @@ in {
       prefix = "C-b";
       escapeTime = 0;
       extraConfig = ''
+        # Increase scrollback buffer size from 2000 to 50000 lines
+        set -g history-limit 50000
+
         set -g status-interval 0
         set-option -ga terminal-overrides ",xterm-256color:Tc"
         set -g @tmux_power_theme 'moon'
