@@ -94,6 +94,11 @@ vim.cmd.colorscheme("onedark")
 require("snacks").setup({
   explorer = {},
   picker = {
+    sources = {
+      files = { hidden = true },
+      grep = { hidden = true },
+      explorer = { hidden = true },
+    },
     win = {
       input = {
         keys = {
