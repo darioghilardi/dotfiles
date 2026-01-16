@@ -28,6 +28,11 @@
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
 
+    plugins-treesitter-textobjects = {
+      url = "github:nvim-treesitter/nvim-treesitter-textobjects/main";
+      flake = false;
+    };
+
     mac-app-util = {
       url = "github:hraban/mac-app-util";
     };
