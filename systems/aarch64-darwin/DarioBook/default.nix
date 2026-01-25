@@ -18,5 +18,14 @@ with lib.dariodots; {
     };
   };
 
+  nix.package = pkgs.nix.overrideAttrs (old: {
+    doCheck = false;
+    doInstallCheck = false;
+
+    mesonFlags =
+      (old.mesonFlags or [])
+      ++ ["-Dunit-tests=false"];
+  });
+
   system.stateVersion = 4;
 }

@@ -53,6 +53,7 @@ in {
         # this includes LSPs
         lspsAndRuntimeDeps = {
           general = with pkgs; [
+            tree-sitter
             lazygit
           ];
           elixir = with pkgs; [

@@ -96,16 +96,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1768220509,
-        "narHash": "sha256-8wMrJP/Xk5Dkm0TxzaERLt3eGFEhHTWaJKUpK3AoL4o=",
+        "lastModified": 1767634391,
+        "narHash": "sha256-owcSz2ICqTSvhBbhPP+1eWzi88e54rRZtfCNE5E/wwg=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "7b1d394e7d9112d4060e12ef3271b38a7c43e83b",
+        "rev": "08585aacc3d6d6c280a02da195fdbd4b9cf083c2",
         "type": "github"
       },
       "original": {
         "owner": "LnL7",
-        "ref": "master",
+        "ref": "nix-darwin-25.11",
         "repo": "nix-darwin",
         "type": "github"
       }
@@ -139,11 +139,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766150702,
-        "narHash": "sha256-P0kM+5o+DKnB6raXgFEk3azw8Wqg5FL6wyl9jD+G5a4=",
+        "lastModified": 1768923567,
+        "narHash": "sha256-GVJ0jKsyXLuBzRMXCDY6D5J8wVdwP1DuQmmvYL/Vw/Q=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "916506443ecd0d0b4a0f4cf9d40a3c22ce39b378",
+        "rev": "00395d188e3594a1507f214a2f15d4ce5c07cb28",
         "type": "github"
       },
       "original": {
@@ -359,15 +359,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1768530555,
-        "narHash": "sha256-EBXKDho4t1YSgodAL6C8M3UTm8MGMZNQ9rQnceR5+6c=",
+        "lastModified": 1768949235,
+        "narHash": "sha256-TtjKgXyg1lMfh374w5uxutd6Vx2P/hU81aEhTxrO2cg=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "d21bee5abf9fb4a42b2fa7728bf671f8bb246ba6",
+        "rev": "75ed713570ca17427119e7e204ab3590cc3bf2a5",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
+        "ref": "release-25.11",
         "repo": "home-manager",
         "type": "github"
       }
@@ -397,11 +398,11 @@
     },
     "nixCats": {
       "locked": {
-        "lastModified": 1767604651,
-        "narHash": "sha256-itAnxzTpWpY1s3LA/oNngOuZDXT5U5JUZP5fApwx9gs=",
+        "lastModified": 1769085828,
+        "narHash": "sha256-TjhFIAtS628+/r3IuYWPcNa++mUMMDDG8PbSfFHXBiA=",
         "owner": "BirdeeHub",
         "repo": "nixCats-nvim",
-        "rev": "3c9bc4d7123e1b48d92f25ba505b889af541e897",
+        "rev": "43fbf4d12b0a613f1a792503da4bb2bf270173c7",
         "type": "github"
       },
       "original": {
@@ -441,18 +442,18 @@
         "type": "github"
       }
     },
-    "nixpkgs-stable": {
+    "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1768323494,
-        "narHash": "sha256-yBXJLE6WCtrGo7LKiB6NOt6nisBEEkguC/lq/rP3zRQ=",
+        "lastModified": 1769298235,
+        "narHash": "sha256-6LYNeTHX7779CiR4oqhG4C6u2NIUeZUOfITHgywaRlQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "2c3e5ec5df46d3aeee2a1da0bfedd74e21f4bf3a",
+        "rev": "26b0093bc977081dc7653175a3fadab11e07bed7",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-25.11",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -507,16 +508,16 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1768395095,
-        "narHash": "sha256-ZhuYJbwbZT32QA95tSkXd9zXHcdZj90EzHpEXBMabaw=",
+        "lastModified": 1769089682,
+        "narHash": "sha256-9yA/LIuAVQq0lXelrZPjLuLVuZdm03p8tfmHhnDIkms=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "13868c071cc73a5e9f610c47d7bb08e5da64fdd5",
+        "rev": "078d69f03934859a181e81ba987c2bb033eebfc5",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
+        "ref": "nixos-25.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -538,11 +539,11 @@
     "plugins-treesitter-textobjects": {
       "flake": false,
       "locked": {
-        "lastModified": 1768302252,
-        "narHash": "sha256-kbnZaUtIKXoBj4tFiQWSpGmI6Doke7PjoetqIhsI8lc=",
+        "lastModified": 1769263844,
+        "narHash": "sha256-9qpTwJqfkpF/M7MVE2VgEU9ptIYUcNvWrWM0nQxXo7M=",
         "owner": "nvim-treesitter",
         "repo": "nvim-treesitter-textobjects",
-        "rev": "baa6b4ec28c8be5e4a96f9b1b6ae9db85ec422f8",
+        "rev": "52bda74e087034408e2d563cb4499c1601038f9d",
         "type": "github"
       },
       "original": {
@@ -563,7 +564,7 @@
         "mac-app-util": "mac-app-util",
         "nixCats": "nixCats",
         "nixpkgs": "nixpkgs_5",
-        "nixpkgs-stable": "nixpkgs-stable",
+        "nixpkgs-unstable": "nixpkgs-unstable",
         "plugins-treesitter-textobjects": "plugins-treesitter-textobjects",
         "snowfall-lib": "snowfall-lib",
         "vscode-server": "vscode-server"

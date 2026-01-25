@@ -18,7 +18,7 @@ in {
   config = mkIf cfg.enable {
     programs.tmux = {
       enable = true;
-      package = inputs.nixpkgs-stable.legacyPackages.${system}.tmux;
+      package = inputs.nixpkgs.legacyPackages.${system}.tmux;
       keyMode = "vi";
       prefix = "C-b";
       escapeTime = 0;
