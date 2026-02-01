@@ -8,6 +8,7 @@ with lib.dariodots; {
   dariodots = {
     apps = {
       kitty = disabled;
+      opencode = enabled;
       wezterm = enabled;
       zed = enabled;
     };
