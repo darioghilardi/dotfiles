@@ -24,6 +24,7 @@ with lib.dariodots; {
       lazygit = enabled;
       neovim = enabled;
       ripgrep = enabled;
+      script-directory = enabled;
       zellij = enabled;
       zoxide = enabled;
       #awscli = enabled;

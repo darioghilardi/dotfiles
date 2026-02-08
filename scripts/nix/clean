@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+sudo nh clean all --ask
+nix store optimise

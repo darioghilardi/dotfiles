@@ -58,31 +58,10 @@
 
     # Set editor
     set -gx EDITOR nvim
+
+    # Set sd root
+    set -gx SD_ROOT "${config.home.homeDirectory}/dotfiles/scripts";
   '';
-
-  programs.fish.functions = {
-    # Ask for confirmation when executing a command.
-    read_confirm = ''
-      while true
-        read -l -P 'Do you want to continue? [y/N] ' confirm
-        switch $confirm
-          case Y y
-            return 0
-          case ''' N n
-            return 1
-        end
-      end
-    '';
-
-    # Renames electronic invoices for the crappy BlueNext tool.
-    invoice_rename = ''
-      if read_confirm
-        for j in ./*
-          mv -v -- $j (uuidgen | string replace -a '-' ''')".xml"
-        end
-      end
-    '';
-  };
 
   programs.fish.interactiveShellInit = ''
     # Set Fish colors.
@@ -99,16 +78,6 @@
   '';
 
   programs.fish.shellAliases = {
-    # Nix
-    # cd ~/dotfiles && nix build .#darwinConfigurations.DarioBook.system && sudo ./result/sw/bin/darwin-rebuild switch --flake .'';
-    dbb = ''
-      cd ~/dotfiles && nix build .#darwinConfigurations.DarioBook.system && nh darwin switch .'';
-    dab = ''
-      cd ~/dotfiles && nix build .#darwinConfigurations.DarioAir.system && nh darwin switch .'';
-    rebuild-osaka = ''
-      pushd ~/dotfiles
-      sudo nixos-rebuild switch --flake .#osaka
-      popd'';
     flakeup = "nix flake update ~/dotfiles";
     nixclean = "sudo nh clean all --ask && nix store optimise";
 
