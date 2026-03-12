@@ -79,6 +79,8 @@
     };
   in
     lib.mkFlake {
+      channels-config.allowUnfree = true;
+
       # External modules only for nixos
       systems.modules.nixos = with inputs; [
         agenix.nixosModules.default

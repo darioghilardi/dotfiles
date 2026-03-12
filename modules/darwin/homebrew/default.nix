@@ -29,6 +29,7 @@
     "affinity"
     "alfred"
     "balenaetcher"
+    "claude-code"
     "discord"
     # Stopped working on 22/7/25
     # "docker"
