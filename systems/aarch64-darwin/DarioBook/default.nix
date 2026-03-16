@@ -15,7 +15,6 @@ with lib.dariodots; {
   dariodots = {
     apps = {
       ice = enabled;
-      lima = enabled;
     };
   };
 
