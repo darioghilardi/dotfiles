@@ -54,7 +54,7 @@
     # the times, even if it says "updated".
     # "setapp"
     "signal"
-    "spotify"
+    # "spotify"
     "steam"
     "sublime-text"
     "tailscale-app"
@@ -121,7 +121,7 @@ in {
     Numbers = 409203825;
     Pages = 409201541;
     # Slack = 803453959;
-    "Spark - App email di Readdle" = 1176895641;
+    # "Spark - App email di Readdle" = 1176895641;
     # Tailscale = 1475387142;
     # "Things 3" = 904280696;
     "1password for Safari" = 1569813296;
