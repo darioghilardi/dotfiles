@@ -133,7 +133,7 @@ in {
   homebrew.casks = greedyCasks;
 
   # Until these are managed by nix.
-  homebrew.brews = ["awscli" "php" "duckdb" "cloudflare/cloudflare/cf-terraforming"]; # [ "unixodbc" "wxwidgets" ];
+  homebrew.brews = ["awscli" "php" "opencode" "duckdb" "cloudflare/cloudflare/cf-terraforming"]; # [ "unixodbc" "wxwidgets" ];
 
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK =
