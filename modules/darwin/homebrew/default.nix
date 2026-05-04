@@ -42,7 +42,7 @@
     "google-drive"
     "keka"
     "kobo"
-    "linear-linear"
+    "linear"
     "microsoft-teams"
     "notion"
     "omnidisksweeper"
