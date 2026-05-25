@@ -69,10 +69,6 @@ with lib.${namespace}; {
   };
 
   dariodots.services = {
-    samba = {
-      enable = true;
-    };
-
     nfs = {
       enable = true;
       exports = [
@@ -114,7 +110,7 @@ with lib.${namespace}; {
     dario = {
       isNormalUser = true;
       shell = pkgs.fish;
-      extraGroups = ["wheel" "samba"];
+      extraGroups = ["wheel"];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJlcsiLTBnj6tGb5P49Zcg5svvT6qIDLbfar7ac8YLwi"
       ];
