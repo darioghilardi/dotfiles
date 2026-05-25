@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+pushd ~/dotfiles
+nix run github:serokell/deploy-rs -- --hostname saturn .#saturn
+popd
