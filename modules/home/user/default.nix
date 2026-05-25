@@ -12,9 +12,7 @@ with lib.dariodots; let
   is-darwin = pkgs.stdenv.isDarwin;
 
   home-directory =
-    if cfg.name == null
-    then null
-    else if is-darwin
+    if is-darwin
     then "/Users/${cfg.username}"
     else "/home/${cfg.username}";
 in {
