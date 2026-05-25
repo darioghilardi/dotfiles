@@ -9,14 +9,9 @@ with lib;
 with lib.dariodots; {
   environment.systemPackages = with pkgs; [
     terminal-notifier
+    deploy-rs
     # inputs.alejandra.defaultPackage.aarch64-darwin
   ];
-
-  dariodots = {
-    apps = {
-      ice = enabled;
-    };
-  };
 
   nix.package = pkgs.nix.overrideAttrs (old: {
     doCheck = false;

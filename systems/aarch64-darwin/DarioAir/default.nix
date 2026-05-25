@@ -11,11 +11,5 @@ with lib.dariodots; {
     inputs.alejandra.defaultPackage.aarch64-darwin
   ];
 
-  dariodots = {
-    apps = {
-      ice = enabled;
-    };
-  };
-
   system.stateVersion = 4;
 }
