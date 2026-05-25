@@ -73,6 +73,17 @@ with lib.${namespace}; {
       enable = true;
     };
 
+    nfs = {
+      enable = true;
+      exports = [
+        {
+          path = "/home/storage";
+          clients = "100.64.0.0/10";
+          options = "rw,sync,no_subtree_check,insecure";
+        }
+      ];
+    };
+
     tailscale = {
       enable = true;
       autoconnect = {
