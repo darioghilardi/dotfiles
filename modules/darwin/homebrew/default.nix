@@ -47,7 +47,7 @@
     "notion"
     "omnidisksweeper"
     "postman"
-    "powershell"
+    # "powershell"
     "qmk-toolbox"
     "rectangle-pro"
     # setapp is commented because it gets uninstalled by brew all
@@ -104,9 +104,6 @@ in {
   };
 
   homebrew.taps = [
-    "homebrew/cask-fonts"
-    "homebrew/cask-versions"
-    "homebrew/services"
     "nrlquaker/createzap"
     "cloudflare/cloudflare"
   ];
@@ -116,7 +113,7 @@ in {
   # Commented apps suffer continual update issue:
   # https://github.com/malob/nixpkgs/issues/9
   homebrew.masApps = {
-    "GIPHY Capture. The GIF Maker" = 668208984;
+    # "GIPHY Capture. The GIF Maker" = 668208984;
     Keynote = 409183694;
     Numbers = 409203825;
     Pages = 409201541;
@@ -125,7 +122,7 @@ in {
     # Tailscale = 1475387142;
     # "Things 3" = 904280696;
     "1password for Safari" = 1569813296;
-    wireguard = 1451685025;
+    # wireguard = 1451685025;
   };
 
   # If an app isn't available in the Mac App Store, or the version in the App Store has
@@ -133,7 +130,7 @@ in {
   homebrew.casks = greedyCasks;
 
   # Until these are managed by nix.
-  homebrew.brews = ["awscli" "php" "opencode" "duckdb" "cloudflare/cloudflare/cf-terraforming"]; # [ "unixodbc" "wxwidgets" ];
+  homebrew.brews = ["awscli" "opencode" "duckdb" "cloudflare/cloudflare/cf-terraforming"]; # [ "unixodbc" "wxwidgets" ];
 
   # Configuration related to casks
   environment.variables.SSH_AUTH_SOCK =
