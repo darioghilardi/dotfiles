@@ -23,7 +23,6 @@ with lib.dariodots; {
       lazygit = enabled;
       neovim = enabled;
       ripgrep = enabled;
-      tmux = enabled;
       zellij = enabled;
       zoxide = enabled;
       #awscli = enabled;
@@ -31,6 +30,7 @@ with lib.dariodots; {
     tools = {
       direnv = enabled;
       git = enabled;
+      tmux = enabled;
       ssh = {
         enable = true;
         use1Password = true;
