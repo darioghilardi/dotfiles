@@ -49,7 +49,7 @@
   boot.zfs.extraPools = ["zpool_os" "zpool_storage"];
   boot.zfs.devNodes = "/dev/disk/by-id";
 
-  boot.kernelParams = ["ip=192.168.8.102::192.168.8.1:255.255.255.0:saturn::none"];
+  boot.kernelParams = ["ip=192.168.1.102::192.168.1.1:255.255.255.0:saturn::none"];
 
   boot.initrd = {
     supportedFilesystems = ["zfs"];
