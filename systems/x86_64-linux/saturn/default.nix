@@ -60,6 +60,12 @@ with lib.${namespace}; {
     "restic/env".file = ../../../secrets/restic/env.age;
     "restic/repo".file = ../../../secrets/restic/repo.age;
     "restic/password".file = ../../../secrets/restic/password.age;
+    "healthchecks/borgbackup" = {
+      file = ../../../secrets/healthchecks/borgbackup.age;
+      owner = "borgbackup";
+      group = "borgbackup";
+      mode = "0400";
+    };
   };
 
   # Clean up packages automatically
@@ -75,7 +81,7 @@ with lib.${namespace}; {
         {
           path = "/home/storage";
           clients = "100.64.0.0/10";
-          options = "rw,sync,no_subtree_check,insecure";
+          options = "rw,sync,no_subtree_check,insecure,all_squash,anonuid=1000,anongid=100";
         }
       ];
     };
@@ -101,6 +107,7 @@ with lib.${namespace}; {
       paths = ["/home/storage"];
       repo = "ssh://u433810@u433810.your-storagebox.de:23/./backups/saturn";
       passwordFile = config.age.secrets."borgbackup/password".path;
+      healthchecksUrlFile = config.age.secrets."healthchecks/borgbackup".path;
     };
   };
 

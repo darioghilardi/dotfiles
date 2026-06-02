@@ -74,6 +74,28 @@ Backups are executed daily with:
 
 ### BorgBackup
 
+The SSH connection uses post-quantum key exchange (`mlkem768x25519-sha256`) to avoid warnings from Hetzner's newer OpenSSH.
+
+Job status is monitored via healthchecks.io. The ping URL is stored as an agenix secret at `secrets/healthchecks/borgbackup.age`. The job pings `/start` before running and the base URL on success. On failure, systemd triggers a one-shot service that pings `/fail`.
+
+To trigger the job manually:
+
+```
+systemctl start borgbackup-job-storage
+```
+
+To follow the logs:
+
+```
+journalctl -u borgbackup-job-storage -f
+```
+
+To test the failure notification:
+
+```
+systemctl start borgbackup-job-storage-notify-fail
+```
+
 Some useful commands to interact with Borg Backup.
 
 View the list of backups with the follwing command (repository password is required):

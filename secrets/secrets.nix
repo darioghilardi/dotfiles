@@ -8,4 +8,5 @@ in {
   "restic/password.age".publicKeys = [dariobook saturn];
   "restic/env.age".publicKeys = [dariobook saturn];
   "borgbackup/password.age".publicKeys = [dariobook saturn saturn-borgbackup];
+  "healthchecks/borgbackup.age".publicKeys = [dariobook saturn];
 }
