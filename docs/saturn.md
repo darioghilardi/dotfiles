@@ -76,6 +76,18 @@ Backups are executed daily with:
 
 The SSH connection uses post-quantum key exchange (`mlkem768x25519-sha256`) to avoid warnings from Hetzner's newer OpenSSH.
 
+#### File permissions and ACLs
+
+Borgbackup runs as the `borgbackup` user but files in `/home/storage` may be owned by other users (e.g. written via NFS as `dario`). POSIX ACLs grant borgbackup read access without changing file ownership.
+
+The ZFS dataset must have ACL support enabled. This is a one-time operation that persists in pool metadata:
+
+```
+zfs set acltype=posixacl xattr=sa zpool_storage/storage
+```
+
+The NixOS config then runs `setfacl -R -m u:borgbackup:rX,d:u:borgbackup:rX /home/storage` automatically before each backup via `borgbackup-job-storage-acl.service`. The `d:` prefix sets a default ACL so newly created files inherit the permission.
+
 Job status is monitored via healthchecks.io. The ping URL is stored as an agenix secret at `secrets/healthchecks/borgbackup.age`. The job pings `/start` before running and the base URL on success. On failure, systemd triggers a one-shot service that pings `/fail`.
 
 To trigger the job manually:

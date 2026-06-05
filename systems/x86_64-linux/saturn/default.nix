@@ -66,6 +66,7 @@ with lib.${namespace}; {
       group = "borgbackup";
       mode = "0400";
     };
+    "healthchecks/restic".file = ../../../secrets/healthchecks/restic.age;
   };
 
   # Clean up packages automatically
@@ -100,6 +101,7 @@ with lib.${namespace}; {
       envFile = config.age.secrets."restic/env".path;
       repositoryFile = config.age.secrets."restic/repo".path;
       passwordFile = config.age.secrets."restic/password".path;
+      healthchecksUrlFile = config.age.secrets."healthchecks/restic".path;
     };
 
     borgbackup = {

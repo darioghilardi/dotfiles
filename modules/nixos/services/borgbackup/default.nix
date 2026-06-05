@@ -30,8 +30,8 @@ in {
         paths = cfg.paths;
 
         exclude = [
-          ".DS_Store"
-          "._*"
+          "sh:**/.DS_Store"
+          "sh:**/._*"
         ];
 
         encryption = {
@@ -54,6 +54,18 @@ in {
         '';
         postHook = optionalString hasHealthchecks ''
           ${pkgs.curl}/bin/curl -fsS -m 10 --retry 3 "$(cat ${cfg.healthchecksUrlFile})" || true
+        '';
+      };
+    };
+
+    systemd.services."borgbackup-job-storage-acl" = {
+      description = "Set ACLs for borgbackup on backup paths";
+      before = ["borgbackup-job-storage.service"];
+      wantedBy = ["borgbackup-job-storage.service"];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = pkgs.writeShellScript "borgbackup-acl-setup" ''
+          ${pkgs.acl}/bin/setfacl -R -m u:${user}:rX,d:u:${user}:rX ${lib.escapeShellArgs cfg.paths}
         '';
       };
     };
