@@ -112,23 +112,6 @@ in {
     "cloudflare/cloudflare"
   ];
 
-  # Prefer installing application from the Mac App Store
-  #
-  # Commented apps suffer from repetitive update issue:
-  # https://github.com/malob/nixpkgs/issues/9
-  homebrew.masApps = {
-    # "GIPHY Capture. The GIF Maker" = 668208984;
-    # Keynote = 409183694;
-    # Numbers = 409203825;
-    # Pages = 409201541;
-    # Slack = 803453959;
-    # "Spark - App email di Readdle" = 1176895641;
-    # Tailscale = 1475387142;
-    # "Things 3" = 904280696;
-    "1password for Safari" = 1569813296;
-    # wireguard = 1451685025;
-  };
-
   # If an app isn't available in the Mac App Store, or the version in the App Store has
   # limitiations, e.g., Transmit, install the Homebrew Cask.
   homebrew.casks = greedyCasks;
