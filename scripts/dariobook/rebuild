@@ -4,5 +4,15 @@ set -euo pipefail
 
 pushd ~/dotfiles
 nix build .#darwinConfigurations.DarioBook.system
+
+# Run brew before nh so its logs are visible (nh suppresses brew output).
+# Reuse the exact `brew bundle` invocation from the freshly-built system so
+# the brew step inside nh becomes a no-op. The command already carries
+# `--force` via homebrew.onActivation.extraFlags (see modules/darwin/homebrew).
+brew_cmd=$(grep -oE "brew bundle --file=.*" result/activate | head -1)
+if [ -n "$brew_cmd" ]; then
+  eval "$brew_cmd"
+fi
+
 nh darwin switch --show-activation-logs --print-build-logs .
 popd

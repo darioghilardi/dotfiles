@@ -101,6 +101,10 @@ in {
     upgrade = true;
     autoUpdate = true;
     cleanup = "zap";
+    # Homebrew 4.7+ requires `--force` (or HOMEBREW_ASK) for `brew bundle
+    # --cleanup`. Activation runs non-interactively, so without this the
+    # `--cleanup --zap` invocation aborts and nix-darwin activation fails.
+    extraFlags = ["--force"];
   };
 
   homebrew.taps = [
@@ -110,13 +114,13 @@ in {
 
   # Prefer installing application from the Mac App Store
   #
-  # Commented apps suffer continual update issue:
+  # Commented apps suffer from repetitive update issue:
   # https://github.com/malob/nixpkgs/issues/9
   homebrew.masApps = {
     # "GIPHY Capture. The GIF Maker" = 668208984;
-    Keynote = 409183694;
-    Numbers = 409203825;
-    Pages = 409201541;
+    # Keynote = 409183694;
+    # Numbers = 409203825;
+    # Pages = 409201541;
     # Slack = 803453959;
     # "Spark - App email di Readdle" = 1176895641;
     # Tailscale = 1475387142;
