@@ -181,7 +181,7 @@
     mtw = "mix test.watch";
     mx = "mix xref";
     mf = "mix format";
-    yup = "cd assets/ && yarn && cd ..";
+    yup = "cd assets/ && npm install && cd ..";
 
     # Terraform
     tf = "tofu";

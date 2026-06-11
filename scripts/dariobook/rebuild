@@ -11,7 +11,13 @@ nix build .#darwinConfigurations.DarioBook.system
 # `--force` via homebrew.onActivation.extraFlags (see modules/darwin/homebrew).
 brew_cmd=$(grep -oE "brew bundle --file=.*" result/activate | head -1)
 if [ -n "$brew_cmd" ]; then
-  eval "$brew_cmd"
+  # nix-darwin still emits the deprecated combined `brew bundle --cleanup`
+  # switch (Homebrew 6+). Reproduce it with the non-deprecated split: install
+  # the Brewfile, then run the `cleanup` subcommand. `--force` skips cleanup's
+  # interactive confirmation (activation runs non-interactively).
+  brewfile=$(echo "$brew_cmd" | grep -oE "\-\-file='[^']*'")
+  eval "brew bundle install $brewfile"
+  eval "brew bundle cleanup $brewfile --zap --force"
 fi
 
 nh darwin switch --show-activation-logs --print-build-logs .
