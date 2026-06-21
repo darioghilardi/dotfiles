@@ -67,6 +67,12 @@ with lib.${namespace}; {
       mode = "0400";
     };
     "healthchecks/restic".file = ../../../secrets/healthchecks/restic.age;
+    "filebrowser/password" = {
+      file = ../../../secrets/filebrowser/password.age;
+      owner = "dario";
+      group = "users";
+      mode = "0400";
+    };
   };
 
   # Clean up packages automatically
@@ -93,6 +99,14 @@ with lib.${namespace}; {
         enable = true;
         key = config.age.secrets."tailscale-key".path;
       };
+    };
+
+    filebrowser = {
+      enable = true;
+      root = "/home/storage";
+      user = "dario";
+      group = "users";
+      passwordFile = config.age.secrets."filebrowser/password".path;
     };
 
     restic = {

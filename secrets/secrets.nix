@@ -10,4 +10,5 @@ in {
   "borgbackup/password.age".publicKeys = [dariobook saturn saturn-borgbackup];
   "healthchecks/borgbackup.age".publicKeys = [dariobook saturn];
   "healthchecks/restic.age".publicKeys = [dariobook saturn];
+  "filebrowser/password.age".publicKeys = [dariobook saturn];
 }
