@@ -101,8 +101,11 @@ with lib.${namespace}; {
       };
     };
 
-    filebrowser = {
+    filebrowser-quantum = {
       enable = true;
+      # Not yet in the pinned nixos-25.11; pull just this package from unstable.
+      package = inputs.nixpkgs-unstable.legacyPackages.${system}.filebrowser-quantum;
+      port = 8080;
       root = "/home/storage";
       user = "dario";
       group = "users";
