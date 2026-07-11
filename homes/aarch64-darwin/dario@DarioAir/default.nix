@@ -35,6 +35,7 @@ with lib.dariodots; {
       ssh = {
         enable = true;
         use1Password = true;
+        onePasswordSshKeyItem = "DarioAir SSH Key";
       };
     };
   };

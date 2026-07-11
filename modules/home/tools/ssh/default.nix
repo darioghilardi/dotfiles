@@ -12,6 +12,7 @@ in {
   options.dariodots.tools.ssh = with types; {
     enable = mkBoolOpt false "Whether or not to enable ssh.";
     use1Password = mkBoolOpt false "Configure the 1password agent.";
+    onePasswordSshKeyItem = mkOpt str "DarioBook SSH Key" "Name of the 1Password item holding the SSH key for this host.";
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -49,7 +50,7 @@ in {
       # Generate ssh agent config for 1Password
       home.file.".config/1Password/ssh/agent.toml".text = ''
         [[ssh-keys]]
-        item = "DarioBook SSH Key"
+        item = "${cfg.onePasswordSshKeyItem}"
         vault = "Private"
       '';
     })
