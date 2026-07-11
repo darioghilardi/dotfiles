@@ -4,5 +4,7 @@ set -euo pipefail
 
 pushd ~/dotfiles
 nix build .#darwinConfigurations.DarioBook.system
+brew trust --taps cloudflare/cloudflare
+brew trust --formulae cloudflare/cloudflare/cf-terraforming
 nh darwin switch --show-activation-logs --print-build-logs .
 popd
