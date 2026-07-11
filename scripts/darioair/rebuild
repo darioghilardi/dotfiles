@@ -4,5 +4,5 @@ set -euo pipefail
 
 pushd ~/dotfiles
 nix build .#darwinConfigurations.DarioAir.system
-nh darwin switch .
+nh darwin switch --show-activation-logs --print-build-logs .
 popd
