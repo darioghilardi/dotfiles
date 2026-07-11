@@ -4,21 +4,5 @@ set -euo pipefail
 
 pushd ~/dotfiles
 nix build .#darwinConfigurations.DarioBook.system
-
-# Run brew before nh so its logs are visible (nh suppresses brew output).
-# Reuse the exact `brew bundle` invocation from the freshly-built system so
-# the brew step inside nh becomes a no-op. The command already carries
-# `--force` via homebrew.onActivation.extraFlags (see modules/darwin/homebrew).
-brew_cmd=$(grep -oE "brew bundle --file=.*" result/activate | head -1)
-if [ -n "$brew_cmd" ]; then
-  # nix-darwin still emits the deprecated combined `brew bundle --cleanup`
-  # switch (Homebrew 6+). Reproduce it with the non-deprecated split: install
-  # the Brewfile, then run the `cleanup` subcommand. `--force` skips cleanup's
-  # interactive confirmation (activation runs non-interactively).
-  brewfile=$(echo "$brew_cmd" | grep -oE "\-\-file='[^']*'")
-  eval "brew bundle install $brewfile"
-  eval "brew bundle cleanup $brewfile --zap --force"
-fi
-
 nh darwin switch --show-activation-logs --print-build-logs .
 popd

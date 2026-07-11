@@ -41,7 +41,13 @@ deploy --hostname MACHINE_IP/HOSTNAME .#saturn
 
 ## Starting the server
 
-The disks are encrypted so at any restart you need to:
+The disks are encrypted so at any restart you need to find the ip address of the server, as likely it's given through dhcp:
+
+```
+nix run nixpkgs#nmap -- -p 9999 --open -Pn 192.168.1.0/24
+```
+
+Then connect:
 
 ```
 ssh root@saturn -p 9999
