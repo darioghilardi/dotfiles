@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+#
+# verify-host — prove a host's system toplevel is unchanged between the old
+# (snowfall) baseline and the new (dendritic) tree, via an nvd store-path diff.
+#
+# Usage:
+#   scripts/verify-host <hostname>
+#
+# Refs (override via env):
+#   OLD   baseline flake ref   (default: <repo> — the snowfall config at the root)
+#   NEW   candidate flake ref  (default: path:<repo>/dendritic — new setup)
+#
+# OLD is the repo root as a plain working-tree ref: git-tracked files only, so
+# the untracked dendritic/ subfolder, .direnv/, and result symlink don't leak
+# into the baseline. NEW is a path: ref so in-progress, not-yet-committed aspect
+# files under dendritic/ are visible without `git add`.
+#
+# Examples:
+#   scripts/verify-host DarioAir
+#   OLD='git+file:///Users/dario/dotfiles?rev=384b89d' scripts/verify-host saturn
+#   NEW='path:/tmp/other-checkout' scripts/verify-host osaka
+#
+# Exit codes: 0 identical · 1 differs (nvd output shown) · 2 usage/build error
+
+set -euo pipefail
+
+HOST="${1:-}"
+if [[ -z "$HOST" ]]; then
+  echo "usage: verify-host <hostname>" >&2
+  exit 2
+fi
+
+ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
+OLD="${OLD:-${ROOT}}"
+NEW="${NEW:-path:${ROOT}/dendritic}"
+
+# nvd isn't guaranteed on PATH; fall back to running it from nixpkgs.
+if command -v nvd >/dev/null 2>&1; then
+  NVD=(nvd)
+else
+  NVD=(nix run nixpkgs#nvd --)
+fi
+
+# Warn about untracked .nix files: a git-based flake ref only sees git-tracked
+# files, so a not-yet-`git add`ed feature file is invisible and the diff would
+# silently understate the change. (A `path:` ref copies untracked files too, so
+# it's exempt.)
+if [[ "$NEW" == "$ROOT" || "$NEW" == "." || "$NEW" == git+file://* ]]; then
+  untracked="$(git -C "$ROOT" ls-files --others --exclude-standard -- '*.nix' || true)"
+  if [[ -n "$untracked" ]]; then
+    echo "warning: untracked .nix files are invisible to the flake — run 'git add' first:" >&2
+    sed 's/^/  /' <<<"$untracked" >&2
+    echo >&2
+  fi
+fi
+
+# Detect nixos vs darwin. The baseline (OLD) always has every host, so probe
+# there first, then fall back to NEW (in case a host only exists post-migration).
+detect_kind() {
+  local ref
+  for ref in "$OLD" "$NEW"; do
+    for kind in nixos darwin; do
+      if [[ "$(nix eval "${ref}#${kind}Configurations" \
+                --apply "l: builtins.elem \"${HOST}\" (builtins.attrNames l)" \
+                2>/dev/null)" == "true" ]]; then
+        echo "$kind"
+        return 0
+      fi
+    done
+  done
+  return 1
+}
+
+KIND="$(detect_kind)" || {
+  echo "error: '$HOST' is not a nixos or darwin configuration in either ref" >&2
+  exit 2
+}
+ATTR="${KIND}Configurations.${HOST}.config.system.build.toplevel"
+
+# During a host-by-host migration, NEW legitimately won't have the host yet.
+# Say so plainly instead of leaking a raw nix "attribute missing" error.
+if [[ "$(nix eval "${NEW}#${KIND}Configurations" \
+          --apply "l: builtins.elem \"${HOST}\" (builtins.attrNames l)" \
+          2>/dev/null)" != "true" ]]; then
+  echo "error: '$HOST' ($KIND) is not defined in NEW yet — not migrated." >&2
+  echo "       NEW = $NEW" >&2
+  exit 2
+fi
+
+echo "host:  $HOST ($KIND)"
+echo "attr:  $ATTR"
+echo "old:   $OLD"
+echo "new:   $NEW"
+echo
+
+echo ">> building old toplevel…" >&2
+old_path="$(nix build --no-link --print-out-paths "${OLD}#${ATTR}")"
+echo ">> building new toplevel…" >&2
+new_path="$(nix build --no-link --print-out-paths "${NEW}#${ATTR}")"
+echo
+
+if [[ "$old_path" == "$new_path" ]]; then
+  echo "IDENTICAL — same store path:"
+  echo "  $old_path"
+  exit 0
+fi
+
+"${NVD[@]}" diff "$old_path" "$new_path"
+echo
+echo "old: $old_path"
+echo "new: $new_path"
+exit 1
