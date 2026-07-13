@@ -1,0 +1,119 @@
+{inputs, ...}: let
+  lib = inputs.nixpkgs.lib.extend (final: _prev: {
+    dariodots = import ../../lib/dariodots {lib = final;};
+  });
+in {
+  flake.modules.darwin."homebrew" = {
+    config,
+    pkgs,
+    ...
+  }: let
+  inherit (lib) mkIf;
+
+  mkIfCaskPresent = cask: mkIf (lib.any (x: x == cask) config.homebrew.casks);
+
+  brewEnabled = config.homebrew.enable;
+
+  casks = [
+    "1password@beta"
+    "1password-cli@beta"
+    "airflow"
+    "affinity"
+    "alfred"
+    "balenaetcher"
+    "claude-code"
+    "discord"
+    # Stopped working on 22/7/25
+    # "docker"
+    # Stopped working on 21/4/25
+    # "dropbox"
+    "figma"
+    "firefox"
+    # Will update using the autoupdates in chrome.
+    # "google-chrome"
+    "google-drive"
+    "keka"
+    "kobo"
+    "linear"
+    "microsoft-teams"
+    "notion"
+    "omnidisksweeper"
+    "postman"
+    # "powershell"
+    "qmk-toolbox"
+    "rectangle-pro"
+    # setapp is commented because it gets uninstalled by brew all
+    # the times, even if it says "updated".
+    # "setapp"
+    "signal"
+    # "spotify"
+    "steam"
+    "sublime-text"
+    "tailscale-app"
+    "telegram-desktop"
+    # "tor-browser"
+    "transmission"
+    "transmit"
+    "typora"
+    "visual-studio-code"
+    "vlc"
+    "wezterm"
+    "whatsapp"
+    "zoom"
+  ];
+
+  # Compute the casks likt to set the greedy attribute on all casks.
+  greedyCasks =
+    builtins.map (c: {
+      name = c;
+      greedy = true;
+    })
+    casks;
+in {
+  environment.shellInit = mkIf brewEnabled ''
+    eval "$(${config.homebrew.brewPrefix}/brew shellenv)"
+  '';
+
+  # https://docs.brew.sh/Shell-Completion#configuring-completions-in-fish
+  # For some reason if the Fish completions are added at the end of `fish_complete_path` they don't
+  # seem to work, but they do work if added at the start.
+  programs.fish.interactiveShellInit = mkIf brewEnabled ''
+    if test -d (brew --prefix)"/share/fish/completions"
+      set -p fish_complete_path (brew --prefix)/share/fish/completions
+    end
+    if test -d (brew --prefix)"/share/fish/vendor_completions.d"
+      set -p fish_complete_path (brew --prefix)/share/fish/vendor_completions.d
+    end
+  '';
+
+  # Note: homebrew needs to be installed manually.
+  homebrew.enable = true;
+  homebrew.global.brewfile = true;
+  homebrew.onActivation = {
+    upgrade = true;
+    autoUpdate = true;
+    cleanup = "zap";
+    # Homebrew 4.7+ requires `--force` (or HOMEBREW_ASK) for `brew bundle
+    # --cleanup`. Activation runs non-interactively, so without this the
+    # `--cleanup --zap` invocation aborts and nix-darwin activation fails.
+    extraFlags = ["--force"];
+  };
+
+  homebrew.taps = [
+    "nrlquaker/createzap"
+    "cloudflare/cloudflare"
+  ];
+
+  # If an app isn't available in the Mac App Store, or the version in the App Store has
+  # limitiations, e.g., Transmit, install the Homebrew Cask.
+  homebrew.casks = greedyCasks;
+
+  # Until these are managed by nix.
+  homebrew.brews = ["awscli" "opencode" "duckdb" "cloudflare/cloudflare/cf-terraforming"]; # [ "unixodbc" "wxwidgets" ];
+
+  # Configuration related to casks
+  environment.variables.SSH_AUTH_SOCK =
+    mkIfCaskPresent "1password-cli@beta"
+    "/Users/dario/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+};
+}

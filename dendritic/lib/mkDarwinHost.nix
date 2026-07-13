@@ -9,6 +9,10 @@
   hostName,
   systemModule,
   homeModule,
+  # Dendritic aspect modules (Phase B) composed alongside the still-reused
+  # class modules. As features convert, they move from ../reused into these.
+  darwinAspects ? [],
+  homeAspects ? [],
 }: let
   inherit (inputs.nixpkgs) lib;
   system = "aarch64-darwin";
@@ -35,19 +39,6 @@
     dariodots = import ./dariodots {lib = final;};
   });
 
-  # Every reused module dir contains exactly one default.nix. Sorted DESCENDING
-  # by path: this reproduces snowfall's effective merge order for ordered string
-  # options (e.g. programs.fish.interactiveShellInit) — verified byte-identical
-  # via verify-host. (The `wrap` indirection inverts the module collection order
-  # vs snowfall's direct path imports, so descending here cancels that out.)
-  collectModules = dir:
-    builtins.sort (a: b: (toString a) > (toString b))
-    (builtins.filter
-      (p: lib.hasSuffix "/default.nix" (toString p))
-      (lib.filesystem.listFilesRecursive dir));
-
-  darwinModules = collectModules ../reused/darwin;
-  homeModules = collectModules ../reused/home;
 
   # Values the reused snowfall modules expect. Shared by lexical closure — NOT
   # via specialArgs (banned) nor _module.args (which recurses for helpers used
@@ -107,12 +98,11 @@ in
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = false;
-          # Reused feature modules + external home modules go through
-          # sharedModules (as snowfall did), which is what makes merged options
-          # like programs.fish.interactiveShellInit concatenate in the same
-          # order. The host's own home file is the user's primary module.
+          # Home features are now aspect modules (Phase B), passed in snowfall's
+          # merge order (see home-feature-order.nix) so ordered options like
+          # home.packages / fish init stay byte-identical.
           home-manager.sharedModules =
-            (map wrap homeModules)
+            homeAspects
             ++ [
               inputs.mac-app-util.homeManagerModules.default
               inputs.nixCats.homeModule
@@ -120,5 +110,5 @@ in
           home-manager.users.dario.imports = [(wrap homeModule)];
         }
       ]
-      ++ (map wrap darwinModules);
+      ++ darwinAspects;
   }

@@ -8,6 +8,9 @@
   system,
   systemModule,
   homeModule,
+  # Dendritic aspect modules (Phase B), composed alongside the reused ones.
+  nixosAspects ? [],
+  homeAspects ? [],
 }: let
   inherit (inputs.nixpkgs) lib;
 
@@ -25,14 +28,6 @@
     dariodots = import ./dariodots {lib = final;};
   });
 
-  collectModules = dir:
-    builtins.sort (a: b: (toString a) > (toString b))
-    (builtins.filter
-      (p: lib.hasSuffix "/default.nix" (toString p))
-      (lib.filesystem.listFilesRecursive dir));
-
-  nixosModules = collectModules ../reused/modules/nixos;
-  homeModules = collectModules ../reused/home;
 
   reuseArgs = {
     inherit inputs system;
@@ -100,7 +95,7 @@ in
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = false;
           home-manager.sharedModules =
-            (map wrap homeModules)
+            homeAspects
             ++ [
               inputs.mac-app-util.homeManagerModules.default
               inputs.nixCats.homeModule
@@ -108,5 +103,5 @@ in
           home-manager.users.dario.imports = [(wrap homeModule)];
         }
       ]
-      ++ (map wrap nixosModules);
+      ++ nixosAspects;
   }
