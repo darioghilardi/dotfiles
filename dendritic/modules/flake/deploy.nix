@@ -21,6 +21,12 @@ in {
         sshOpts = ["-p" "2222"];
         profiles.system.user = "root";
       };
+      osaka = {
+        remoteBuild = true;
+        interactiveSudo = false;
+        sshUser = "root";
+        profiles.system.user = "root";
+      };
     };
   };
 }

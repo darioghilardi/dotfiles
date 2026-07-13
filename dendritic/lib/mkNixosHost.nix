@@ -44,6 +44,7 @@
     host = hostName;
     home = "dario@${hostName}";
     channels-config = {allowUnfree = true;};
+    disko = inputs.disko; # osaka declares a `disko` formal arg (unused in body)
   };
 
   wrap = modPath: {
@@ -62,6 +63,10 @@ in
     modules =
       [
         {nixpkgs.pkgs = pkgs;}
+        # flake-utils-plus forces nixpkgs.config empty when providing an external
+        # pkgs instance (mkFlake.nix). Required so a host setting nixpkgs.config
+        # directly (osaka: allowUnfree) doesn't clash with nixpkgs.pkgs.
+        {nixpkgs.config = lib.mkForce {};}
         {system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;}
         # flake-utils-plus (snowfall's base) injects these into every system.
         # On darwin they were inert (nix.enable = false); on nixos they matter.
