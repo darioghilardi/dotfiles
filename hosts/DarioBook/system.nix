@@ -1,8 +1,6 @@
 {
   lib,
   pkgs,
-  inputs,
-  channels-config,
   ...
 }:
 with lib; {

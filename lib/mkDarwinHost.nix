@@ -26,34 +26,16 @@
     ];
   };
 
-  # Values the host system/home module files expect as formal arguments. Shared
-  # by lexical closure — NOT via specialArgs. Only `inputs` is read in bodies;
-  # the rest satisfy formal arguments and are unused.
-  hostArgs = {
-    inherit inputs system;
-    target = system;
-    format = "darwin";
-    virtual = false;
-    systems = {};
-    host = hostName;
-    home = "dario@${hostName}";
-    channels-config = {allowUnfree = true;};
-  };
-
-  # Wrap a host module file so it receives `hostArgs` alongside the real
-  # config/pkgs/options/lib from whichever module system evaluates it.
-  wrap = modPath: {
-    config,
-    pkgs,
-    options,
-    ...
-  }:
-    import modPath ({inherit config pkgs options lib;} // hostArgs);
 in
   inputs.darwin.lib.darwinSystem {
     modules =
       [
-        {nixpkgs.pkgs = pkgs;}
+        # Provide the flake `inputs` to plain host modules (system.nix references
+        # them) without specialArgs; aspect modules get inputs via closure.
+        {
+          nixpkgs.pkgs = pkgs;
+          _module.args.inputs = inputs;
+        }
         # snowfall set this automatically from the flake's git rev; reproduced
         # explicitly here. Resolves to the commit rev (or dirtyRev on a dirty
         # working tree, null if not a git flake).
@@ -73,7 +55,7 @@ in
         }
         inputs.mac-app-util.darwinModules.default
         inputs.home-manager.darwinModules.home-manager
-        (wrap systemModule)
+        systemModule
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = false;
@@ -85,7 +67,7 @@ in
               inputs.mac-app-util.homeManagerModules.default
               inputs.nixCats.homeModule
             ];
-          home-manager.users.dario.imports = [(wrap homeModule)];
+          home-manager.users.dario.imports = [homeModule];
         }
       ]
       ++ darwinAspects;

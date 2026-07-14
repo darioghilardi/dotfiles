@@ -2,10 +2,6 @@
   lib,
   pkgs,
   inputs,
-  system,
-  target,
-  format,
-  systems,
   config,
   ...
 }:
@@ -99,7 +95,7 @@ with lib; {
 
     filebrowser-quantum = {
       # Not yet in the pinned nixos-25.11; pull just this package from unstable.
-      package = inputs.nixpkgs-unstable.legacyPackages.${system}.filebrowser-quantum;
+      package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.filebrowser-quantum;
       port = 8080;
       root = "/home/storage";
       user = "dario";

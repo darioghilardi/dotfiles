@@ -1,13 +1,7 @@
 {
   lib,
   pkgs,
-  inputs,
-  system,
-  target,
-  format,
-  systems,
   config,
-  disko,
   ...
 }:
 with lib; {

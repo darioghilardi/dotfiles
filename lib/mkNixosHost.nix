@@ -24,30 +24,16 @@
     ];
   };
 
-  hostArgs = {
-    inherit inputs system;
-    target = system;
-    format = "nixos";
-    virtual = false;
-    systems = {};
-    host = hostName;
-    home = "dario@${hostName}";
-    channels-config = {allowUnfree = true;};
-    disko = inputs.disko; # osaka declares a `disko` formal arg (unused in body)
-  };
-
-  wrap = modPath: {
-    config,
-    pkgs,
-    options,
-    ...
-  }:
-    import modPath ({inherit config pkgs options lib;} // hostArgs);
 in
   inputs.nixpkgs.lib.nixosSystem {
     modules =
       [
-        {nixpkgs.pkgs = pkgs;}
+        # Provide the flake `inputs` to plain host modules (system.nix references
+        # them) without specialArgs; aspect modules get inputs via closure.
+        {
+          nixpkgs.pkgs = pkgs;
+          _module.args.inputs = inputs;
+        }
         # flake-utils-plus forces nixpkgs.config empty when providing an external
         # pkgs instance (mkFlake.nix). Required so a host setting nixpkgs.config
         # directly (osaka: allowUnfree) doesn't clash with nixpkgs.pkgs.
@@ -79,7 +65,7 @@ in
         inputs.disko.nixosModules.disko
         inputs.vscode-server.nixosModules.default
         inputs.home-manager.nixosModules.home-manager
-        (wrap systemModule)
+        systemModule
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = false;
@@ -89,7 +75,7 @@ in
               inputs.mac-app-util.homeManagerModules.default
               inputs.nixCats.homeModule
             ];
-          home-manager.users.dario.imports = [(wrap homeModule)];
+          home-manager.users.dario.imports = [homeModule];
         }
       ]
       ++ nixosAspects;
