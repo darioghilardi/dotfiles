@@ -77,9 +77,8 @@ in
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = false;
-          # Home features are aspect modules, passed in snowfall's original merge
-          # order (see home-feature-order.nix) so ordered options like
-          # home.packages stay in a stable order.
+          # Home features are aspect modules selected per-host (see the caller's
+          # homeAspects list). Order is not significant.
           home-manager.sharedModules =
             homeAspects
             ++ [

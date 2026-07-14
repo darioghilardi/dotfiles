@@ -11,12 +11,11 @@
       system = "x86_64-linux";
       systemModule = ../../hosts/saturn/system.nix;
       homeModule = ../../hosts/saturn/home.nix;
-      nixosAspects =
-        map (n: config.flake.modules.nixos.${n}) (import ../../lib/nixos-feature-order.nix)
-        ++ [config.flake.modules.nixos.fish];
+      # saturn enables every nixos aspect (all the backup/service features).
+      nixosAspects = builtins.attrValues (config.flake.modules.nixos or {});
       homeAspects = map (n: config.flake.modules.homeManager.${n}) [
-        "git" "direnv" "packages" "zoxide" "starship" "ripgrep" "neovim" "k9s"
-        "jq" "htop" "fzf" "fish" "eza" "bottom" "bat"
+        "bat" "bottom" "direnv" "eza" "fish" "fzf" "git" "htop" "jq" "k9s"
+        "neovim" "packages" "ripgrep" "starship" "zoxide"
       ];
     };
 }

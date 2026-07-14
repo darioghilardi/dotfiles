@@ -11,10 +11,10 @@
       system = "aarch64-linux";
       systemModule = ../../hosts/osaka/system.nix;
       homeModule = ../../hosts/osaka/home.nix;
-      nixosAspects = [config.flake.modules.nixos.fish]; # no service aspects (saturn-only), just fish
+      nixosAspects = [config.flake.modules.nixos.fish]; # only fish; not the saturn-only service aspects
       homeAspects = map (n: config.flake.modules.homeManager.${n}) [
-        "tmux" "git" "direnv" "packages" "zoxide" "starship" "ripgrep" "neovim"
-        "jq" "htop" "fzf" "fish" "eza" "bottom" "bat" "awscli"
+        "awscli" "bat" "bottom" "direnv" "eza" "fish" "fzf" "git" "htop" "jq"
+        "neovim" "packages" "ripgrep" "starship" "tmux" "zoxide"
       ];
     };
 }

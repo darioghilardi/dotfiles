@@ -10,11 +10,11 @@
       hostName = "DarioBook";
       systemModule = ../../hosts/DarioBook/system.nix;
       homeModule = ../../hosts/DarioBook/home.nix;
-      darwinAspects = map (n: config.flake.modules.darwin.${n}) (import ../../lib/darwin-feature-order.nix);
+      darwinAspects = builtins.attrValues (config.flake.modules.darwin or {});
       homeAspects = map (n: config.flake.modules.homeManager.${n}) [
-        "tmux" "ssh" "git" "direnv" "packages" "zoxide" "zellij" "starship"
-        "script-directory" "ripgrep" "neovim" "lazygit" "k9s" "jq" "htop" "gh"
-        "fzf" "fish" "eza" "bat" "zed" "wezterm"
+        "bat" "direnv" "eza" "fish" "fzf" "gh" "git" "htop" "jq" "k9s"
+        "lazygit" "neovim" "packages" "ripgrep" "script-directory" "ssh"
+        "starship" "tmux" "wezterm" "zed" "zellij" "zoxide"
       ];
     };
 }
