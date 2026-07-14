@@ -1,9 +1,14 @@
 {
-  description = "Dario's nix system configurations";
+  description = "Dario's nix system configurations (dendritic)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    # Dendritic wiring: flake-parts is the module system for the flake itself,
+    # import-tree turns every *.nix under ./modules into a flake-parts module.
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
 
     darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.11";
@@ -33,15 +38,7 @@
       flake = false;
     };
 
-    mac-app-util = {
-      url = "github:hraban/mac-app-util";
-    };
-
-    snowfall-lib = {
-      url = "github:snowfallorg/lib";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
-    };
+    mac-app-util.url = "github:hraban/mac-app-util";
 
     deploy-rs = {
       url = "github:serokell/deploy-rs";
@@ -54,81 +51,8 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    agenix,
-    deploy-rs,
-    mac-app-util,
-    ...
-  } @ inputs: let
-    inherit (inputs) deploy-rs;
-
-    lib = inputs.snowfall-lib.mkLib {
-      inherit inputs;
-      src = ./.;
-
-      snowfall = {
-        meta = {
-          name = "dariodots";
-          title = "DarioDots";
-        };
-
-        namespace = "dariodots";
-      };
-    };
-  in
-    lib.mkFlake {
-      channels-config.allowUnfree = true;
-
-      # External modules only for nixos
-      systems.modules.nixos = with inputs; [
-        agenix.nixosModules.default
-        disko.nixosModules.disko
-        vscode-server.nixosModules.default
-      ];
-
-      # External modules only for darwin
-      systems.modules.darwin = with inputs; [
-        mac-app-util.darwinModules.default
-      ];
-
-      # External modules for home-manager
-      homes.modules = with inputs; [
-        mac-app-util.homeManagerModules.default
-        nixCats.homeModule
-      ];
-
-      deploy = lib.mkDeploy {
-        inherit (inputs) self;
-
-        overrides = {
-          saturn = {
-            remoteBuild = true;
-            interactiveSudo = false;
-            sshUser = "root";
-            sshOpts = ["-p" "2222"];
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.activate.nixos self.nixosConfigurations.saturn;
-            };
-          };
-
-          osaka = {
-            remoteBuild = true;
-            interactiveSudo = false;
-            sshUser = "root";
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.osaka;
-            };
-          };
-        };
-      };
-
-      outputs-builder = channel: {
-        # Outputs in the outputs builder are transformed to support each system.
-        formatter = channel.nixpkgs.alejandra;
-      };
-    };
+  # The entire flake is assembled by import-tree walking ./modules. No outputs
+  # are defined here directly — every feature lives in its own file under
+  # ./modules and contributes via flake-parts options.
+  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 }
