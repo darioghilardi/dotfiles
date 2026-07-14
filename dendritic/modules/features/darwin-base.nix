@@ -1,7 +1,5 @@
 {inputs, ...}: let
-  lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
-  });
+  inherit (inputs.nixpkgs) lib;
 in {
   flake.modules.darwin."base" = {
     config,

@@ -1,23 +1,12 @@
 {inputs, ...}: let
-  lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
-  });
+  inherit (inputs.nixpkgs) lib;
 in {
   flake.modules.homeManager."tmux" = {
     config,
     pkgs,
     ...
   }:
-with lib;
-with lib.dariodots; let
-  cfg = config.dariodots.tools.tmux;
-  user = config.dariodots.user;
-in {
-  options.dariodots.tools.tmux = with types; {
-    enable = mkBoolOpt false "Whether or not to enable tmux.";
-  };
-
-  config = mkIf cfg.enable {
+    with lib; {
     programs.tmux = {
       enable = true;
       package = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.tmux;
@@ -43,6 +32,6 @@ in {
     home.file."${config.xdg.configHome}/tmuxinator/dev.yml".text = builtins.readFile ./tmux-data/layouts/dev.yml;
     home.file."${config.xdg.configHome}/tmux-powerline/config.sh".text = builtins.readFile ./tmux-data/tmux-powerline/config.sh;
     home.file."${config.xdg.configHome}/tmux-powerline/themes/tmux-power.sh".text = builtins.readFile ./tmux-data/tmux-powerline/tmux-power.sh;
-  };
-};
+  
+    };
 }

@@ -1,8 +1,7 @@
 {inputs, ...}: let
   lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
+    opts = import ../../lib/opts {lib = final;};
   });
-  namespace = "dariodots";
 in {
   flake.modules.nixos."filebrowser-quantum" = {
     config,
@@ -10,8 +9,8 @@ in {
     ...
   }:
 with lib;
-with lib.${namespace}; let
-  cfg = config.${namespace}.services.filebrowser-quantum;
+with lib.opts; let
+  cfg = config.my.services.filebrowser-quantum;
 
   stateDir = "/var/lib/filebrowser-quantum";
   cacheDir = "/var/cache/filebrowser-quantum";
@@ -43,8 +42,7 @@ with lib.${namespace}; let
     exec ${getExe cfg.package}
   '';
 in {
-  options.${namespace}.services.filebrowser-quantum = with types; {
-    enable = mkBoolOpt false "Whether or not to enable the FileBrowser Quantum web UI (Tailscale-only).";
+  options.my.services.filebrowser-quantum = with types; {
     package = mkOpt package pkgs.filebrowser-quantum "The filebrowser-quantum package to use.";
     port = mkOpt port 8081 "Port FileBrowser Quantum listens on.";
     root = mkOpt path "/home/storage" "Directory served by FileBrowser Quantum.";
@@ -53,7 +51,7 @@ in {
     passwordFile = mkOpt (nullOr path) null "Path to a file holding the admin password, injected as FILEBROWSER_ADMIN_PASSWORD on first run.";
   };
 
-  config = mkIf cfg.enable {
+  config = {
     systemd.services.filebrowser-quantum = {
       description = "FileBrowser Quantum";
       after = ["network.target"];

@@ -24,14 +24,8 @@
     ];
   };
 
-  extendedLib = lib.extend (final: _prev: {
-    dariodots = import ./dariodots {lib = final;};
-  });
-
-
   reuseArgs = {
     inherit inputs system;
-    namespace = "dariodots"; # `with lib.${namespace}` in the reused nixos modules
     target = system;
     format = "nixos";
     virtual = false;
@@ -48,11 +42,7 @@
     options,
     ...
   }:
-    import modPath ({
-        inherit config pkgs options;
-        lib = extendedLib;
-      }
-      // reuseArgs);
+    import modPath ({inherit config pkgs options lib;} // reuseArgs);
 in
   inputs.nixpkgs.lib.nixosSystem {
     modules =

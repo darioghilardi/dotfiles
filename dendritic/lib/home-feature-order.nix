@@ -1,33 +1,9 @@
-# Home feature composition order — reverse of snowfall's alphabetical
-# depth-first path traversal of modules/home (apps/*, cli-apps/*, packages,
-# tools/*, user). Passing the home aspects in this order reproduces snowfall's
-# merge order for order-sensitive options (home.packages list, fish init), so
-# the toplevel stays byte-identical. (Phase-B scaffolding; see mkDarwinHost.)
+# Full home feature order — reverse of snowfall's alphabetical DFS of
+# modules/home. Hosts filter this by their own feature SET (import-to-enable),
+# preserving snowfall's merge order for order-sensitive options.
 [
-  "user"
-  "tmux"
-  "ssh"
-  "git"
-  "direnv"
-  "packages"
-  "zoxide"
-  "zellij"
-  "starship"
-  "script-directory"
-  "ripgrep"
-  "neovim"
-  "lazygit"
-  "k9s"
-  "jq"
-  "htop"
-  "gh"
-  "fzf"
-  "fish"
-  "eza"
-  "bottom"
-  "bat"
-  "awscli"
-  "zed"
-  "wezterm"
-  "kitty"
+  "tmux" "ssh" "git" "direnv"
+  "packages" "zoxide" "zellij" "starship" "script-directory" "ripgrep"
+  "neovim" "lazygit" "k9s" "jq" "htop" "gh" "fzf" "fish" "eza" "bottom"
+  "bat" "awscli" "zed" "wezterm" "kitty"
 ]

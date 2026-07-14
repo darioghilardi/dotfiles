@@ -1,63 +1,34 @@
-{inputs, ...}: let
-  lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
-  });
-in {
-  flake.modules.homeManager."ssh" = {
-    config,
-    pkgs,
-    ...
-  }:
-with lib;
-with lib.dariodots; let
-  cfg = config.dariodots.tools.ssh;
-  user = config.dariodots.user;
-in {
-  options.dariodots.tools.ssh = with types; {
-    enable = mkBoolOpt false "Whether or not to enable ssh.";
-    use1Password = mkBoolOpt false "Configure the 1password agent.";
-    onePasswordSshKeyItem = mkOpt str "DarioBook SSH Key" "Name of the 1Password item holding the SSH key for this host.";
+# ssh + 1Password agent. Unconditional (imported by the darwin hosts). The
+# per-host bit — the 1Password SSH key item — is set by each host as
+# `home.file.".config/1Password/ssh/agent.toml"` (see the host home files).
+{...}: {
+  flake.modules.homeManager."ssh" = {config, ...}: {
+    programs.ssh.enable = true;
+    programs.ssh.enableDefaultConfig = false;
+    programs.ssh.matchBlocks."*" = {
+      forwardAgent = false;
+      addKeysToAgent = "yes";
+      compression = true;
+      serverAliveInterval = 60;
+      serverAliveCountMax = 3;
+    };
+
+    # The IdentityAgent config works only for the ssh command, not for
+    # ssh-copy-id or ssh-add
+    programs.ssh.extraConfig = ''
+      IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+      IdentitiesOnly no
+    '';
+
+    # Symlink agent.sock to a human path (and without spaces)
+    home.file.".1Password/agent.sock" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+    };
+
+    # Required to find the 1password identities when using commands
+    # like ssh-copy-id or ssh-add
+    programs.fish.interactiveShellInit = ''
+      set -gx SSH_AUTH_SOCK ~/.1password/agent.sock
+    '';
   };
-
-  config = mkIf cfg.enable (mkMerge [
-    {
-      programs.ssh.enable = true;
-      programs.ssh.enableDefaultConfig = false;
-      programs.ssh.matchBlocks."*" = {
-        forwardAgent = false;
-        addKeysToAgent = "yes";
-        compression = true;
-        serverAliveInterval = 60;
-        serverAliveCountMax = 3;
-      };
-    }
-
-    (mkIf cfg.use1Password {
-      # The IdentityAgent config works only for the ssh command, not for
-      # ssh-copy-id or ssh-add
-      programs.ssh.extraConfig = ''
-        IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-        IdentitiesOnly no
-      '';
-
-      # Symlink agent.sock to a human path (and without spaces)
-      home.file.".1Password/agent.sock" = {
-        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-      };
-
-      # Required to find the 1password identities when using commands
-      # like ssh-copy-id or ssh-add
-      programs.fish.interactiveShellInit = ''
-        set -gx SSH_AUTH_SOCK ~/.1password/agent.sock
-      '';
-
-      # Generate ssh agent config for 1Password
-      home.file.".config/1Password/ssh/agent.toml".text = ''
-        [[ssh-keys]]
-        item = "${cfg.onePasswordSshKeyItem}"
-        vault = "Private"
-      '';
-    })
-  ]);
-};
 }

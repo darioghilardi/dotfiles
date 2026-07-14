@@ -2,7 +2,6 @@
   lib,
   pkgs,
   inputs,
-  namespace,
   system,
   target,
   format,
@@ -10,8 +9,7 @@
   config,
   ...
 }:
-with lib;
-with lib.${namespace}; {
+with lib; {
   imports = [
     ./hardware-configuration.nix
     ./boot-configuration.nix
@@ -81,9 +79,8 @@ with lib.${namespace}; {
     dates = "weekly UTC";
   };
 
-  dariodots.services = {
+  my.services = {
     nfs = {
-      enable = true;
       exports = [
         {
           path = "/home/storage";
@@ -94,7 +91,6 @@ with lib.${namespace}; {
     };
 
     tailscale = {
-      enable = true;
       autoconnect = {
         enable = true;
         key = config.age.secrets."tailscale-key".path;
@@ -102,7 +98,6 @@ with lib.${namespace}; {
     };
 
     filebrowser-quantum = {
-      enable = true;
       # Not yet in the pinned nixos-25.11; pull just this package from unstable.
       package = inputs.nixpkgs-unstable.legacyPackages.${system}.filebrowser-quantum;
       port = 8080;
@@ -113,7 +108,6 @@ with lib.${namespace}; {
     };
 
     restic = {
-      enable = true;
       paths = ["/home/storage"];
       envFile = config.age.secrets."restic/env".path;
       repositoryFile = config.age.secrets."restic/repo".path;
@@ -122,7 +116,6 @@ with lib.${namespace}; {
     };
 
     borgbackup = {
-      enable = true;
       paths = ["/home/storage"];
       repo = "ssh://u433810@u433810.your-storagebox.de:23/./backups/saturn";
       passwordFile = config.age.secrets."borgbackup/password".path;

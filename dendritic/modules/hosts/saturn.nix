@@ -12,6 +12,9 @@
       systemModule = ../../reused/systems/x86_64-linux/saturn/default.nix;
       homeModule = ../../reused/saturn-home.nix;
       nixosAspects = map (n: config.flake.modules.nixos.${n}) (import ../../lib/nixos-feature-order.nix);
-      homeAspects = map (n: config.flake.modules.homeManager.${n}) (import ../../lib/home-feature-order.nix);
+      homeAspects = map (n: config.flake.modules.homeManager.${n}) [
+        "git" "direnv" "packages" "zoxide" "starship" "ripgrep" "neovim" "k9s"
+        "jq" "htop" "fzf" "fish" "eza" "bottom" "bat"
+      ];
     };
 }

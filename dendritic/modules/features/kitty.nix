@@ -1,22 +1,12 @@
 {inputs, ...}: let
-  lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
-  });
+  inherit (inputs.nixpkgs) lib;
 in {
   flake.modules.homeManager."kitty" = {
     config,
     pkgs,
     ...
   }:
-with lib;
-with lib.dariodots; let
-  cfg = config.dariodots.apps.kitty;
-in {
-  options.dariodots.apps.kitty = with types; {
-    enable = mkBoolOpt false "Whether or not to enable `kitty`.";
-  };
-
-  config = mkIf cfg.enable {
+    with lib; {
     # Kitty terminal
     # https://sw.kovidgoyal.net/kitty/conf.html
     programs.kitty = {
@@ -41,6 +31,6 @@ in {
         tab_activity_symbol = "";
       };
     };
-  };
-};
+  
+    };
 }

@@ -30,20 +30,9 @@
     ];
   };
 
-  # nixpkgs.lib extended with the project's `dariodots` helpers, mirroring
-  # snowfall's lib injection. Passed to reused modules as their `lib` arg by the
-  # wrapper below (a plain function call, so it bypasses the module system's
-  # fixed `lib` — no specialArgs needed, and the reused files stay byte-identical
-  # with `with lib.dariodots;` intact).
-  extendedLib = lib.extend (final: _prev: {
-    dariodots = import ./dariodots {lib = final;};
-  });
-
-
-  # Values the reused snowfall modules expect. Shared by lexical closure — NOT
-  # via specialArgs (banned) nor _module.args (which recurses for helpers used
-  # while building the option tree). Only `inputs`/`dariodots` are read in
-  # bodies; the rest satisfy formal arguments and are unused.
+  # Values the reused snowfall modules (host system/home files) expect. Shared
+  # by lexical closure — NOT via specialArgs. Only `inputs` is read in bodies;
+  # the rest satisfy formal arguments and are unused.
   reuseArgs = {
     inherit inputs system;
     target = system;
@@ -55,20 +44,15 @@
     channels-config = {allowUnfree = true;};
   };
 
-  # Wrap a reused module so it receives `reuseArgs` + the extended `lib`,
-  # alongside the real config/pkgs/options from whichever module system evaluates
-  # it (nix-darwin for darwin modules, home-manager for home modules).
+  # Wrap a reused module so it receives `reuseArgs` alongside the real
+  # config/pkgs/options/lib from whichever module system evaluates it.
   wrap = modPath: {
     config,
     pkgs,
     options,
     ...
   }:
-    import modPath ({
-        inherit config pkgs options;
-        lib = extendedLib;
-      }
-      // reuseArgs);
+    import modPath ({inherit config pkgs options lib;} // reuseArgs);
 in
   inputs.darwin.lib.darwinSystem {
     modules =

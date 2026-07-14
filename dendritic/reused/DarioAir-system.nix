@@ -4,8 +4,7 @@
   inputs,
   ...
 }:
-with lib;
-with lib.dariodots; {
+with lib; {
   environment.systemPackages = with pkgs; [
     terminal-notifier
     # inputs.alejandra.defaultPackage.aarch64-darwin

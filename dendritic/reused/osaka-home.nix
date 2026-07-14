@@ -1,44 +1,9 @@
-{
-  lib,
-  home,
-  config,
-  ...
-}:
-with lib.dariodots; {
+# osaka home. Feature selection lives in the host module (homeAspects list).
+# home.username/homeDirectory come from the nixos user (users.users.dario).
+{...}: {
   programs.home-manager.enable = true;
 
-  dariodots = {
-    tools = {
-      direnv = enabled;
-      git = enabled;
-      tmux = enabled;
-    };
-    cli-apps = {
-      awscli = enabled;
-      bat = enabled;
-      bottom = enabled;
-      eza = enabled;
-      fzf = enabled;
-      neovim = enabled;
-      htop = enabled;
-      jq = enabled;
-      ripgrep = enabled;
-      zoxide = enabled;
-    };
-  };
-
-  home = {
-    #   username = "dario";
-    #   homeDirectory = "/home/dario.linux";
-
-    #   #   sessionVariables = {
-    #   #     EDITOR = "vim";
-    #   #     TERM = "xterm-256color";
-    #   #   };
-
-    # Home Manager release
-    stateVersion = "25.05";
-  };
+  home.stateVersion = "25.05";
 
   manual = {
     manpages.enable = false;

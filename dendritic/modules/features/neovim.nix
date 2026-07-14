@@ -5,7 +5,7 @@
 # ../../reused/home/cli-apps/neovim therefore stays as neovim's config source.
 {inputs, ...}: let
   lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
+    dariodots = import ../../lib/opts {lib = final;};
   });
 in {
   flake.modules.homeManager."neovim" = {

@@ -1,40 +1,14 @@
-{
-  lib,
-  home,
-  config,
-  ...
-}:
-with lib.dariodots; {
+# saturn home. Feature selection lives in the host module (homeAspects list).
+{...}: {
   programs.home-manager.enable = true;
-
-  dariodots = {
-    tools = {
-      direnv = enabled;
-      git = enabled;
-    };
-    cli-apps = {
-      bat = enabled;
-      bottom = enabled;
-      eza = enabled;
-      fzf = enabled;
-      htop = enabled;
-      jq = enabled;
-      k9s = enabled;
-      ripgrep = enabled;
-      zoxide = enabled;
-    };
-  };
 
   home = {
     username = "dario";
     homeDirectory = "/home/dario";
-
     sessionVariables = {
       EDITOR = "vim";
       TERM = "xterm-256color";
     };
-
-    # Home Manager release
     stateVersion = "24.05";
   };
 

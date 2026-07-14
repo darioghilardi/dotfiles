@@ -1,8 +1,7 @@
 {inputs, ...}: let
   lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
+    opts = import ../../lib/opts {lib = final;};
   });
-  namespace = "dariodots";
 in {
   flake.modules.nixos."borgbackup" = {
     config,
@@ -10,21 +9,20 @@ in {
     ...
   }:
 with lib;
-with lib.${namespace}; let
-  cfg = config.${namespace}.services.borgbackup;
+with lib.opts; let
+  cfg = config.my.services.borgbackup;
   user = "borgbackup";
   group = "borgbackup";
   hasHealthchecks = cfg.healthchecksUrlFile != "";
 in {
-  options.${namespace}.services.borgbackup = with types; {
-    enable = mkBoolOpt false "Whether or not to enable borg backups.";
+  options.my.services.borgbackup = with types; {
     paths = mkOpt (listOf str) [] "The path of the folder to backup.";
     repo = mkOpt str "" "The repo url.";
     passwordFile = mkOpt str "" "Path to the password file.";
     healthchecksUrlFile = mkOpt str "" "Path to file containing the healthchecks.io ping URL.";
   };
 
-  config = mkIf cfg.enable {
+  config = {
     services.borgbackup.jobs = {
       storage = {
         inherit user;

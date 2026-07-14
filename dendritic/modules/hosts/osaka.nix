@@ -11,7 +11,10 @@
       system = "aarch64-linux";
       systemModule = ../../reused/systems/aarch64-linux/osaka/default.nix;
       homeModule = ../../reused/osaka-home.nix;
-      nixosAspects = map (n: config.flake.modules.nixos.${n}) (import ../../lib/nixos-feature-order.nix);
-      homeAspects = map (n: config.flake.modules.homeManager.${n}) (import ../../lib/home-feature-order.nix);
+      nixosAspects = []; # osaka uses none of the (saturn-only) service aspects
+      homeAspects = map (n: config.flake.modules.homeManager.${n}) [
+        "tmux" "git" "direnv" "packages" "zoxide" "starship" "ripgrep" "neovim"
+        "jq" "htop" "fzf" "fish" "eza" "bottom" "bat" "awscli"
+      ];
     };
 }

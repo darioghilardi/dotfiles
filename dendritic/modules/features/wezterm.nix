@@ -1,22 +1,12 @@
 {inputs, ...}: let
-  lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
-  });
+  inherit (inputs.nixpkgs) lib;
 in {
   flake.modules.homeManager."wezterm" = {
     config,
     pkgs,
     ...
   }:
-with lib;
-with lib.dariodots; let
-  cfg = config.dariodots.apps.wezterm;
-in {
-  options.dariodots.apps.wezterm = with types; {
-    enable = mkBoolOpt false "Whether or not to enable `wezterm`.";
-  };
-
-  config = mkIf cfg.enable {
+    with lib; {
     # Installed with brew, the nix version messes up
     # with the macos dock.
     home.file.".config/wezterm/wezterm.lua".text = ''
@@ -35,6 +25,6 @@ in {
         use_fancy_tab_bar = true,
       }
     '';
-  };
-};
+  
+    };
 }

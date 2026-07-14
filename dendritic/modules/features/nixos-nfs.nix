@@ -1,8 +1,7 @@
 {inputs, ...}: let
   lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
+    opts = import ../../lib/opts {lib = final;};
   });
-  namespace = "dariodots";
 in {
   flake.modules.nixos."nfs" = {
     config,
@@ -10,11 +9,10 @@ in {
     ...
   }:
 with lib;
-with lib.${namespace}; let
-  cfg = config.${namespace}.services.nfs;
+with lib.opts; let
+  cfg = config.my.services.nfs;
 in {
-  options.dariodots.services.nfs = with types; {
-    enable = mkBoolOpt false "Whether or not to enable NFS server.";
+  options.my.services.nfs = with types; {
     exports = mkOption {
       type = listOf (submodule {
         options = {
@@ -28,7 +26,7 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
     services.nfs.server = {
       enable = true;
       exports = concatMapStrings (e: "${e.path} ${e.clients}(${e.options})\n") cfg.exports;

@@ -1,22 +1,12 @@
-# bat — a substitute for cat. https://github.com/sharkdp/bat
-# Phase-B aspect: contributes the home-manager slice via flake.modules.homeManager.
-# Helpers come from the file's lexical closure (no lib.dariodots injection needed).
 {inputs, ...}: let
-  inherit (import ../../lib/dariodots {inherit (inputs.nixpkgs) lib;}) mkBoolOpt;
+  inherit (inputs.nixpkgs) lib;
 in {
-  flake.modules.homeManager.bat = {
+  flake.modules.homeManager."bat" = {
     config,
-    lib,
+    pkgs,
     ...
   }:
-    with lib; let
-      cfg = config.dariodots.cli-apps.bat;
-    in {
-      options.dariodots.cli-apps.bat = with types; {
-        enable = mkBoolOpt false "Whether or not to enable `bat`.";
-      };
-
-      config = mkIf cfg.enable {
+    with lib; {
         programs.bat = {
           enable = true;
           config = {
@@ -24,6 +14,6 @@ in {
             theme = "Solarized (dark)";
           };
         };
-      };
+      
     };
 }

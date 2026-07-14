@@ -8,7 +8,7 @@
     (import ../../lib/deploy {
       lib = inputs.nixpkgs.lib;
       inherit inputs;
-      namespace = "dariodots";
+      namespace = "my";
     }).mkDeploy;
 in {
   flake.deploy = mkDeploy {

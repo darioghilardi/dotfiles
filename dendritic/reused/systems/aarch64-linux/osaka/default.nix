@@ -2,7 +2,6 @@
   lib,
   pkgs,
   inputs,
-  namespace,
   system,
   target,
   format,
@@ -11,8 +10,7 @@
   disko,
   ...
 }:
-with lib;
-with lib.${namespace}; {
+with lib; {
   imports = [
     ./disk-config.nix
     ./hardware-configuration.nix

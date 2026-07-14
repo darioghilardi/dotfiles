@@ -1,8 +1,7 @@
 {inputs, ...}: let
   lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
+    opts = import ../../lib/opts {lib = final;};
   });
-  namespace = "dariodots";
 in {
   flake.modules.nixos."restic" = {
     config,
@@ -10,12 +9,11 @@ in {
     ...
   }:
 with lib;
-with lib.${namespace}; let
-  cfg = config.${namespace}.services.restic;
+with lib.opts; let
+  cfg = config.my.services.restic;
   hasHealthchecks = cfg.healthchecksUrlFile != "";
 in {
-  options.${namespace}.services.restic = with types; {
-    enable = mkBoolOpt false "Whether or not to enable restic backups.";
+  options.my.services.restic = with types; {
     paths = mkOpt (listOf str) [] "The path of the folder to backup.";
     envFile = mkOpt str "" "Path to the environment file.";
     repositoryFile = mkOpt str "" "Path to the repository file.";
@@ -23,7 +21,7 @@ in {
     healthchecksUrlFile = mkOpt str "" "Path to file containing the healthchecks.io ping URL.";
   };
 
-  config = mkIf cfg.enable {
+  config = {
     services.restic.backups = {
       storage = {
         initialize = true;

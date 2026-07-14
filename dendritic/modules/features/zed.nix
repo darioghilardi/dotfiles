@@ -1,26 +1,12 @@
 {inputs, ...}: let
-  lib = inputs.nixpkgs.lib.extend (final: _prev: {
-    dariodots = import ../../lib/dariodots {lib = final;};
-  });
+  inherit (inputs.nixpkgs) lib;
 in {
   flake.modules.homeManager."zed" = {
     config,
     pkgs,
     ...
   }:
-with lib;
-with lib.dariodots;
-let
-  cfg = config.dariodots.apps.zed;
-in
-{
-  # Zed configuration (zed installed through brew for now)
-
-  options.dariodots.apps.zed = with types; {
-    enable = mkBoolOpt false "Whether or not to enable `Zed` configurations.";
-  };
-
-  config = mkIf cfg.enable {
+    with lib; {
     # Still experimenting, config to be moved here when it's stable enough.
     # home.file.".config/zed/settings.json".text = ''
     #   {
@@ -74,6 +60,6 @@ in
     #     }
     #   ]
     # '';
-  };
-};
+  
+    };
 }
