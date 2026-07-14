@@ -1,16 +1,12 @@
-# Phase-A shared assembly for the aarch64-darwin hosts: reproduces the
-# snowfall-generated darwin toplevel on raw flake-parts, reusing the original
-# module files verbatim (under ../reused). Goal: byte-identical store path vs
-# the root flake. Given a host's name + its reused system/home files.
-#
-# This is Phase-A scaffolding (it reuses snowfall-shaped class modules); it goes
-# away when features become native aspect files in Phase B.
+# Shared assembly for the aarch64-darwin hosts: builds a darwin toplevel on raw
+# flake-parts from a host's system/home module files (under ../hosts/<name>) plus
+# the dendritic aspect modules it selects. Called by modules/hosts/<name>.nix.
 {inputs}: {
   hostName,
   systemModule,
   homeModule,
-  # Dendritic aspect modules (Phase B) composed alongside the still-reused
-  # class modules. As features convert, they move from ../reused into these.
+  # Dendritic aspect modules (see modules/features/*) composed into the system
+  # and home configs — the darwin/home feature set this host enables.
   darwinAspects ? [],
   homeAspects ? [],
 }: let
@@ -30,10 +26,10 @@
     ];
   };
 
-  # Values the reused snowfall modules (host system/home files) expect. Shared
+  # Values the host system/home module files expect as formal arguments. Shared
   # by lexical closure — NOT via specialArgs. Only `inputs` is read in bodies;
   # the rest satisfy formal arguments and are unused.
-  reuseArgs = {
+  hostArgs = {
     inherit inputs system;
     target = system;
     format = "darwin";
@@ -44,7 +40,7 @@
     channels-config = {allowUnfree = true;};
   };
 
-  # Wrap a reused module so it receives `reuseArgs` alongside the real
+  # Wrap a host module file so it receives `hostArgs` alongside the real
   # config/pkgs/options/lib from whichever module system evaluates it.
   wrap = modPath: {
     config,
@@ -52,16 +48,15 @@
     options,
     ...
   }:
-    import modPath ({inherit config pkgs options lib;} // reuseArgs);
+    import modPath ({inherit config pkgs options lib;} // hostArgs);
 in
   inputs.darwin.lib.darwinSystem {
     modules =
       [
         {nixpkgs.pkgs = pkgs;}
-        # snowfall set this automatically from the flake's git rev. Reproduced
-        # explicitly. As a path: flake during migration `self.rev` is absent, so
-        # it's null now (matching a dirty build); once dendritic is promoted to
-        # the repo root it resolves to the commit, restoring parity.
+        # snowfall set this automatically from the flake's git rev; reproduced
+        # explicitly here. Resolves to the commit rev (or dirtyRev on a dirty
+        # working tree, null if not a git flake).
         {system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;}
         # snowfall derived the hostname from the system directory name.
         # localHostName defaults to hostName, so this emits both
@@ -82,9 +77,9 @@ in
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = false;
-          # Home features are now aspect modules (Phase B), passed in snowfall's
-          # merge order (see home-feature-order.nix) so ordered options like
-          # home.packages / fish init stay byte-identical.
+          # Home features are aspect modules, passed in snowfall's original merge
+          # order (see home-feature-order.nix) so ordered options like
+          # home.packages stay in a stable order.
           home-manager.sharedModules =
             homeAspects
             ++ [

@@ -1,8 +1,7 @@
-# neovim (nixCats). Special case: the module's `luaPath = ./.` bundles its whole
-# directory (init.lua + lua/ + default.nix) into the nixCats config hash, so to
-# stay byte-identical the aspect wraps the reused module in place rather than
-# inlining it (moving the file would change luaPath's hash). The reused dir under
-# ../../reused/home/cli-apps/neovim therefore stays as neovim's config source.
+# neovim (nixCats). The module's `luaPath = ./.` bundles its whole directory
+# (init.lua + lua/ + default.nix) into the nixCats config hash, so the aspect
+# wraps the module in place rather than inlining it. The neovim config lives in
+# its own tree at ../../neovim (kept intact so luaPath's hash stays stable).
 {inputs, ...}: let
   lib = inputs.nixpkgs.lib.extend (final: _prev: {
     dariodots = import ../../lib/opts {lib = final;};
@@ -13,7 +12,7 @@ in {
     pkgs,
     ...
   }:
-    import ../../reused/home/cli-apps/neovim/default.nix {
+    import ../../neovim/default.nix {
       inherit config pkgs inputs lib;
     };
 }

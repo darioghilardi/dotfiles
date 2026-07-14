@@ -54,19 +54,19 @@ with lib; {
   ];
 
   age.secrets = {
-    "tailscale-key".file = ../../../secrets/tailscale-key.age;
-    "restic/env".file = ../../../secrets/restic/env.age;
-    "restic/repo".file = ../../../secrets/restic/repo.age;
-    "restic/password".file = ../../../secrets/restic/password.age;
+    "tailscale-key".file = ../../secrets/tailscale-key.age;
+    "restic/env".file = ../../secrets/restic/env.age;
+    "restic/repo".file = ../../secrets/restic/repo.age;
+    "restic/password".file = ../../secrets/restic/password.age;
     "healthchecks/borgbackup" = {
-      file = ../../../secrets/healthchecks/borgbackup.age;
+      file = ../../secrets/healthchecks/borgbackup.age;
       owner = "borgbackup";
       group = "borgbackup";
       mode = "0400";
     };
-    "healthchecks/restic".file = ../../../secrets/healthchecks/restic.age;
+    "healthchecks/restic".file = ../../secrets/healthchecks/restic.age;
     "filebrowser/password" = {
-      file = ../../../secrets/filebrowser/password.age;
+      file = ../../secrets/filebrowser/password.age;
       owner = "dario";
       group = "users";
       mode = "0400";

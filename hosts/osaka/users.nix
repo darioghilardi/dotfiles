@@ -16,10 +16,10 @@
     shell = pkgs.fish;
     extraGroups = ["wheel" "docker"];
     hashedPasswordFile = config.age.secrets.dario-password.path;
-    openssh.authorizedKeys.keyFiles = [../../../keys/dariobook.pub];
+    openssh.authorizedKeys.keyFiles = [../../keys/dariobook.pub];
   };
 
   users.users.root = {
-    openssh.authorizedKeys.keyFiles = [../../../keys/dariobook.pub];
+    openssh.authorizedKeys.keyFiles = [../../keys/dariobook.pub];
   };
 }

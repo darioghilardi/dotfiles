@@ -1,14 +1,14 @@
-# Phase-A shared assembly for the NixOS hosts: reproduces the snowfall-generated
-# nixos toplevel on raw flake-parts, reusing the original module files verbatim.
-# Analogous to mkDarwinHost. Given a host's name, target system, and its reused
-# system/home files. (Reused files keep their relative paths to ../reused/secrets
-# etc., so the reused/ tree mirrors the repo's directory depth.)
+# Shared assembly for the NixOS hosts: builds a nixos toplevel on raw flake-parts
+# from a host's system/home module files (under ../hosts/<name>) plus the
+# dendritic aspect modules it selects. Analogous to mkDarwinHost; called by
+# modules/hosts/<name>.nix. Host files reference ../../secrets and ../../keys.
 {inputs}: {
   hostName,
   system,
   systemModule,
   homeModule,
-  # Dendritic aspect modules (Phase B), composed alongside the reused ones.
+  # Dendritic aspect modules (see modules/features/*) composed into the system
+  # and home configs — the nixos/home feature set this host enables.
   nixosAspects ? [],
   homeAspects ? [],
 }: let
@@ -24,7 +24,7 @@
     ];
   };
 
-  reuseArgs = {
+  hostArgs = {
     inherit inputs system;
     target = system;
     format = "nixos";
@@ -42,7 +42,7 @@
     options,
     ...
   }:
-    import modPath ({inherit config pkgs options lib;} // reuseArgs);
+    import modPath ({inherit config pkgs options lib;} // hostArgs);
 in
   inputs.nixpkgs.lib.nixosSystem {
     modules =
@@ -59,9 +59,8 @@ in
           nix.package = lib.mkDefault pkgs.nixVersions.latest;
           nix.extraOptions = "extra-experimental-features = nix-command flakes";
           # flake-utils-plus registers the flake itself (options.nix: `nix.registry
-          # = { self.flake = flakes.self; }`). The entry embeds the flake's
-          # path/rev, so like configurationRevision it only matches once dendritic
-          # replaces the root flake.
+          # = { self.flake = flakes.self; }`). Reproduced so `nix` commands on the
+          # host resolve `self` to this flake.
           nix.registry.self.flake = inputs.self;
         }
         # snowfall auto-created the user via `snowfallorg.users.<n>` (create=true):

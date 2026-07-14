@@ -1,5 +1,5 @@
-# Phase-A migration of saturn (x86_64-linux). Assembly lives in
-# ../../lib/mkNixosHost.nix; this names the host and points at its reused files.
+# saturn host (x86_64-linux). Assembly lives in ../../lib/mkNixosHost.nix; this
+# names the host and points at its files under ../../hosts/saturn.
 {
   config,
   inputs,
@@ -9,8 +9,8 @@
     import ../../lib/mkNixosHost.nix {inherit inputs;} {
       hostName = "saturn";
       system = "x86_64-linux";
-      systemModule = ../../reused/systems/x86_64-linux/saturn/default.nix;
-      homeModule = ../../reused/saturn-home.nix;
+      systemModule = ../../hosts/saturn/system.nix;
+      homeModule = ../../hosts/saturn/home.nix;
       nixosAspects =
         map (n: config.flake.modules.nixos.${n}) (import ../../lib/nixos-feature-order.nix)
         ++ [config.flake.modules.nixos.fish];

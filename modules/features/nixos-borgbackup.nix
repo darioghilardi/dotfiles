@@ -87,7 +87,7 @@ in {
 
     age.secrets = {
       "borgbackup/password" = {
-        file = ../../reused/secrets/borgbackup/password.age;
+        file = ../../secrets/borgbackup/password.age;
         mode = "700";
         owner = user;
         group = group;
