@@ -51,8 +51,12 @@
     };
   };
 
-  # The entire flake is assembled by import-tree walking ./modules. No outputs
-  # are defined here directly — every feature lives in its own file under
-  # ./modules and contributes via flake-parts options.
-  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
+  # The flake is assembled from two module trees: import-tree walks ./modules
+  # (every feature/aspect contributes via flake-parts options), and ./hosts
+  # (hosts/default.nix) defines the darwin/nixos configurations. No outputs are
+  # defined here directly.
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      imports = [(inputs.import-tree ./modules) ./hosts];
+    };
 }
