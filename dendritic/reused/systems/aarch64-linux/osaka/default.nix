@@ -42,8 +42,6 @@ with lib; {
     };
   };
 
-  programs.fish.enable = true;
-
   virtualisation.docker.enable = true;
 
   time.timeZone = "Europe/Rome";

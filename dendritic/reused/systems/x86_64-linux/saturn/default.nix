@@ -123,8 +123,6 @@ with lib; {
     };
   };
 
-  programs.fish.enable = true;
-
   users.users = {
     dario = {
       isNormalUser = true;
