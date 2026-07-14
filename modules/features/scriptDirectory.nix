@@ -1,7 +1,7 @@
 {inputs, ...}: let
   inherit (inputs.nixpkgs) lib;
 in {
-  flake.modules.homeManager."script-directory" = {
+  flake.modules.homeManager.scriptDirectory = {
     config,
     pkgs,
     ...

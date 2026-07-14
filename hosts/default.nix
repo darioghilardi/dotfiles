@@ -11,9 +11,9 @@
   mkDarwin = import ../lib/mkDarwinHost.nix {inherit inputs;};
   mkNixos = import ../lib/mkNixosHost.nix {inherit inputs;};
 
-  # Home features are selected per host (order insignificant).
-  home = names: map (n: config.flake.modules.homeManager.${n}) names;
   # Darwin/nixos hosts take every aspect of their class, except where noted.
+  # Home features are selected per host (order insignificant) via
+  # `with config.flake.modules.homeManager; [ … ]` below.
   allDarwin = builtins.attrValues (config.flake.modules.darwin or {});
   allNixos = builtins.attrValues (config.flake.modules.nixos or {});
 in {
@@ -23,10 +23,10 @@ in {
       systemModule = ./DarioAir/system.nix;
       homeModule = ./DarioAir/home.nix;
       darwinAspects = allDarwin;
-      homeAspects = home [
-        "bat" "bottom" "direnv" "eza" "fish" "fzf" "gh" "git" "htop" "jq" "k9s"
-        "lazygit" "neovim" "packages" "ripgrep" "script-directory" "ssh"
-        "starship" "tmux" "wezterm" "zed" "zellij" "zoxide"
+      homeAspects = with config.flake.modules.homeManager; [
+        bat bottom direnv eza fish fzf gh git htop jq k9s
+        lazygit neovim packages ripgrep scriptDirectory ssh
+        starship tmux wezterm zed zellij zoxide
       ];
     };
 
@@ -35,10 +35,10 @@ in {
       systemModule = ./DarioBook/system.nix;
       homeModule = ./DarioBook/home.nix;
       darwinAspects = allDarwin;
-      homeAspects = home [
-        "bat" "direnv" "eza" "fish" "fzf" "gh" "git" "htop" "jq" "k9s"
-        "lazygit" "neovim" "packages" "ripgrep" "script-directory" "ssh"
-        "starship" "tmux" "wezterm" "zed" "zellij" "zoxide"
+      homeAspects = with config.flake.modules.homeManager; [
+        bat direnv eza fish fzf gh git htop jq k9s
+        lazygit neovim packages ripgrep scriptDirectory ssh
+        starship tmux wezterm zed zellij zoxide
       ];
     };
   };
@@ -50,9 +50,9 @@ in {
       systemModule = ./saturn/system.nix;
       homeModule = ./saturn/home.nix;
       nixosAspects = allNixos; # every service/backup aspect
-      homeAspects = home [
-        "bat" "bottom" "direnv" "eza" "fish" "fzf" "git" "htop" "jq" "k9s"
-        "neovim" "packages" "ripgrep" "starship" "zoxide"
+      homeAspects = with config.flake.modules.homeManager; [
+        bat bottom direnv eza fish fzf git htop jq k9s
+        neovim packages ripgrep starship zoxide
       ];
     };
 
@@ -62,9 +62,9 @@ in {
       systemModule = ./osaka/system.nix;
       homeModule = ./osaka/home.nix;
       nixosAspects = [config.flake.modules.nixos.fish]; # only fish; not the saturn-only services
-      homeAspects = home [
-        "awscli" "bat" "bottom" "direnv" "eza" "fish" "fzf" "git" "htop" "jq"
-        "neovim" "packages" "ripgrep" "starship" "tmux" "zoxide"
+      homeAspects = with config.flake.modules.homeManager; [
+        awscli bat bottom direnv eza fish fzf git htop jq
+        neovim packages ripgrep starship tmux zoxide
       ];
     };
   };
