@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.homeManager."wezterm" =
+  flake.modules.homeManager.wezterm =
     {
       config,
       pkgs,

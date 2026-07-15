@@ -7,7 +7,7 @@ let
   );
 in
 {
-  flake.modules.nixos."filebrowser-quantum" =
+  flake.modules.nixos.filebrowser-quantum =
     {
       config,
       pkgs,

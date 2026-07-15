@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.darwin."system" =
+  flake.modules.darwin.system =
     {
       config,
       pkgs,

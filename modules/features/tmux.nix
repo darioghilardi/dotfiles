@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.homeManager."tmux" =
+  flake.modules.homeManager.tmux =
     {
       config,
       pkgs,

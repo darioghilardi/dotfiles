@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.homeManager."direnv" =
+  flake.modules.homeManager.direnv =
     {
       config,
       pkgs,

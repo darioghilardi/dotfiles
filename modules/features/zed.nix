@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.homeManager."zed" =
+  flake.modules.homeManager.zed =
     {
       config,
       pkgs,

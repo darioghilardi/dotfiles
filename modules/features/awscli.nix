@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.homeManager."awscli" =
+  flake.modules.homeManager.awscli =
     {
       config,
       pkgs,

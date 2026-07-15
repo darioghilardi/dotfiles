@@ -7,7 +7,7 @@ let
   );
 in
 {
-  flake.modules.nixos."borgbackup" =
+  flake.modules.nixos.borgbackup =
     {
       config,
       pkgs,

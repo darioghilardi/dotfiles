@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.homeManager."starship" =
+  flake.modules.homeManager.starship =
     {
       config,
       pkgs,

@@ -7,7 +7,7 @@ let
   );
 in
 {
-  flake.modules.nixos."tailscale" =
+  flake.modules.nixos.tailscale =
     {
       config,
       pkgs,

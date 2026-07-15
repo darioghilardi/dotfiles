@@ -1,7 +1,7 @@
 # git. Unconditional (imported by hosts that want it). The identity was the
 # dariodots.user default (no host overrode it), so it's inlined here.
 { ... }: {
-  flake.modules.homeManager."git" = { ... }: {
+  flake.modules.homeManager.git = { ... }: {
     programs.git = {
       enable = true;
 

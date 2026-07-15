@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.homeManager."bat" =
+  flake.modules.homeManager.bat =
     {
       config,
       pkgs,

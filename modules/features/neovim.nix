@@ -11,7 +11,7 @@ let
   );
 in
 {
-  flake.modules.homeManager."neovim" =
+  flake.modules.homeManager.neovim =
     {
       config,
       pkgs,

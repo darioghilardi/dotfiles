@@ -7,7 +7,7 @@ let
   );
 in
 {
-  flake.modules.nixos."restic" =
+  flake.modules.nixos.restic =
     {
       config,
       pkgs,

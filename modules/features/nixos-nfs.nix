@@ -7,7 +7,7 @@ let
   );
 in
 {
-  flake.modules.nixos."nfs" =
+  flake.modules.nixos.nfs =
     {
       config,
       pkgs,

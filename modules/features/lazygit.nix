@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.homeManager."lazygit" =
+  flake.modules.homeManager.lazygit =
     {
       config,
       pkgs,

@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.homeManager."gh" =
+  flake.modules.homeManager.gh =
     {
       config,
       pkgs,

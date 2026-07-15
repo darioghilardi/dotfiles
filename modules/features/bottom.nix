@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
 in
 {
-  flake.modules.homeManager."bottom" =
+  flake.modules.homeManager.bottom =
     {
       config,
       pkgs,
