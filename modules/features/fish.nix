@@ -213,16 +213,6 @@ in {
       shellAliases = aliases;
 
       plugins = [
-        # This plugin is needed when using fish on macos to pickup ~/.nix-profile/bin
-        {
-          name = "nix-env";
-          src = pkgs.fetchFromGitHub {
-            owner = "lilyball";
-            repo = "nix-env.fish";
-            rev = "00c6cc762427efe08ac0bd0d1b1d12048d3ca727";
-            sha256 = "1hrl22dd0aaszdanhvddvqz3aq40jp9zi2zn0v1hjnf7fx4bgpma";
-          };
-        }
         {
           name = "fzf.fish";
           src = pkgs.fetchFromGitHub {
