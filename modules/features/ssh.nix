@@ -1,8 +1,8 @@
 # ssh + 1Password agent. Unconditional (imported by the darwin hosts). The
 # per-host bit — the 1Password SSH key item — is set by each host as
 # `home.file.".config/1Password/ssh/agent.toml"` (see the host home files).
-{...}: {
-  flake.modules.homeManager."ssh" = {config, ...}: {
+{ ... }: {
+  flake.modules.homeManager."ssh" = { config, ... }: {
     programs.ssh.enable = true;
     programs.ssh.enableDefaultConfig = false;
     programs.ssh.matchBlocks."*" = {

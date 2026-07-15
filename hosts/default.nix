@@ -7,16 +7,18 @@
   config,
   inputs,
   ...
-}: let
-  mkDarwin = import ../lib/mkDarwinHost.nix {inherit inputs;};
-  mkNixos = import ../lib/mkNixosHost.nix {inherit inputs;};
+}:
+let
+  mkDarwin = import ../lib/mkDarwinHost.nix { inherit inputs; };
+  mkNixos = import ../lib/mkNixosHost.nix { inherit inputs; };
 
   # Darwin/nixos hosts take every aspect of their class, except where noted.
   # Home features are selected per host (order insignificant) via
   # `with config.flake.modules.homeManager; [ … ]` below.
-  allDarwin = builtins.attrValues (config.flake.modules.darwin or {});
-  allNixos = builtins.attrValues (config.flake.modules.nixos or {});
-in {
+  allDarwin = builtins.attrValues (config.flake.modules.darwin or { });
+  allNixos = builtins.attrValues (config.flake.modules.nixos or { });
+in
+{
   flake.darwinConfigurations = {
     DarioAir = mkDarwin {
       hostName = "DarioAir";
@@ -24,9 +26,29 @@ in {
       homeModule = ./DarioAir/home.nix;
       darwinAspects = allDarwin;
       homeAspects = with config.flake.modules.homeManager; [
-        bat bottom direnv eza fish fzf gh git htop jq k9s
-        lazygit neovim packages ripgrep scriptDirectory ssh
-        starship tmux wezterm zed zellij zoxide
+        bat
+        bottom
+        direnv
+        eza
+        fish
+        fzf
+        gh
+        git
+        htop
+        jq
+        k9s
+        lazygit
+        neovim
+        packages
+        ripgrep
+        scriptDirectory
+        ssh
+        starship
+        tmux
+        wezterm
+        zed
+        zellij
+        zoxide
       ];
     };
 
@@ -36,9 +58,28 @@ in {
       homeModule = ./DarioBook/home.nix;
       darwinAspects = allDarwin;
       homeAspects = with config.flake.modules.homeManager; [
-        bat direnv eza fish fzf gh git htop jq k9s
-        lazygit neovim packages ripgrep scriptDirectory ssh
-        starship tmux wezterm zed zellij zoxide
+        bat
+        direnv
+        eza
+        fish
+        fzf
+        gh
+        git
+        htop
+        jq
+        k9s
+        lazygit
+        neovim
+        packages
+        ripgrep
+        scriptDirectory
+        ssh
+        starship
+        tmux
+        wezterm
+        zed
+        zellij
+        zoxide
       ];
     };
   };
@@ -51,8 +92,21 @@ in {
       homeModule = ./saturn/home.nix;
       nixosAspects = allNixos; # every service/backup aspect
       homeAspects = with config.flake.modules.homeManager; [
-        bat bottom direnv eza fish fzf git htop jq k9s
-        neovim packages ripgrep starship zoxide
+        bat
+        bottom
+        direnv
+        eza
+        fish
+        fzf
+        git
+        htop
+        jq
+        k9s
+        neovim
+        packages
+        ripgrep
+        starship
+        zoxide
       ];
     };
 
@@ -61,10 +115,24 @@ in {
       system = "aarch64-linux";
       systemModule = ./osaka/system.nix;
       homeModule = ./osaka/home.nix;
-      nixosAspects = [config.flake.modules.nixos.fish]; # only fish; not the saturn-only services
+      nixosAspects = [ config.flake.modules.nixos.fish ]; # only fish; not the saturn-only services
       homeAspects = with config.flake.modules.homeManager; [
-        awscli bat bottom direnv eza fish fzf git htop jq
-        neovim packages ripgrep starship tmux zoxide
+        awscli
+        bat
+        bottom
+        direnv
+        eza
+        fish
+        fzf
+        git
+        htop
+        jq
+        neovim
+        packages
+        ripgrep
+        starship
+        tmux
+        zoxide
       ];
     };
   };

@@ -2,7 +2,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   age.secrets = {
     dario-ssh-key = {
       file = ../../secrets/osaka/dario-ssh-key.age;

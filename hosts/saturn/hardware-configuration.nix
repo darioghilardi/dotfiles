@@ -4,7 +4,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
@@ -36,13 +37,19 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-id/ata-CT500MX500SSD1_1834E14E1C41-part1";
     fsType = "vfat";
-    options = ["fmask=0022" "dmask=0022"];
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
   };
 
   fileSystems."/boot-fallback" = {
     device = "/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2R8J9EC619301-part1";
     fsType = "vfat";
-    options = ["fmask=0022" "dmask=0022"];
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
   };
 
   swapDevices = [

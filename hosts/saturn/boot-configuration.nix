@@ -4,10 +4,11 @@
   pkgs,
   lib,
   ...
-}: {
-  boot.kernelModules = ["kvm-intel"];
-  boot.kernelParams = ["ip=192.168.1.102::192.168.1.1:255.255.255.0:saturn::none"];
-  boot.extraModulePackages = [];
+}:
+{
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelParams = [ "ip=192.168.1.102::192.168.1.1:255.255.255.0:saturn::none" ];
+  boot.extraModulePackages = [ ];
 
   boot.loader.efi.efiSysMountPoint = "/boot";
   boot.loader.efi.canTouchEfiVariables = true;
@@ -33,24 +34,35 @@
     # needed to boot to the other drive.
     mirroredBoots = [
       {
-        devices = ["/dev/disk/by-id/ata-CT500MX500SSD1_1834E14E1C41-part1"];
+        devices = [ "/dev/disk/by-id/ata-CT500MX500SSD1_1834E14E1C41-part1" ];
         path = "/boot";
       }
       {
-        devices = ["/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2R8J9EC619301-part1"];
+        devices = [ "/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2R8J9EC619301-part1" ];
         path = "/boot-fallback";
       }
     ];
   };
 
-  boot.supportedFilesystems = ["zfs"];
-  boot.zfs.extraPools = ["zpool_os" "zpool_storage"];
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.extraPools = [
+    "zpool_os"
+    "zpool_storage"
+  ];
   boot.zfs.devNodes = "/dev/disk/by-id";
 
   boot.initrd = {
-    supportedFilesystems = ["zfs"];
-    availableKernelModules = ["xhci_pci" "ehci_pci" "ata_piix" "usbhid" "usb_storage" "sd_mod" "r8169"];
-    kernelModules = [];
+    supportedFilesystems = [ "zfs" ];
+    availableKernelModules = [
+      "xhci_pci"
+      "ehci_pci"
+      "ata_piix"
+      "usbhid"
+      "usb_storage"
+      "sd_mod"
+      "r8169"
+    ];
+    kernelModules = [ ];
 
     # Wait a bit before starting
     # See https://github.com/NixOS/nixpkgs/issues/98741
@@ -83,7 +95,7 @@
         authorizedKeys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJlcsiLTBnj6tGb5P49Zcg5svvT6qIDLbfar7ac8YLwi"
         ];
-        hostKeys = ["/etc/ssh/ssh_host_ed25519_key"];
+        hostKeys = [ "/etc/ssh/ssh_host_ed25519_key" ];
       };
 
       # FIXME:

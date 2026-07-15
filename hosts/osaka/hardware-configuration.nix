@@ -7,14 +7,20 @@
   pkgs,
   modulesPath,
   ...
-}: {
-  imports = [];
+}:
+{
+  imports = [ ];
 
   boot = {
-    initrd.availableKernelModules = ["ehci_pci" "xhci_pci" "usbhid" "sr_mod"];
-    initrd.kernelModules = [];
-    kernelModules = [];
-    extraModulePackages = [];
+    initrd.availableKernelModules = [
+      "ehci_pci"
+      "xhci_pci"
+      "usbhid"
+      "sr_mod"
+    ];
+    initrd.kernelModules = [ ];
+    kernelModules = [ ];
+    extraModulePackages = [ ];
     zfs.devNodes = "/dev/disk/by-uuid";
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;

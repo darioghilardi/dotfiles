@@ -1,12 +1,16 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   inherit (inputs.nixpkgs) lib;
-in {
-  flake.modules.homeManager.fzf = {
-    config,
-    pkgs,
-    ...
-  }:
-    with lib; {
+in
+{
+  flake.modules.homeManager.fzf =
+    {
+      config,
+      pkgs,
+      ...
+    }:
+    with lib;
+    {
       programs.fzf = {
         enable = true;
         # Fish keybindings come from the PatrickF1/fzf.fish plugin (see fish.nix),

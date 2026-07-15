@@ -3,10 +3,10 @@
 # a declared option it's a freeform attr that expects a single definition, so
 # two host modules each setting it would collide. Declare it as merge-by-key so
 # every host module can contribute its own entry.
-{lib, ...}: {
+{ lib, ... }: {
   options.flake.darwinConfigurations = lib.mkOption {
     type = lib.types.lazyAttrsOf lib.types.raw;
-    default = {};
+    default = { };
     description = "nix-darwin configurations, one entry per host module.";
   };
 }

@@ -6,7 +6,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -38,24 +39,32 @@
     # needed to boot to the other drive.
     mirroredBoots = [
       {
-        devices = ["/dev/disk/by-uuid/${SDA1_UUID}"];
+        devices = [ "/dev/disk/by-uuid/${SDA1_UUID}" ];
         path = "/boot";
       }
       {
-        devices = ["/dev/disk/by-uuid/${SDB1_UUID}"];
+        devices = [ "/dev/disk/by-uuid/${SDB1_UUID}" ];
         path = "/boot-fallback";
       }
     ];
   };
 
-  boot.supportedFilesystems = ["zfs"];
-  boot.zfs.extraPools = ["zpool_os" "zpool_storage"];
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.extraPools = [
+    "zpool_os"
+    "zpool_storage"
+  ];
   boot.zfs.devNodes = "/dev/disk/by-uuid";
 
   boot.initrd = {
-    supportedFilesystems = ["zfs"];
-    availableKernelModules = ["virtio_net" "virtio_pci" "xhci_pci" "sr_mod"];
-    kernelModules = [];
+    supportedFilesystems = [ "zfs" ];
+    availableKernelModules = [
+      "virtio_net"
+      "virtio_pci"
+      "xhci_pci"
+      "sr_mod"
+    ];
+    kernelModules = [ ];
 
     # Wait a bit before starting
     # See https://github.com/NixOS/nixpkgs/issues/98741
@@ -88,7 +97,7 @@
         authorizedKeys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJlcsiLTBnj6tGb5P49Zcg5svvT6qIDLbfar7ac8YLwi"
         ];
-        hostKeys = ["/etc/ssh/ssh_host_ed25519_key"];
+        hostKeys = [ "/etc/ssh/ssh_host_ed25519_key" ];
       };
 
       postCommands = "/bin/cryptsetup-askpass";
@@ -104,7 +113,7 @@
   networking.hostId = "37636429";
   networking.hostName = "testvm"; # Define your hostname.
 
-  networking.firewall.allowedTCPPorts = [22];
+  networking.firewall.allowedTCPPorts = [ 22 ];
 
   time.timeZone = "Europe/Rome";
 
@@ -112,7 +121,7 @@
 
   users.users.dario = {
     isNormalUser = true;
-    extraGroups = ["wheel"];
+    extraGroups = [ "wheel" ];
   };
 
   environment.systemPackages = with pkgs; [

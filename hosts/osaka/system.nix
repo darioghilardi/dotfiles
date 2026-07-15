@@ -4,7 +4,8 @@
   config,
   ...
 }:
-with lib; {
+with lib;
+{
   imports = [
     ./disk-config.nix
     ./hardware-configuration.nix
@@ -31,7 +32,7 @@ with lib; {
     knownHosts = {
       "github/ed25519" = {
         publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
-        hostNames = ["github.com"];
+        hostNames = [ "github.com" ];
       };
     };
   };
@@ -58,7 +59,10 @@ with lib; {
     "d /media/psf 0777 dario users -"
   ];
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nix.gc.automatic = true;
   nix.gc.dates = "weekly UTC";
 

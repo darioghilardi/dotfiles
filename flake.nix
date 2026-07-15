@@ -44,19 +44,18 @@
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    alejandra = {
-      url = "github:kamadorueda/alejandra/3.0.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   # The flake is assembled from two module trees: import-tree walks ./modules
   # (every feature/aspect contributes via flake-parts options), and ./hosts
   # (hosts/default.nix) defines the darwin/nixos configurations. No outputs are
   # defined here directly.
-  outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      imports = [(inputs.import-tree ./modules) ./hosts];
+  outputs =
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        (inputs.import-tree ./modules)
+        ./hosts
+      ];
     };
 }

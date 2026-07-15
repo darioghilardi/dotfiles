@@ -3,14 +3,16 @@
 # ../../lib/deploy). Only one module sets `flake.deploy`, so no mergeable option
 # declaration is needed. Overrides for hosts not yet migrated are ignored
 # (mkDeploy only iterates self.nixosConfigurations).
-{inputs, ...}: let
+{ inputs, ... }:
+let
   mkDeploy =
     (import ../../lib/deploy {
       lib = inputs.nixpkgs.lib;
       inherit inputs;
       namespace = "my";
     }).mkDeploy;
-in {
+in
+{
   flake.deploy = mkDeploy {
     self = inputs.self;
     overrides = {
@@ -18,7 +20,10 @@ in {
         remoteBuild = true;
         interactiveSudo = false;
         sshUser = "root";
-        sshOpts = ["-p" "2222"];
+        sshOpts = [
+          "-p"
+          "2222"
+        ];
         profiles.system.user = "root";
       };
       osaka = {

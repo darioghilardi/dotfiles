@@ -1,5 +1,5 @@
 # saturn home. Feature selection lives in the host module (homeAspects list).
-{...}: {
+{ ... }: {
   programs.home-manager.enable = true;
 
   home = {

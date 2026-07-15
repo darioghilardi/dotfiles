@@ -3,6 +3,12 @@
   "editor.tabSize": 2,
   "editor.stickyScroll.enabled": false,
   "editor.insertSpaces": true,
+  // Format .nix files with nixfmt (RFC 166) via the Nix IDE extension.
+  // "-" makes nixfmt read the buffer from stdin.
+  "nix.formatterPath": ["nixfmt", "-"],
+  "[nix]": {
+    "editor.defaultFormatter": "jnoortheen.nix-ide"
+  },
   "vspacecode.bindingOverrides": [
     {
       "keys": "F",

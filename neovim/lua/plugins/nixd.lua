@@ -26,7 +26,7 @@ return {
           },
         },
         formatting = {
-          command = { "alejandra" },
+          command = { "nixfmt" },
         },
         diagnostic = {
           suppress = {

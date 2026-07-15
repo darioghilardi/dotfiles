@@ -5,7 +5,8 @@
   config,
   ...
 }:
-with lib; {
+with lib;
+{
   imports = [
     ./hardware-configuration.nix
     ./boot-configuration.nix
@@ -35,7 +36,7 @@ with lib; {
     enable = true;
     settings.PermitRootLogin = "yes";
     settings.PasswordAuthentication = true;
-    ports = [2222];
+    ports = [ 2222 ];
     openFirewall = true;
   };
 
@@ -95,7 +96,8 @@ with lib; {
 
     filebrowser-quantum = {
       # Not yet in the pinned nixos-25.11; pull just this package from unstable.
-      package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.filebrowser-quantum;
+      package =
+        inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.filebrowser-quantum;
       port = 8080;
       root = "/home/storage";
       user = "dario";
@@ -104,7 +106,7 @@ with lib; {
     };
 
     restic = {
-      paths = ["/home/storage"];
+      paths = [ "/home/storage" ];
       envFile = config.age.secrets."restic/env".path;
       repositoryFile = config.age.secrets."restic/repo".path;
       passwordFile = config.age.secrets."restic/password".path;
@@ -112,7 +114,7 @@ with lib; {
     };
 
     borgbackup = {
-      paths = ["/home/storage"];
+      paths = [ "/home/storage" ];
       repo = "ssh://u433810@u433810.your-storagebox.de:23/./backups/saturn";
       passwordFile = config.age.secrets."borgbackup/password".path;
       healthchecksUrlFile = config.age.secrets."healthchecks/borgbackup".path;
@@ -123,7 +125,7 @@ with lib; {
     dario = {
       isNormalUser = true;
       shell = pkgs.fish;
-      extraGroups = ["wheel"];
+      extraGroups = [ "wheel" ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJlcsiLTBnj6tGb5P49Zcg5svvT6qIDLbfar7ac8YLwi"
       ];
@@ -136,7 +138,7 @@ with lib; {
     };
   };
 
-  nix.settings.trusted-users = ["@wheel"];
+  nix.settings.trusted-users = [ "@wheel" ];
 
   security.sudo.enable = true;
 

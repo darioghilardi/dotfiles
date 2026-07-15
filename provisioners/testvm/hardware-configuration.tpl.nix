@@ -7,13 +7,14 @@
   pkgs,
   modulesPath,
   ...
-}: {
+}:
+{
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
-  boot.kernelModules = [];
-  boot.extraModulePackages = [];
+  boot.kernelModules = [ ];
+  boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
     device = "zpool_os/root";
@@ -42,13 +43,19 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/$SDA1_UUID";
     fsType = "vfat";
-    options = ["fmask=0022" "dmask=0022"];
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
   };
 
   fileSystems."/boot-fallback" = {
     device = "/dev/disk/by-uuid/$SDB1_UUID";
     fsType = "vfat";
-    options = ["fmask=0022" "dmask=0022"];
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
   };
 
   swapDevices = [
