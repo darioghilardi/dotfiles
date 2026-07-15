@@ -5,12 +5,12 @@
   flake.modules.homeManager.ssh = { config, ... }: {
     programs.ssh.enable = true;
     programs.ssh.enableDefaultConfig = false;
-    programs.ssh.matchBlocks."*" = {
-      forwardAgent = false;
-      addKeysToAgent = "yes";
-      compression = true;
-      serverAliveInterval = 60;
-      serverAliveCountMax = 3;
+    programs.ssh.settings."*" = {
+      ForwardAgent = false;
+      AddKeysToAgent = "yes";
+      Compression = true;
+      ServerAliveInterval = 60;
+      ServerAliveCountMax = 3;
     };
 
     # The IdentityAgent config works only for the ssh command, not for

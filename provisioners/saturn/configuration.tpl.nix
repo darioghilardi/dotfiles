@@ -55,6 +55,12 @@
 
   boot.kernelParams = [ "ip=192.168.1.102::192.168.1.1:255.255.255.0:saturn::none" ];
 
+  # nixos-26.05 flipped the default to systemd stage-1 initrd, which does not
+  # support this host's scripted-initrd flow (preLVMCommands / postDeviceCommands
+  # / luks.devices.*.preLVM). Force the classic scripted initrd to preserve the
+  # current LUKS-unlock + ZFS-import boot behavior.
+  boot.initrd.systemd.enable = lib.mkForce false;
+
   boot.initrd = {
     supportedFilesystems = [ "zfs" ];
     availableKernelModules = [

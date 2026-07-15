@@ -72,7 +72,7 @@ in
     in
     {
       environment.shellInit = mkIf brewEnabled ''
-        eval "$(${config.homebrew.brewPrefix}/brew shellenv)"
+        eval "$(${config.homebrew.prefix}/bin/brew shellenv)"
       '';
 
       # https://docs.brew.sh/Shell-Completion#configuring-completions-in-fish

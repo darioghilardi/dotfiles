@@ -51,6 +51,13 @@
   ];
   boot.zfs.devNodes = "/dev/disk/by-id";
 
+  # nixos-26.05 flipped the default to systemd stage-1 initrd, which does not
+  # support this host's scripted-initrd flow (preLVMCommands / postDeviceCommands
+  # / luks.devices.*.preLVM). Force the classic scripted initrd to preserve the
+  # current LUKS-unlock + ZFS-import boot behavior. Migrating to systemd stage 1
+  # is tracked separately (rework LUKS + remote unlock, test on the VM first).
+  boot.initrd.systemd.enable = lib.mkForce false;
+
   boot.initrd = {
     supportedFilesystems = [ "zfs" ];
     availableKernelModules = [
