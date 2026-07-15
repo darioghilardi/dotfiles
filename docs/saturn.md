@@ -71,6 +71,72 @@ Now the server can be accessed with:
 ssh root@saturn -p 2222
 ```
 
+## Boot / initrd (LUKS + ZFS)
+
+### Current state: forced scripted (classic) initrd
+
+Saturn boots with the **classic scripted initrd**, forced on in
+`hosts/saturn/boot-configuration.nix`:
+
+```nix
+boot.initrd.systemd.enable = lib.mkForce false;
+```
+
+This is required because `nixos-26.05` flipped the default to **systemd
+stage-1 initrd**, which does *not* support the scripted-initrd features this
+host's boot depends on:
+
+- `boot.initrd.preLVMCommands` — the `sleep 1` device-settle workaround.
+- `boot.initrd.postDeviceCommands` — the `zpool import -a -f -d /dev/mapper`
+  that speeds up pool import.
+- `boot.initrd.luks.devices.*.preLVM` — the ordering flag on the four LUKS
+  containers (`os_1`, `os_2`, `storage_1`, `storage_2`).
+
+Without the force, the config fails to evaluate with `systemd stage 1 does not
+support ...` assertions. Forcing scripted initrd keeps the existing
+LUKS-unlock + ZFS-import boot behavior unchanged.
+
+### Migration required for 26.11
+
+**Scripted initrd is deprecated and removed in `nixos-26.11`.** Before
+upgrading saturn past 26.05, the boot must be migrated to systemd stage-1
+initrd. Do this on the `testvm` provisioner first — a broken initrd on saturn
+locks the box out until you have physical console access.
+
+Steps (verify details against the NixOS 26.11 release notes):
+
+1. **Remove the force.** Delete `boot.initrd.systemd.enable = lib.mkForce
+   false;` so systemd stage-1 initrd (the new default) is used.
+2. **Drop the manual ZFS import.** Under systemd initrd, pools are imported by
+   auto-generated `zfs-import-<pool>.service` units from `boot.zfs.extraPools`
+   and the `fileSystems` entries — so `boot.initrd.postDeviceCommands` (the
+   `zpool import`) can be removed. If a forced import is still needed, express
+   it as a `boot.initrd.systemd.services.<name>` unit instead.
+3. **Drop the settle workaround.** Remove `boot.initrd.preLVMCommands` (the
+   `sleep 1`); systemd initrd orders devices via units. If a wait is still
+   needed, model it as a unit dependency rather than a sleep.
+4. **Clean up the LUKS devices.** Remove the now-meaningless `preLVM = true`
+   from each `boot.initrd.luks.devices.<name>` (there is no LVM here). The
+   device declarations themselves stay; systemd initrd unlocks them via the
+   generated `systemd-cryptsetup@` units.
+5. **Fix remote unlock (finally).** `boot.initrd.network.ssh` still works under
+   systemd initrd, but the passphrase prompt is no longer `cryptsetup-askpass`.
+   After SSHing into the initrd (see "Starting the server"), unlock with:
+
+   ```
+   systemd-tty-ask-password-agent --query
+   ```
+
+   This replaces the long-broken `postCommands = "/bin/cryptsetup-askpass"`
+   (currently commented out with a FIXME). Update the "Starting the server"
+   section above once this lands.
+6. **Set the new ZFS default.** Add `boot.zfs.forceImportRoot = false;` — it is
+   the recommended value and becomes the default in 26.11.
+
+Apply the same changes to the provisioner template
+(`provisioners/saturn/configuration.tpl.nix`), which mirrors this boot config
+for fresh installs.
+
 ## Backups
 
 Backups are executed daily with:
