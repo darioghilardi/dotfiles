@@ -39,6 +39,54 @@ After the first installation, deploy a new configuration using this flake and `d
 deploy --hostname MACHINE_IP/HOSTNAME .#saturn
 ```
 
+### Deploy fails with "Could not acquire lock" / activation exit status 11
+
+If a deploy fails during activation with `Could not acquire lock` and
+deploy-rs rolls back (`exit status: 11`), the cause is usually **not** a bad
+config — retrying the same deploy will fail identically. The real failure mode
+seen on saturn: `switch-to-configuration` tried to **reload
+`dbus-broker.service`** (the system D-Bus bus), the reload timed out, and the
+bus was killed and never came back. With the system bus dead:
+
+- every dbus/varlink client breaks — logind can no longer create sessions
+  (`Transport endpoint is not connected`, `io.systemd.Login.CreateSession
+  failed`);
+- the `switch-to-configuration` process spins at ~100% CPU retrying the dead
+  bus forever, holding the Nix **system profile lock** — which is what makes
+  every subsequent deploy fail with `Could not acquire lock`.
+
+This can be triggered by systemd/dbus changes across a channel bump (it hit us
+on the 26.05 / systemd 260 upgrade).
+
+**Recover in place (no reboot — a reboot would strand saturn at the LUKS
+prompt, see the boot section below).** Over SSH as root:
+
+```
+# 1. Find and kill the stuck switch + orphaned deploy processes (this frees
+#    the profile lock). Confirm none remain afterwards.
+ps aux | grep -E "switch-to-configuration|deploy-rs|nix-env" | grep -v grep
+kill -KILL <PIDs>
+
+# 2. Confirm the system bus is dead, then restart it.
+systemctl is-active dbus-broker.service          # -> inactive
+systemctl start dbus-broker.service
+busctl --system list | head                       # should now round-trip
+
+# 3. Reconnect the bus clients and PID 1's managers.
+systemctl restart systemd-logind.service
+systemctl daemon-reexec
+loginctl list-sessions                            # should list sessions, no errors
+
+# 4. Verify, then redeploy from the workstation.
+systemctl is-system-running                       # running
+systemctl --failed                                # 0 failed units
+```
+
+A clean redeploy afterwards will *start* `dbus-broker.service` (rather than
+reload a live one) and complete normally. Because this recovery depends on SSH
+staying reachable while the bus is down, it is fragile on this host until the
+initrd remote-unlock migration below is done.
+
 ## Starting the server
 
 The disks are encrypted so at any restart you need to find the ip address of the server, as likely it's given through dhcp:
