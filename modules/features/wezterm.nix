@@ -19,8 +19,8 @@ in
 
         return {
           front_end = "WebGpu",
-          font = wezterm.font("JetBrains Mono"),
-          font_size = 14.0,
+          font = wezterm.font("Iosevka Nerd Font"),
+          font_size = 15.0,
           freetype_load_target = 'Light',
           freetype_render_target = 'HorizontalLcd',
           color_scheme = 'Solarized Dark - Patched',

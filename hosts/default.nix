@@ -31,6 +31,7 @@ in
         direnv
         eza
         fish
+        fonts
         fzf
         gh
         git
@@ -62,6 +63,7 @@ in
         direnv
         eza
         fish
+        fonts
         fzf
         gh
         git
