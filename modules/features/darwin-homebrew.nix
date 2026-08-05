@@ -48,7 +48,7 @@ in
         # the times, even if it says "updated".
         # "setapp"
         "signal"
-        # "spotify"
+        "spotify"
         "steam"
         "sublime-text"
         "tailscale-app"
