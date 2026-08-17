@@ -60,7 +60,8 @@ in
         "visual-studio-code"
         "vlc"
         "wezterm"
-        "whatsapp"
+        # can't download from brew cask
+        # "whatsapp"
         "zoom"
       ];
 

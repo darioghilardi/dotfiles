@@ -8,3 +8,5 @@ brew trust --taps cloudflare/cloudflare
 brew trust --formulae cloudflare/cloudflare/cf-terraforming
 nh darwin switch --show-activation-logs --print-build-logs .
 popd
+
+echo "try again to remove the comment on whatsapp for brew cask"

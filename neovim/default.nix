@@ -63,9 +63,6 @@ in
             elixir = with pkgs; [
               elixir-ls
             ];
-            fsharp = with pkgs; [
-              fsautocomplete
-            ];
             lua = with pkgs; [
               lua-language-server
               stylua
@@ -120,9 +117,6 @@ in
             ];
             elixir = with pkgs.vimPlugins; [
               elixir-tools-nvim
-            ];
-            fsharp = with pkgs.vimPlugins; [
-              Ionide-vim
             ];
             javascript = with pkgs.vimPlugins; [
             ];
@@ -190,7 +184,6 @@ in
             categories = {
               general = true;
               elixir = true;
-              fsharp = true;
               lua = true;
               nix = true;
               javascript = true;

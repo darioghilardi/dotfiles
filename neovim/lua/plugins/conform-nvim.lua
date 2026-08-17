@@ -17,7 +17,6 @@ return {
         lua = nixCats("lua") and { "stylua" } or nil,
         elixir = nixCats("elixir") and { "mix" } or nil,
         nix = nixCats("nix") and { "nixfmt" } or nil,
-        fsharp = nixCats("fsharp") and { "fantomas" } or nil,
         javascript = nixCats("javascript") and { "biome" } or nil,
         css = nixCats("css") and { "biome" } or nil,
       },
