@@ -192,6 +192,55 @@ Backups are executed daily with:
 - Restic, at 00:00, to Backblaze B2
 - BorgBackup, at 3:00, to Hetzner
 
+### Restic
+
+The NixOS restic module installs a wrapper command for each backup. The backup has the name `storage`, so the wrapper is `restic-storage`. The wrapper loads the repository, the password and the environment file. Run it with `sudo`, because only root can read the agenix secrets in `/run/agenix/`.
+
+View the list of snapshots:
+
+```
+sudo restic-storage snapshots
+```
+
+List the files in the latest snapshot:
+
+```
+sudo restic-storage ls latest
+```
+
+List the files in one folder only:
+
+```
+sudo restic-storage ls latest /home/storage/some/dir
+```
+
+List the files in a specified snapshot (use an ID from `snapshots`):
+
+```
+sudo restic-storage ls SNAPSHOT_ID
+```
+
+Find a file in all snapshots:
+
+```
+sudo restic-storage find '*.pdf'
+```
+
+Mount the repository to browse the snapshots as folders (press Ctrl-C to unmount):
+
+```
+sudo mkdir -p /tmp/restic
+sudo restic-storage mount /tmp/restic
+```
+
+If the `restic-storage` wrapper is not available, set the variables manually:
+
+```
+sudo bash -c 'set -a; . /run/agenix/restic/env; set +a;
+  restic -r "$(cat /run/agenix/restic/repo)" \
+         --password-file /run/agenix/restic/password snapshots'
+```
+
 ### BorgBackup
 
 The SSH connection uses post-quantum key exchange (`mlkem768x25519-sha256`) to avoid warnings from Hetzner's newer OpenSSH.
