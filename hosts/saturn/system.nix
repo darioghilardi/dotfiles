@@ -32,6 +32,14 @@ with lib;
   networking.hostId = "55536429";
   networking.hostName = "saturn";
 
+  # Matter devices on the LAN (for matter-server, see the home-assistant
+  # aspect): mDNS (5353) for discovery and 5540 for operational traffic.
+  # Only on the LAN interface. The Home Assistant UI stays Tailscale-only.
+  networking.firewall.interfaces.enp3s0.allowedUDPPorts = [
+    5353
+    5540
+  ];
+
   services.openssh = {
     enable = true;
     settings.PermitRootLogin = "yes";
